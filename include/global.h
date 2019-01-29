@@ -12,7 +12,8 @@
 #define SUCCESS 1
 #define FAIL 0
 
-
+#define ENABLE_TX (1)
+#define DISABLE_TX (0)
 typedef struct{
 	Uint16 currentHallPosition;
 	Uint16 lastTimeHalllPosition;

@@ -2,13 +2,28 @@
 #include "DSP280x_Examples.h"   // DSP280x Examples Include File
 #include "global.h"
 #include "scirx.h"
+#include "scitx.h"
+
+#define WAVE_AMOUNT (16)
 
 
 RS422RXQUE gRS422RxQue = {0};
 char rs422rxPack[16];
+static void WaveCommand(VAR16 a, int b, int c) {
+	int i;
 
+	for(i = 0; i < WAVE_AMOUNT; ++i){
+		//unpack bit information
+		if((a.value & (0x0001 << i)) >> i){
+			gRx422TxEnableFlag[i] = ENABLE_TX;
+		}
+		else{
+			gRx422TxEnableFlag[i] = DISABLE_TX;
+		}
+	}
+}
 const functionMsgCodeUnpack msgInterface[] = {
-			0,
+			WaveCommand,
 			0,
 			0
 };

@@ -111,7 +111,6 @@ void PackRS422TxData(void){
 	int lenPosition = 0;
 	Uint16 total =0;
 
-
 	if(count == 0){
 		if(RX422TXEnQueue(0x5a) == 0){
 			asm ("      ESTOP0");
@@ -121,6 +120,7 @@ void PackRS422TxData(void){
 			asm ("      ESTOP0");
 			return;
 		}
+
 		lenPosition = gRS422TxQue.rear;
 		if(RX422TXEnQueue(0x05) == 0){
 			asm ("      ESTOP0");
