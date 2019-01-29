@@ -341,81 +341,79 @@ void InitEPwm2(void)
 {
 
 //初始化EPWM2，驱动B相。BH—EPWM1A，BL-EPWM1B
-	//时基模块寄存器设置：
-	    // 设置时基周期寄存器TBPRD
-		//注意：在向上向下计数模式中，该值是PWM周期的1/2；其他模式下该值是PWM的周期
-	    EPwm2Regs.TBPRD = PWM_TIMER_TBPRD;  // 设置 Set timer period TBCLKs  40KHz, 25us
-		//设置时基相位寄存器TBPHS
-	    EPwm2Regs.TBPHS.all = 0x0000;   // 初始相位为0
-		//设置时基计数器TBCTR
-	    EPwm2Regs.TBCTR = 0x0000;       // 清零时基计数器
-		//设置时基控制寄存器
-		EPwm2Regs.TBCTL.bit.PHSEN = 0;//相位角控制禁止
-		EPwm2Regs.TBCTL.bit.HSPCLKDIV = 0;//高速时钟预分频,0:不分频
-	  	EPwm2Regs.TBCTL.bit.CLKDIV = 0;//时钟预分频比设置，TBCLK=SYSCLKOUT/(HSPCLKDIV*CLKDIV)，0:不分频
+//时基模块寄存器设置：
+    // 设置时基周期寄存器TBPRD
+	//注意：在向上向下计数模式中，该值是PWM周期的1/2；其他模式下该值是PWM的周期
+    EPwm2Regs.TBPRD = PWM_TIMER_TBPRD;  // 设置 Set timer period TBCLKs  40KHz, 25us
+	//设置时基相位寄存器TBPHS
+    EPwm2Regs.TBPHS.all = 0x0000;   // 初始相位为0
+	//设置时基计数器TBCTR
+    EPwm2Regs.TBCTR = 0x0000;       // 清零时基计数器
+	//设置时基控制寄存器
+	EPwm2Regs.TBCTL.bit.PHSEN = 0;//相位角控制禁止
+	EPwm2Regs.TBCTL.bit.HSPCLKDIV = 0;//高速时钟预分频,0:不分频
+  	EPwm2Regs.TBCTL.bit.CLKDIV = 0;//时钟预分频比设置，TBCLK=SYSCLKOUT/(HSPCLKDIV*CLKDIV)，0:不分频
 
-		EPwm2Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_DISABLE;//禁止同步信号输出
-		EPwm2Regs.TBCTL.bit.PRDLD = TB_SHADOW;//更新时基周期寄存器时使用缓冲寄存器，即使用时基周期寄存器的影子寄存器
-		EPwm2Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;//计数模式为：连续向上向下
+	EPwm2Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_DISABLE;//禁止同步信号输出
+	EPwm2Regs.TBCTL.bit.PRDLD = TB_SHADOW;//更新时基周期寄存器时使用缓冲寄存器，即使用时基周期寄存器的影子寄存器
+	EPwm2Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;//计数模式为：连续向上向下
+	//计数比较模块寄存器设置:
+	//计数比较控制寄存器CMPCTL设置
+	EPwm2Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;//启用占空比计数比较B影子寄存器
+	EPwm2Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;//启用占空比计数比较A影子寄存器
+	EPwm2Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;//当计数器为0时重载比较寄存器B
+	EPwm2Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;//当计数器为0时重载比较寄存器A
 
-		//计数比较模块寄存器设置:
-		//计数比较控制寄存器CMPCTL设置
-		EPwm2Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;//启用占空比计数比较B影子寄存器
-		EPwm2Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;//启用占空比计数比较A影子寄存器
-		EPwm2Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;//当计数器为0时重载比较寄存器B
-		EPwm2Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;//当计数器为0时重载比较寄存器A
+	//输出模块设置：
+	//输出A控制寄存器AQCTLA设置
+	//设置计数器值等于比较设定值CMPA时，EPWM1A极性:向下计数与比较值相等时置高
+	EPwm2Regs.AQCTLA.bit.CAD =AQ_SET;//AQ_SET;
+	//设置计数器值等于比较设定值CMPA时，EPWM1A极性:向上计数与比较值相等时置低
+	EPwm2Regs.AQCTLA.bit.CAU =AQ_CLEAR;//AQ_CLEAR;
+	//设置计数器值等于占空比设定值CMPB时，EPWM1A极性:不响应
+	EPwm2Regs.AQCTLA.bit.CBD =AQ_NO_ACTION;//AQ_NO_ACTION;
+	//设置计数器值等于占空比设定值CMPB时，EPWM1A极性:不响应
+	EPwm2Regs.AQCTLA.bit.CBU =AQ_NO_ACTION;//AQ_NO_ACTION;
+	//设置计数器值等于时基周期时EPWM1A动作：不响应
+	EPwm2Regs.AQCTLA.bit.PRD =AQ_NO_ACTION;
+	//设置计数器值等于0时EPWM1A动作：不响应
+	EPwm2Regs.AQCTLA.bit.ZRO =AQ_NO_ACTION;
 
-		//输出模块设置：
-		//输出A控制寄存器AQCTLA设置
-		//设置计数器值等于比较设定值CMPA时，EPWM1A极性:向下计数与比较值相等时置高
-		EPwm2Regs.AQCTLA.bit.CAD =AQ_SET;//AQ_SET;
-		//设置计数器值等于比较设定值CMPA时，EPWM1A极性:向上计数与比较值相等时置低
-		EPwm2Regs.AQCTLA.bit.CAU =AQ_CLEAR;//AQ_CLEAR;
-		//设置计数器值等于占空比设定值CMPB时，EPWM1A极性:不响应
-		EPwm2Regs.AQCTLA.bit.CBD =AQ_NO_ACTION;//AQ_NO_ACTION;
-		//设置计数器值等于占空比设定值CMPB时，EPWM1A极性:不响应
-		EPwm2Regs.AQCTLA.bit.CBU =AQ_NO_ACTION;//AQ_NO_ACTION;
-		//设置计数器值等于时基周期时EPWM1A动作：不响应
-		EPwm2Regs.AQCTLA.bit.PRD =AQ_NO_ACTION;
-		//设置计数器值等于0时EPWM1A动作：不响应
-		EPwm2Regs.AQCTLA.bit.ZRO =AQ_NO_ACTION;
+	//输出B控制寄存器AQCTLB设置
+	//设置计数器值等于比较设定值CMPA时，EPWM1B极性:向下计数与比较值相等时置高
+	EPwm2Regs.AQCTLB.bit.CAD =AQ_CLEAR;//AQ_CLEAR;
+	//设置计数器值等于比较设定值CMPA时，EPWM1B极性:向上计数与比较值相等时置低
+	EPwm2Regs.AQCTLB.bit.CAU =AQ_SET;//AQ_SET;
+	//设置计数器值等于比较设定值CMPB时，E/PWM1B极性:不响应
+	EPwm2Regs.AQCTLB.bit.CBD =AQ_NO_ACTION;
+	//设置计数器值等于比较设定值CMPB时，EPWM1B极性:不响应
+	EPwm2Regs.AQCTLB.bit.CBU =AQ_NO_ACTION;
+	//设置计数器值等于时基周期时EPWM1A动作：不响应
+	EPwm2Regs.AQCTLB.bit.PRD =AQ_NO_ACTION;
+	//设置计数器值等于0时EPWM1A动作：不响应
+	EPwm2Regs.AQCTLB.bit.ZRO =AQ_NO_ACTION;
 
-		//输出B控制寄存器AQCTLB设置
-		//设置计数器值等于比较设定值CMPA时，EPWM1B极性:向下计数与比较值相等时置高
-		EPwm2Regs.AQCTLB.bit.CAD =AQ_CLEAR;//AQ_CLEAR;
-		//设置计数器值等于比较设定值CMPA时，EPWM1B极性:向上计数与比较值相等时置低
-		EPwm2Regs.AQCTLB.bit.CAU =AQ_SET;//AQ_SET;
-		//设置计数器值等于比较设定值CMPB时，E/PWM1B极性:不响应
-		EPwm2Regs.AQCTLB.bit.CBD =AQ_NO_ACTION;
-		//设置计数器值等于比较设定值CMPB时，EPWM1B极性:不响应
-		EPwm2Regs.AQCTLB.bit.CBU =AQ_NO_ACTION;
-		//设置计数器值等于时基周期时EPWM1A动作：不响应
-		EPwm2Regs.AQCTLB.bit.PRD =AQ_NO_ACTION;
-		//设置计数器值等于0时EPWM1A动作：不响应
-		EPwm2Regs.AQCTLB.bit.ZRO =AQ_NO_ACTION;
+	EPwm2Regs.CMPA.half.CMPA= PWM_HALF/2 ;//初始设置50%的占空比
+	//动作软件连续软件强制输出控制寄存器AQSFRC设置
+    EPwm2Regs.AQSFRC.bit.RLDCSF = 3;//立即加载
+	//关闭PWM2
+  //EPwm2Regs.AQCSFRC.all = 0x0009;   //这样设置是上管子和下管子都让它保持低电平
 
-		EPwm2Regs.CMPA.half.CMPA= PWM_HALF/2 ;//初始设置50%的占空比
-		//动作软件连续软件强制输出控制寄存器AQSFRC设置
-	   EPwm2Regs.AQSFRC.bit.RLDCSF = 3;//立即加载
-		//关闭PWM2
-	  //EPwm2Regs.AQCSFRC.all = 0x0009;   //这样设置是上管子和下管子都让它保持低电平
+	EPwm2Regs.DBCTL.bit.IN_MODE = 2;//EPWMxA是上升沿,B下降沿延迟信号源
+	EPwm2Regs.DBCTL.bit.POLSEL = 2;	//极性控制，EPWMxB 翻转，EPWMxA不翻转
+	EPwm2Regs.DBCTL.bit.OUT_MODE = 3; //死区输出模式控制
 
-		EPwm2Regs.DBCTL.bit.IN_MODE = 2;//EPWMxA是上升沿,B下降沿延迟信号源
-		EPwm2Regs.DBCTL.bit.POLSEL = 2;	//极性控制，EPWMxB 翻转，EPWMxA不翻转
-		EPwm2Regs.DBCTL.bit.OUT_MODE = 3; //死区输出模式控制
+	//死区上升沿延迟寄存器DBRED设置
+ 	EPwm2Regs.DBRED = DEAD_time;//死区时间:1us=DBFED*TTBCLK
+ 	//死区下降沿延迟寄存器DBFED设置
+ 	EPwm2Regs.DBFED = DEAD_time;//死区时间: 1us=DBFED*TTBCLK
 
-		//死区上升沿延迟寄存器DBRED设置
-	 	EPwm2Regs.DBRED = DEAD_time;//死区时间:1us=DBFED*TTBCLK
-	 	//死区下降沿延迟寄存器DBFED设置
-	 	EPwm2Regs.DBFED = DEAD_time;//死区时间: 1us=DBFED*TTBCLK
+	//PWM斩波控制寄存器PCCTL设置，暂不用
+	//故障捕捉区设置：暂不用
 
-		//PWM斩波控制寄存器PCCTL设置，暂不用
-		//故障捕捉区设置：暂不用
-
-		EPwm2Regs.ETPS.bit.INTPRD = ET_1ST;//PWM中断次数：1次
-		EPwm2Regs.ETSEL.bit.INTSEL = ET_CTR_ZERO;//pwm中断时刻：计数器值=0
-		EPwm2Regs.ETSEL.bit.INTEN =0; //disable INT
-
+	EPwm2Regs.ETPS.bit.INTPRD = ET_1ST;//PWM中断次数：1次
+	EPwm2Regs.ETSEL.bit.INTSEL = ET_CTR_ZERO;//pwm中断时刻：计数器值=0
+	EPwm2Regs.ETSEL.bit.INTEN =0; //disable INT
 }
 /*初始化EPwm3函数*/
 void InitEPwm3(void)
@@ -423,79 +421,77 @@ void InitEPwm3(void)
 
 //初始化EPWM3，驱动A相。AH—EPWM1A，AL-EPWM1B
 	//时基模块寄存器设置：
-	    // 设置时基周期寄存器TBPRD
-		//注意：在向上向下计数模式中，该值是PWM周期的1/2；其他模式下该值是PWM的周期
-	    EPwm3Regs.TBPRD = PWM_TIMER_TBPRD;  // 设置 Set timer period TBCLKs  40KHz, 25us
-		//设置时基相位寄存器TBPHS
-	    EPwm3Regs.TBPHS.all = 0x0000;   // 初始相位为0
-		//设置时基计数器TBCTR
-	    EPwm3Regs.TBCTR = 0x0000;       // 清零时基计数器
-		//设置时基控制寄存器
-		EPwm3Regs.TBCTL.bit.PHSEN = 0;//相位角控制禁止
-		EPwm3Regs.TBCTL.bit.HSPCLKDIV = 0;//高速时钟预分频,0:不分频
-	  	EPwm3Regs.TBCTL.bit.CLKDIV = 0;//时钟预分频比设置，TBCLK=SYSCLKOUT/(HSPCLKDIV*CLKDIV)，0:不分频
+    // 设置时基周期寄存器TBPRD
+	//注意：在向上向下计数模式中，该值是PWM周期的1/2；其他模式下该值是PWM的周期
+    EPwm3Regs.TBPRD = PWM_TIMER_TBPRD;  // 设置 Set timer period TBCLKs  40KHz, 25us
+	//设置时基相位寄存器TBPHS
+    EPwm3Regs.TBPHS.all = 0x0000;   // 初始相位为0
+	//设置时基计数器TBCTR
+    EPwm3Regs.TBCTR = 0x0000;       // 清零时基计数器
+	//设置时基控制寄存器
+	EPwm3Regs.TBCTL.bit.PHSEN = 0;//相位角控制禁止
+	EPwm3Regs.TBCTL.bit.HSPCLKDIV = 0;//高速时钟预分频,0:不分频
+  	EPwm3Regs.TBCTL.bit.CLKDIV = 0;//时钟预分频比设置，TBCLK=SYSCLKOUT/(HSPCLKDIV*CLKDIV)，0:不分频
+	EPwm3Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_DISABLE;//禁止同步信号输出
+	EPwm3Regs.TBCTL.bit.PRDLD = TB_SHADOW;//更新时基周期寄存器时使用缓冲寄存器，即使用时基周期寄存器的影子寄存器
+	EPwm3Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;//计数模式为：连续向上向下
 
-		EPwm3Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_DISABLE;//禁止同步信号输出
-		EPwm3Regs.TBCTL.bit.PRDLD = TB_SHADOW;//更新时基周期寄存器时使用缓冲寄存器，即使用时基周期寄存器的影子寄存器
-		EPwm3Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;//计数模式为：连续向上向下
+	//计数比较模块寄存器设置:
+	//计数比较控制寄存器CMPCTL设置
+	EPwm3Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;//启用占空比计数比较B影子寄存器
+	EPwm3Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;//启用占空比计数比较A影子寄存器
+	EPwm3Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;//当计数器为0时重载比较寄存器B
+	EPwm3Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;//当计数器为0时重载比较寄存器A
 
-		//计数比较模块寄存器设置:
-		//计数比较控制寄存器CMPCTL设置
-		EPwm3Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;//启用占空比计数比较B影子寄存器
-		EPwm3Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;//启用占空比计数比较A影子寄存器
-		EPwm3Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;//当计数器为0时重载比较寄存器B
-		EPwm3Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;//当计数器为0时重载比较寄存器A
+	//输出模块设置：
+	//输出A控制寄存器AQCTLA设置
+	//设置计数器值等于比较设定值CMPA时，EPWM1A极性:向下计数与比较值相等时置高
+	EPwm3Regs.AQCTLA.bit.CAD =AQ_SET;//AQ_SET;
+	//设置计数器值等于比较设定值CMPA时，EPWM1A极性:向上计数与比较值相等时置低
+	EPwm3Regs.AQCTLA.bit.CAU =AQ_CLEAR;//AQ_CLEAR;
+	//设置计数器值等于占空比设定值CMPB时，EPWM1A极性:不响应
+	EPwm3Regs.AQCTLA.bit.CBD =AQ_NO_ACTION;//AQ_NO_ACTION;
+	//设置计数器值等于占空比设定值CMPB时，EPWM1A极性:不响应
+	EPwm3Regs.AQCTLA.bit.CBU =AQ_NO_ACTION;//AQ_NO_ACTION;
+	//设置计数器值等于时基周期时EPWM1A动作：不响应
+	EPwm3Regs.AQCTLA.bit.PRD =AQ_NO_ACTION;
+	//设置计数器值等于0时EPWM1A动作：不响应
+	EPwm3Regs.AQCTLA.bit.ZRO =AQ_NO_ACTION;
 
-		//输出模块设置：
-		//输出A控制寄存器AQCTLA设置
-		//设置计数器值等于比较设定值CMPA时，EPWM1A极性:向下计数与比较值相等时置高
-		EPwm3Regs.AQCTLA.bit.CAD =AQ_SET;//AQ_SET;
-		//设置计数器值等于比较设定值CMPA时，EPWM1A极性:向上计数与比较值相等时置低
-		EPwm3Regs.AQCTLA.bit.CAU =AQ_CLEAR;//AQ_CLEAR;
-		//设置计数器值等于占空比设定值CMPB时，EPWM1A极性:不响应
-		EPwm3Regs.AQCTLA.bit.CBD =AQ_NO_ACTION;//AQ_NO_ACTION;
-		//设置计数器值等于占空比设定值CMPB时，EPWM1A极性:不响应
-		EPwm3Regs.AQCTLA.bit.CBU =AQ_NO_ACTION;//AQ_NO_ACTION;
-		//设置计数器值等于时基周期时EPWM1A动作：不响应
-		EPwm3Regs.AQCTLA.bit.PRD =AQ_NO_ACTION;
-		//设置计数器值等于0时EPWM1A动作：不响应
-		EPwm3Regs.AQCTLA.bit.ZRO =AQ_NO_ACTION;
+	//输出B控制寄存器AQCTLB设置
+	//设置计数器值等于比较设定值CMPA时，EPWM1B极性:向下计数与比较值相等时置高
+	EPwm3Regs.AQCTLB.bit.CAD =AQ_CLEAR;//AQ_CLEAR;
+	//设置计数器值等于比较设定值CMPA时，EPWM1B极性:向上计数与比较值相等时置低
+	EPwm3Regs.AQCTLB.bit.CAU =AQ_SET;//AQ_SET;
+	//设置计数器值等于比较设定值CMPB时，E/PWM1B极性:不响应
+	EPwm3Regs.AQCTLB.bit.CBD =AQ_NO_ACTION;
+	//设置计数器值等于比较设定值CMPB时，EPWM1B极性:不响应
+	EPwm3Regs.AQCTLB.bit.CBU =AQ_NO_ACTION;
+	//设置计数器值等于时基周期时EPWM1A动作：不响应
+	EPwm3Regs.AQCTLB.bit.PRD =AQ_NO_ACTION;
+	//设置计数器值等于0时EPWM1A动作：不响应
+	EPwm3Regs.AQCTLB.bit.ZRO =AQ_NO_ACTION;
 
-		//输出B控制寄存器AQCTLB设置
-		//设置计数器值等于比较设定值CMPA时，EPWM1B极性:向下计数与比较值相等时置高
-		EPwm3Regs.AQCTLB.bit.CAD =AQ_CLEAR;//AQ_CLEAR;
-		//设置计数器值等于比较设定值CMPA时，EPWM1B极性:向上计数与比较值相等时置低
-		EPwm3Regs.AQCTLB.bit.CAU =AQ_SET;//AQ_SET;
-		//设置计数器值等于比较设定值CMPB时，E/PWM1B极性:不响应
-		EPwm3Regs.AQCTLB.bit.CBD =AQ_NO_ACTION;
-		//设置计数器值等于比较设定值CMPB时，EPWM1B极性:不响应
-		EPwm3Regs.AQCTLB.bit.CBU =AQ_NO_ACTION;
-		//设置计数器值等于时基周期时EPWM1A动作：不响应
-		EPwm3Regs.AQCTLB.bit.PRD =AQ_NO_ACTION;
-		//设置计数器值等于0时EPWM1A动作：不响应
-		EPwm3Regs.AQCTLB.bit.ZRO =AQ_NO_ACTION;
+	EPwm3Regs.CMPA.half.CMPA= PWM_HALF/3 ;//初始设置50%的占空比
+	//动作软件连续软件强制输出控制寄存器AQSFRC设置
+    EPwm3Regs.AQSFRC.bit.RLDCSF = 3;//立即加载
+	//关闭PWM3
+    //EPwm3Regs.AQCSFRC.all = 0x0009;   //这样设置是上管子和下管子都让它保持低电平
 
-		EPwm3Regs.CMPA.half.CMPA= PWM_HALF/3 ;//初始设置50%的占空比
-		//动作软件连续软件强制输出控制寄存器AQSFRC设置
-	   EPwm3Regs.AQSFRC.bit.RLDCSF = 3;//立即加载
-		//关闭PWM3
-	  //EPwm3Regs.AQCSFRC.all = 0x0009;   //这样设置是上管子和下管子都让它保持低电平
+	EPwm3Regs.DBCTL.bit.IN_MODE = 2;//EPWMxA是上升沿,B下降沿延迟信号源
+	EPwm3Regs.DBCTL.bit.POLSEL = 2;	//极性控制，EPWMxB 翻转，EPWMxA不翻转
+	EPwm3Regs.DBCTL.bit.OUT_MODE = 3; //死区输出模式控制
+	//死区上升沿延迟寄存器DBRED设置
+ 	EPwm3Regs.DBRED = DEAD_time;//死区时间:1us=DBFED*TTBCLK
+ 	//死区下降沿延迟寄存器DBFED设置
+ 	EPwm3Regs.DBFED = DEAD_time;//死区时间: 1us=DBFED*TTBCLK
 
-		EPwm3Regs.DBCTL.bit.IN_MODE = 2;//EPWMxA是上升沿,B下降沿延迟信号源
-		EPwm3Regs.DBCTL.bit.POLSEL = 2;	//极性控制，EPWMxB 翻转，EPWMxA不翻转
-		EPwm3Regs.DBCTL.bit.OUT_MODE = 3; //死区输出模式控制
+	//PWM斩波控制寄存器PCCTL设置，暂不用
+	//故障捕捉区设置：暂不用
 
-		//死区上升沿延迟寄存器DBRED设置
-	 	EPwm3Regs.DBRED = DEAD_time;//死区时间:1us=DBFED*TTBCLK
-	 	//死区下降沿延迟寄存器DBFED设置
-	 	EPwm3Regs.DBFED = DEAD_time;//死区时间: 1us=DBFED*TTBCLK
-
-		//PWM斩波控制寄存器PCCTL设置，暂不用
-		//故障捕捉区设置：暂不用
-
-		EPwm3Regs.ETPS.bit.INTPRD = ET_1ST;//PWM中断次数：1次
-		EPwm3Regs.ETSEL.bit.INTSEL = ET_CTR_ZERO;//pwm中断时刻：计数器值=0
-		EPwm3Regs.ETSEL.bit.INTEN =0; //disable INT
+	EPwm3Regs.ETPS.bit.INTPRD = ET_1ST;//PWM中断次数：1次
+	EPwm3Regs.ETSEL.bit.INTSEL = ET_CTR_ZERO;//pwm中断时刻：计数器值=0
+	EPwm3Regs.ETSEL.bit.INTEN =0; //disable INT
 
 }
 

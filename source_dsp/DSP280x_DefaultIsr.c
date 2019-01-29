@@ -23,6 +23,7 @@
 
 #include "DSP280x_Device.h"     // DSP280x Headerfile Include File
 #include "DSP280x_Examples.h"   // DSP280x Examples Include File
+#include "pwm.h"
 
 // Connected to INT13 of CPU (use MINT13 mask):
 // Note CPU-Timer1 is reserved for TI use, however XINT13
@@ -441,7 +442,7 @@ interrupt void EPWM1_INT_ISR(void)     // EPWM-1
 /*调用PWM中断处理过程函数*/
 	// Clear INT flag for this timer
 	EPwm1Regs.ETCLR.bit.INT = 1;
-
+	PwmIsrThread();
 	// Acknowledge this interrupt to receive more interrupts from group 3
 	PieCtrlRegs.PIEACK.all = PIEACK_GROUP3;
   // Insert ISR Code here
