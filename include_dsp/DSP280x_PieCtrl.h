@@ -140,8 +140,8 @@ struct PIE_CTRL_REGS {
 // PIE Control Registers External References & Function Declarations:
 //
 extern volatile struct PIE_CTRL_REGS PieCtrlRegs;
+void InitInterruptForJ75(void);
 
-void Init_Interrupt(void);
 #ifdef __cplusplus
 }
 #endif /* extern "C" */

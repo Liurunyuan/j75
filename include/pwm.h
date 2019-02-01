@@ -4,6 +4,7 @@
 
 
 void PwmIsrThread(void);
+void InitTest2(void);
 
-
+extern int test2;
 #endif

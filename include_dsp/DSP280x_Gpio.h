@@ -260,7 +260,7 @@ struct GPIO_INT_REGS {
 extern volatile struct GPIO_CTRL_REGS GpioCtrlRegs;
 extern volatile struct GPIO_DATA_REGS GpioDataRegs;
 extern volatile struct GPIO_INT_REGS GpioIntRegs;
-void Init_GPIO();
+void InitGpioForJ75();
 #ifdef __cplusplus
 }
 #endif /* extern "C" */

@@ -221,7 +221,7 @@ struct  SCI_REGS {
 //
 extern volatile struct SCI_REGS SciaRegs;
 extern volatile struct SCI_REGS ScibRegs;
-
+void InitSciForJ75(void);
 #ifdef __cplusplus
 }
 #endif /* extern "C" */

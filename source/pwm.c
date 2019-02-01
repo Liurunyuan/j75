@@ -5,6 +5,11 @@
 
 int test2 = 0;
 
+
+void InitTest2(void){
+	test2 = 5;
+}
+
 void DisablePwm1(void){
 	EALLOW;
 	EPwm1Regs.TZFRC.bit.OST = 1;
@@ -180,7 +185,7 @@ void SwitchDirection(void){
  **************************************************************/
 void PwmIsrThread(void)
 {
-//	SwitchDirection();
+	SwitchDirection();
 	++test2;
 }
 
