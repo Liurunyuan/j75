@@ -3,6 +3,7 @@
 #include "global.h"
 #include "pwm.h"
 
+int test2 = 0;
 
 void DisablePwm1(void){
 	EALLOW;
@@ -179,6 +180,7 @@ void SwitchDirection(void){
  **************************************************************/
 void PwmIsrThread(void)
 {
-	SwitchDirection();
+//	SwitchDirection();
+	++test2;
 }
 

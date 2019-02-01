@@ -64,17 +64,33 @@ void InitPieCtrl(void)
 //
 void EnableInterrupts()
 {
-
-    // Enable the PIE
     PieCtrlRegs.PIECTRL.bit.ENPIE = 1;
     		
 	// Enables PIE to drive a pulse into the CPU 
 	PieCtrlRegs.PIEACK.all = 0xFFFF;  
+	//配置TZ中断相关管脚
 
-	PieCtrlRegs.PIEIER3.bit.INTx1 = 1;//使能epwm1中间级中断
+	// Enable Interrupts at the CPU level
+	//PieCtrlRegs.PIEIER1.bit.INTx1 = 1;//ADC中断,16通道转换完成后来中断
+	PieCtrlRegs.PIEIER1.bit.INTx7 = 1;//定时器0中断。
+//	PieCtrlRegs.PIEIER2.bit.INTx1= 1;//TZ_FAULTB触发
+	//PieCtrlRegs.PIEIER2.bit.INTx2= 1;//TZ_FAULTA触发//
+	//PieCtrlRegs.PIEIER2.bit.INTx3= 1;//IKA_BJ触发//
+	//PieCtrlRegs.PIEIER2.bit.INTx4= 1;//IKB_BJ触发//
+//	PieCtrlRegs.PIEIER2.bit.INTx6 = 1;//应急开关触发
+	PieCtrlRegs.PIEIER3.bit.INTx1 = 1;//ePWM1中断
 
-	// Enable Interrupts at the CPU level 
-    EINT;
+	PieCtrlRegs.PIEIER4.bit.INTx4 = 1;//ECAP4
+	PieCtrlRegs.PIEIER4.bit.INTx5 = 1;//ECAP5
+	PieCtrlRegs.PIEIER4.bit.INTx6 = 1;//ECAP6
+
+
+	//PieCtrlRegs.PIEIER7.bit.INTx1 = 1;//DMA interrupt enable
+
+//	PieCtrlRegs.PIEIER8.bit.INTx5 = 1;//SCIC RX Interrupt
+//	PieCtrlRegs.PIEIER8.bit.INTx6 = 1;//SCIC TX Interrupt
+//	PieCtrlRegs.PIEIER9.bit.INTx3 = 1;//SCIB RX interrupt
+//	PieCtrlRegs.PIEIER9.bit.INTx4 = 1;//SCIB TX interrupt
 
 }
 /*
@@ -107,6 +123,8 @@ void Init_Interrupt(void)
     IER |= M_INT13;//timer1
 
     EnableInterrupts();
+
+	EPwm1Regs.ETSEL.bit.INTEN =1;
     EINT;   // Enable Global interrupt INTM
     ERTM;
     AdcRegs.ADCST.bit.INT_SEQ1_CLR=1;//此句要有，否则进步了中断，应为在该行代码执行前，seq1中断标识已经被立起，此处需要清除

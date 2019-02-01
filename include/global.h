@@ -2,7 +2,7 @@
 #define _GLOBAL_H
 
 
-
+#define FEED_WATCH_DOG  GpioDataRegs.GPATOGGLE.bit.GPIO23
 
 #define EPWM1_TIMER_TBPRD 1500     //������������ģʽ��6000--10k��3000--20k��4286--14K,120M/2/14K=4286
 #define EPWM2_TIMER_TBPRD 1500     //6000--10k��3000--20k��4286--14K

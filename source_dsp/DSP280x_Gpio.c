@@ -171,7 +171,44 @@ void InitGpio(void)
     EDIS;
 }	
 void InitOutputPin(void){
+	/*Read the circuit diagram and find which Pin need to init as Output GPIO, finsish the code here*/
+	/*
+	 * GPIO12
+	 * Pin index:			1
+	 * Name in circuit:		BREAK_K
+	 */
+	GpioCtrlRegs.GPAPUD.bit.GPIO12  = 1;   //禁止使用内部上拉
+	GpioCtrlRegs.GPAMUX1.bit.GPIO12 = 0;  //将GPIO23引脚配置为:(I/O) WDI信号，看门狗复位信号。
+	GpioCtrlRegs.GPADIR.bit.GPIO12  = 1;   //配置为输出
+	GpioDataRegs.GPASET.bit.GPIO12 = 1;   // WDI信号,初始状态为高电平
 
+	/*
+	 * GPIO31
+	 * Pin index:			7
+	 * Name in circuit:		BREAK_K
+	 */
+	GpioCtrlRegs.GPAPUD.bit.GPIO13  = 1;   //禁止使用内部上拉
+	GpioCtrlRegs.GPAMUX1.bit.GPIO13 = 0;  //将GPIO23引脚配置为:(I/O) WDI信号，看门狗复位信号。
+	GpioCtrlRegs.GPADIR.bit.GPIO13  = 1;   //配置为输出
+	GpioDataRegs.GPASET.bit.GPIO13 = 1;   // WDI信号,初始状态为高电平
+
+	/*
+	 * GPIO34
+	 * Pin index:			43
+	 * Name in circuit:		VDD3.3V
+	 */
+	GpioCtrlRegs.GPAPUD.bit.GPIO13  = 1;   //禁止使用内部上拉
+	GpioCtrlRegs.GPAMUX1.bit.GPIO13 = 0;  //将GPIO23引脚配置为:(I/O) WDI信号，看门狗复位信号。
+	GpioCtrlRegs.GPADIR.bit.GPIO13  = 1;   //配置为输出
+	GpioDataRegs.GPASET.bit.GPIO13 = 1;   // WDI信号,初始状态为高电平
+
+
+
+	/*GPIO23为WDI信号*/
+	GpioCtrlRegs.GPAPUD.bit.GPIO23  = 1;   //禁止使用内部上拉
+	GpioCtrlRegs.GPAMUX2.bit.GPIO23 = 0;  //将GPIO23引脚配置为:(I/O) WDI信号，看门狗复位信号。
+	GpioCtrlRegs.GPADIR.bit.GPIO23  = 1;   //配置为输出
+	GpioDataRegs.GPASET.bit.GPIO23 = 1;   // WDI信号,初始状态为高电平
 }
 void InitInputPin(void){
 

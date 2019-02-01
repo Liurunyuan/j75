@@ -6,6 +6,7 @@
 #include "DSP280x_Examples.h"   // DSP280x Examples Include File
 #include "global.h"
 
+int test = 0;
 void Init_Peripheral(){
 
 	Init_GPIO();
@@ -20,7 +21,7 @@ void InitGlobalVar(){
 
 }
 void MainLoop(){
-
+	FEED_WATCH_DOG = 1;
 
 }
 
@@ -37,5 +38,6 @@ void main(void) {
 	while(1){
 		MainLoop();
 		Delay(10000);
+		++test;
 	}
 }
