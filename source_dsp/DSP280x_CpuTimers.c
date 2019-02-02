@@ -104,6 +104,13 @@ void ConfigCpuTimer(struct CPUTIMER_VARS *Timer, float Freq, float Period)
     Timer->InterruptCount = 0;
 }
 
+void Init_CpuTimer_J75(void){
+	InitCpuTimers();
+	ConfigCpuTimer(&CpuTimer0, 120, 200);//t = freq * priod/150000000,0.2ms
+	CpuTimer0Regs.TCR.bit.TIE= 1;
+	CpuTimer0Regs.TCR.bit.TSS = 0;
+}
+
 //===========================================================================
 // End of file.
 //===========================================================================

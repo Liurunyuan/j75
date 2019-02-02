@@ -99,9 +99,9 @@ Uint16 GetCurrentHallValue(void){
 	Uint16 b;
 	Uint16 c;
 //TODO fix later
-	a = GpioDataRegs.GPADAT.bit.GPIO27;
-	b = GpioDataRegs.GPADAT.bit.GPIO26;
-	c = GpioDataRegs.GPADAT.bit.GPIO25;
+	a = GpioDataRegs.GPADAT.bit.GPIO24;
+	b = GpioDataRegs.GPADAT.bit.GPIO25;
+	c = GpioDataRegs.GPADAT.bit.GPIO26;
 
 	temp = ((c << 2) + (b << 1) + a);
 	return temp;

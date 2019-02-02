@@ -26,8 +26,8 @@ extern "C" {
       if CLKINDIV = 0: SYSCLKOUT = (OSCCLK * PLLCR)/2
       if CLKINDIV = 1: SYSCLKOUT = (OSCCLK * PLLCR)
 -----------------------------------------------------------------------------*/
-#define DSP28_CLKINDIV   0   // Enable /2 for SYSCLKOUT
-//#define DSP28_CLKINDIV   1 // Disable /2 for SYSCKOUT
+//#define DSP28_CLKINDIV   0   // Enable /2 for SYSCLKOUT
+#define DSP28_CLKINDIV   1 // Disable /2 for SYSCKOUT
 
 #define DSP28_PLLCR   10
 //#define DSP28_PLLCR    9

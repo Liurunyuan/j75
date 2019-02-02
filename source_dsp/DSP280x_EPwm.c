@@ -13,6 +13,7 @@
 
 #include "DSP280x_Device.h"     // DSP280x Headerfile Include File
 #include "DSP280x_Examples.h"   // DSP280x Examples Include File
+#include "global.h"
 
 //---------------------------------------------------------------------------
 // InitEPwm: 
@@ -311,14 +312,14 @@ void InitTzGpio(void)
 void InitEPwm1()
 {
 	EALLOW;
-	EPwm1Regs.TZCTL.bit.TZA=2;//发生错误时PWMA输出低电平
-	EPwm1Regs.TZCTL.bit.TZB=2;//发生错误时PWMB输出低电平
+	EPwm1Regs.TZCTL.bit.TZA=1;//发生错误时PWMA输出低电平
+	EPwm1Regs.TZCTL.bit.TZB=1;//发生错误时PWMB输出低电平
 	EDIS;
 
-	EPwm1Regs.TBPRD = 1000;
+	EPwm1Regs.TBPRD = EPWM1_TIMER_TBPRD;
 	EPwm1Regs.TBPHS.half.TBPHS = 0x0000;
 	EPwm1Regs.TBCTR = 0x0000;
-	EPwm1Regs.CMPA.half.CMPA = 500;
+	EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD;
 	//EPwm1Regs.CMPB = EPWM2_TIMER_HALF_TBPRD;
 	EPwm1Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;
 	EPwm1Regs.TBCTL.bit.PHSEN = TB_DISABLE;
@@ -342,7 +343,7 @@ void InitEPwm1()
 
 //	EPwm1Regs.DBCTL.all = 0x000b;
 	EPwm1Regs.DBCTL.bit.IN_MODE = 2;//EPWMxA rising edge delay , EPWMXB falling edge delay
-	EPwm1Regs.DBCTL.bit.POLSEL = 2;  //EPWMxB  invert
+	EPwm1Regs.DBCTL.bit.POLSEL = 1;  //EPWMxB  invert
 	EPwm1Regs.DBCTL.bit.OUT_MODE = 3;
 	EPwm1Regs.DBRED = 60;//180==1.5us
 	EPwm1Regs.DBFED = 60;//180==1.5us
@@ -352,15 +353,15 @@ void InitEPwm2()
 	EALLOW;
 //	EPwm2Regs.TZSEL.bit.OSHT2=1;
 //	EPwm2Regs.TZSEL.bit.OSHT3=1;
-	EPwm2Regs.TZCTL.bit.TZA=2;
-	EPwm2Regs.TZCTL.bit.TZB=2;
+	EPwm2Regs.TZCTL.bit.TZA=1;
+	EPwm2Regs.TZCTL.bit.TZB=1;
 //	EPwm2Regs.TZEINT.bit.OST=1;
 	EDIS;
 
-	EPwm2Regs.TBPRD = 1000;
+	EPwm2Regs.TBPRD = EPWM1_TIMER_TBPRD;
 	EPwm2Regs.TBPHS.half.TBPHS = 0x0000;
 	EPwm2Regs.TBCTR = 0x0000;
-	EPwm2Regs.CMPA.half.CMPA =500;
+	EPwm2Regs.CMPA.half.CMPA =EPWM1_TIMER_HALF_TBPRD;
 	//EPwm2Regs.CMPB = EPWM1_TIMER_HALF_TBPRD;
 	EPwm2Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;
 	EPwm2Regs.TBCTL.bit.PHSEN = TB_DISABLE;
@@ -379,9 +380,8 @@ void InitEPwm2()
 	EPwm2Regs.ETPS.bit.INTPRD = ET_1ST;
 
 
-//	EPwm2Regs.DBCTL.all = 0xb;
 	EPwm2Regs.DBCTL.bit.IN_MODE = 2;//EPWMxA rising edge delay , EPWMXB falling edge delay
-	EPwm2Regs.DBCTL.bit.POLSEL = 2;  //EPWMxB  invert
+	EPwm2Regs.DBCTL.bit.POLSEL = 1;  //EPWMxB  invert
 	EPwm2Regs.DBCTL.bit.OUT_MODE = 3;
 	EPwm2Regs.DBRED = 60;
 	EPwm2Regs.DBFED = 60;
@@ -392,15 +392,15 @@ void InitEPwm3()
 	EALLOW;
 //	EPwm3Regs.TZSEL.bit.OSHT2=1;
 //	EPwm3Regs.TZSEL.bit.OSHT3=1;
-	EPwm3Regs.TZCTL.bit.TZA=2;
-	EPwm3Regs.TZCTL.bit.TZB=2;
+	EPwm3Regs.TZCTL.bit.TZA=1;
+	EPwm3Regs.TZCTL.bit.TZB=1;
 //	EPwm3Regs.TZEINT.bit.OST=1;
 	EDIS;
 
-	EPwm3Regs.TBPRD = 1000;
+	EPwm3Regs.TBPRD = EPWM1_TIMER_TBPRD;
 	EPwm3Regs.TBPHS.half.TBPHS = 0x0000;
 	EPwm3Regs.TBCTR = 0x0000;
-	EPwm3Regs.CMPA.half.CMPA =500;
+	EPwm3Regs.CMPA.half.CMPA =EPWM1_TIMER_HALF_TBPRD;
 	//EPwm3Regs.CMPB = EPWM1_TIMER_HALF_TBPRD;
 	EPwm3Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;
 	EPwm3Regs.TBCTL.bit.PHSEN = TB_DISABLE;
@@ -421,7 +421,7 @@ void InitEPwm3()
 
 //	EPwm3Regs.DBCTL.all = 0xb;
 	EPwm3Regs.DBCTL.bit.IN_MODE = 2;//EPWMxA rising edge delay , EPWMXB falling edge delay
-	EPwm3Regs.DBCTL.bit.POLSEL = 2;  //EPWMxB  invert
+	EPwm3Regs.DBCTL.bit.POLSEL = 1;  //EPWMxB  invert
 	EPwm3Regs.DBCTL.bit.OUT_MODE = 3;
 	EPwm3Regs.DBRED = 60;
 	EPwm3Regs.DBFED = 60;

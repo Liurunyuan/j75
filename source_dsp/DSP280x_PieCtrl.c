@@ -71,9 +71,25 @@ void EnableInterrupts()
     		
 	// Enables PIE to drive a pulse into the CPU 
 	PieCtrlRegs.PIEACK.all = 0xFFFF;  
-	PieCtrlRegs.PIEIER1.bit.INTx7 = 1;//定时器0中断。
 
+	//PieCtrlRegs.PIEIER1.bit.INTx1 = 1;//ADC中断,16通道转换完成后来中断
+	PieCtrlRegs.PIEIER1.bit.INTx7 = 1;//定时器0中断。
+//	PieCtrlRegs.PIEIER2.bit.INTx1= 1;//TZ_FAULTB触发
+	//PieCtrlRegs.PIEIER2.bit.INTx2= 1;//TZ_FAULTA触发//
+	//PieCtrlRegs.PIEIER2.bit.INTx3= 1;//IKA_BJ触发//
+	//PieCtrlRegs.PIEIER2.bit.INTx4= 1;//IKB_BJ触发//
+//	PieCtrlRegs.PIEIER2.bit.INTx6 = 1;//应急开关触发
 	PieCtrlRegs.PIEIER3.bit.INTx1 = 1;//ePWM1中断
+
+	PieCtrlRegs.PIEIER4.bit.INTx1 = 1;//ECAP1
+	PieCtrlRegs.PIEIER4.bit.INTx2 = 1;//ECAP2
+	PieCtrlRegs.PIEIER4.bit.INTx3 = 1;//ECAP3
+
+	PieCtrlRegs.PIEIER8.bit.INTx5 = 1;//SCIC RX Interrupt
+	PieCtrlRegs.PIEIER8.bit.INTx6 = 1;//SCIC TX Interrupt
+	PieCtrlRegs.PIEIER9.bit.INTx3 = 1;//SCIB RX interrupt
+	PieCtrlRegs.PIEIER9.bit.INTx4 = 1;//SCIB TX interrupt
+
 
 
 	// Enable Interrupts at the CPU level 

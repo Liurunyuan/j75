@@ -19,9 +19,12 @@ void InitPeripheral(){
 	InitSciForJ75();
 
 	InitEpwmForJ75();
+
+	Init_CpuTimer_J75();
 }
 void InitGlobalVar(){
 	InitTest2();
+	gSysInfo.duty = 0;
 }
 void MainLoop(){
 	FEED_WATCH_DOG = 1;
