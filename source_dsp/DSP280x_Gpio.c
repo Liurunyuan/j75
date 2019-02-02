@@ -52,7 +52,6 @@ void InitGpio(void)
    //GpioCtrlRegs.GPAPUD.all = 0xFFFF;    // Pullup's disabled GPIO0-GPIO31
    //GpioCtrlRegs.GPBPUD.all = 0xFFFF;    // Pullup's disabled GPIO32-GPIO34
    EDIS;
-   sdfsf
 
 }	
 
