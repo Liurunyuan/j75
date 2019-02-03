@@ -319,6 +319,7 @@ void InitEPwm1()
 	EPwm1Regs.TBPRD = EPWM1_TIMER_TBPRD;
 	EPwm1Regs.TBPHS.half.TBPHS = 0x0000;
 	EPwm1Regs.TBCTR = 0x0000;
+
 	EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD;
 	//EPwm1Regs.CMPB = EPWM2_TIMER_HALF_TBPRD;
 	EPwm1Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;
@@ -333,20 +334,26 @@ void InitEPwm1()
 	EPwm1Regs.AQCTLA.bit.CAD = AQ_SET;
 	EPwm1Regs.AQCTLB.bit.CAU = AQ_CLEAR;
 	EPwm1Regs.AQCTLB.bit.CAD = AQ_SET;
-	EPwm1Regs.ETSEL.bit.INTSEL = ET_CTR_ZERO;
-	EPwm1Regs.ETSEL.bit.INTEN = 1;
-	EPwm1Regs.ETPS.bit.INTPRD = ET_1ST;
 
-	EPwm1Regs.ETSEL.bit.SOCAEN = 1;
-	EPwm1Regs.ETSEL.bit.SOCASEL = ET_CTR_PRD;
-	EPwm1Regs.ETPS.bit.SOCAPRD = 1;
+	EPwm1Regs.AQSFRC.bit.RLDCSF = 3;
+
 
 //	EPwm1Regs.DBCTL.all = 0x000b;
 	EPwm1Regs.DBCTL.bit.IN_MODE = 2;//EPWMxA rising edge delay , EPWMXB falling edge delay
 	EPwm1Regs.DBCTL.bit.POLSEL = 1;  //EPWMxB  invert
 	EPwm1Regs.DBCTL.bit.OUT_MODE = 3;
+
 	EPwm1Regs.DBRED = 60;//180==1.5us
 	EPwm1Regs.DBFED = 60;//180==1.5us
+	EPwm1Regs.AQCSFRC.all = 0x0009;
+
+	EPwm1Regs.ETSEL.bit.INTSEL = ET_CTR_PRD;
+	EPwm1Regs.ETSEL.bit.INTEN = 1;
+	EPwm1Regs.ETPS.bit.INTPRD = ET_1ST;
+
+	EPwm1Regs.ETSEL.bit.SOCAEN = 1;
+	EPwm1Regs.ETSEL.bit.SOCASEL = ET_CTR_ZERO;
+	EPwm1Regs.ETPS.bit.SOCAPRD = 1;
 }
 void InitEPwm2()
 {
@@ -375,6 +382,7 @@ void InitEPwm2()
 	EPwm2Regs.AQCTLA.bit.CAD = AQ_SET;
 	EPwm2Regs.AQCTLB.bit.CAU = AQ_CLEAR;
 	EPwm2Regs.AQCTLB.bit.CAD = AQ_SET;
+	EPwm2Regs.AQSFRC.bit.RLDCSF = 3;
 	EPwm2Regs.ETSEL.bit.INTSEL = ET_CTR_ZERO;
 	EPwm2Regs.ETSEL.bit.INTEN = 1;
 	EPwm2Regs.ETPS.bit.INTPRD = ET_1ST;
@@ -385,6 +393,7 @@ void InitEPwm2()
 	EPwm2Regs.DBCTL.bit.OUT_MODE = 3;
 	EPwm2Regs.DBRED = 60;
 	EPwm2Regs.DBFED = 60;
+	EPwm2Regs.AQCSFRC.all = 0x0009;
 }
 
 void InitEPwm3()
@@ -414,6 +423,7 @@ void InitEPwm3()
 	EPwm3Regs.AQCTLA.bit.CAD = AQ_SET;
 	EPwm3Regs.AQCTLB.bit.CAU = AQ_CLEAR;
 	EPwm3Regs.AQCTLB.bit.CAD = AQ_SET;
+	EPwm3Regs.AQSFRC.bit.RLDCSF = 3;
 	EPwm3Regs.ETSEL.bit.INTSEL = ET_CTR_ZERO;
 	EPwm3Regs.ETSEL.bit.INTEN = 1;
 	EPwm3Regs.ETPS.bit.INTPRD = ET_1ST;
@@ -425,6 +435,7 @@ void InitEPwm3()
 	EPwm3Regs.DBCTL.bit.OUT_MODE = 3;
 	EPwm3Regs.DBRED = 60;
 	EPwm3Regs.DBFED = 60;
+	EPwm3Regs.AQCSFRC.all = 0x0009;
 }
 void InitEpwmForJ75(void){
    InitEPwm1Gpio();
