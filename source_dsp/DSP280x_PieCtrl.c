@@ -90,7 +90,7 @@ void EnableInterrupts()
 	PieCtrlRegs.PIEIER9.bit.INTx3 = 1;//SCIB RX interrupt
 	PieCtrlRegs.PIEIER9.bit.INTx4 = 1;//SCIB TX interrupt
 
-
+	EPwm1Regs.ETSEL.bit.INTEN =1;
 
 	// Enable Interrupts at the CPU level 
     EINT;
