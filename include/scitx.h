@@ -20,7 +20,9 @@ typedef struct _GRX422TX{
 	updatevalue updateValue;
 }GRX422TX;
 void SciTxIsrThread(void);
+void PackRS422TxData(void);
 
 
 extern Uint16 gRx422TxEnableFlag[TOTAL_TX_VAR];
+extern RS422TXQUE gRS422TxQue;
 #endif

@@ -2,25 +2,20 @@
 #include "DSP280x_Examples.h"   // DSP280x Examples Include File
 #include "global.h"
 #include "pwm.h"
+#include "adc.h"
 
-int test2 = 0;
 
-
-void InitTest2(void){
-	test2 = 5;
-}
-
-void DisablePwm1(void){
+inline void DisablePwm1(void){
 
 	EPwm1Regs.AQCSFRC.bit.CSFA = 2;
 	EPwm1Regs.AQCSFRC.bit.CSFB = 1;
 }
-void DisablePwm2(void){
+inline void DisablePwm2(void){
 
 	EPwm2Regs.AQCSFRC.bit.CSFA = 2;
 	EPwm2Regs.AQCSFRC.bit.CSFB = 1;
 }
-void DisablePwm3(void){
+inline void DisablePwm3(void){
 
 	EPwm3Regs.AQCSFRC.bit.CSFA = 2;
 	EPwm3Regs.AQCSFRC.bit.CSFB = 1;
@@ -210,7 +205,8 @@ void SwitchDirection(void){
  **************************************************************/
 void PwmIsrThread(void)
 {
+	ReadAnalogValue();
+	IsAnalogValueAbnormal();
 	SwitchDirection();
-	++test2;
 }
 

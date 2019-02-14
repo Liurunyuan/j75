@@ -23,7 +23,6 @@ void InitPeripheral(){
 	Init_CpuTimer_J75();
 }
 void InitGlobalVar(){
-	InitTest2();
 	gSysInfo.duty = 0;
 }
 void MainLoop(){
