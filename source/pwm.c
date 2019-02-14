@@ -3,7 +3,12 @@
 #include "global.h"
 #include "pwm.h"
 #include "adc.h"
+#include "pid.h"
+#include "ecap.h"
 
+
+int currentpid = 0;
+int targetPid = 0;
 
 inline void DisablePwm1(void){
 
@@ -207,6 +212,27 @@ void PwmIsrThread(void)
 {
 	ReadAnalogValue();
 	IsAnalogValueAbnormal();
+	targetPid  = PidOutput(gMotorSpeedEcap);
+
+	if(currentpid < targetPid){
+		++currentpid;
+	}
+	else if(currentpid > targetPid){
+		--currentpid;
+	}
+	else{
+
+	}
+
+	if(currentpid > 400){
+		currentpid = 400;
+	}
+	else if(currentpid <= 0){
+		currentpid = 0;
+	}
+	gSysInfo.duty = currentpid;
+
+
 	SwitchDirection();
 }
 

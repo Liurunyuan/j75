@@ -27,5 +27,5 @@ extern RS422RXQUE gRS422RxQue;
 
 void SciRxIsrThread(RS422RXQUE *RS422RxQue);
 void UnpackSciPackage(RS422RXQUE *RS422RxQue);
-void Init_gRS422RxQue(void);
+void InitSciRxVar(void);
 #endif

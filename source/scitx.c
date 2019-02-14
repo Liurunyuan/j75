@@ -74,8 +74,6 @@ void InitSciTxVar(void){
 	InitgRx422TxEnableFlag();
 }
 
-
-
 int RX422TXEnQueue(char e){
 	if((gRS422TxQue.rear + 1) % TXMAXQSIZE == gRS422TxQue.front){
 		asm ("      ESTOP0");

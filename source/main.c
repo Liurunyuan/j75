@@ -9,6 +9,9 @@
 #include "scirx.h"
 #include "scitx.h"
 #include "adc.h"
+#include "ecap.h"
+#include "pid.h"
+#include "kalman.h"
 
 void InitPeripheral(){
 
@@ -27,19 +30,21 @@ void InitPeripheral(){
 void InitGlobalVar(){
 	gSysInfo.duty = 0;
 	InitAdcVar();
-	Init_gRS422RxQue();
+	InitSciRxVar();
 	InitSciTxVar();
-
+	InitPidVar();
 }
 void MainLoop(){
 	FEED_WATCH_DOG = 1;
 	UnpackSciPackage(&gRS422RxQue);
+//	gMotorSpeedEcap = CalculateSpeed(gECapCount);
+	gMotorSpeedEcap = (KalmanFilter(CalculateSpeed(gECapCount), KALMAN_Q, KALMAN_R));
 }
 
 void main(void) {
-	/*system init*/
+
 	InitSysCtrl();
-	/*peripheral init*/
+
 	InitPeripheral();
 
 	InitGlobalVar();

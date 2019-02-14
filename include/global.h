@@ -29,6 +29,6 @@ typedef union _VAR16{
 }VAR16;
 
 extern SYSINFO gSysInfo;
-extern int gECapCount;
+
 void Delay(int time);
 #endif

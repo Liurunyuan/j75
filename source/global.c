@@ -4,7 +4,7 @@
 
 
 SYSINFO gSysInfo = {0};
-int gECapCount = 0;
+
 
 void Delay(int time){
 	int i;
