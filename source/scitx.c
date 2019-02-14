@@ -5,6 +5,7 @@
 #include "scitx.h"
 
 #define S (0)
+
 RS422TXQUE gRS422TxQue = {0};
 GRX422TX gRx422TxVar[TOTAL_TX_VAR] = {0};
 Uint16 gRx422TxEnableFlag[TOTAL_TX_VAR] = {0};
@@ -42,6 +43,11 @@ void InitgRx422TxEnableFlag(void){
 		gRx422TxEnableFlag[index] = 0;
 	}
 }
+void Init_gRS422TxQue(void) {
+	gRS422TxQue.front = 0;
+	gRS422TxQue.rear = 0;
+	memset(gRS422TxQue.txBuf, 0, sizeof(gRS422TxQue.txBuf));
+}
 void InitgRx422TxVar(void) {
 
 	int index;
@@ -61,6 +67,15 @@ void InitgRx422TxVar(void) {
 	gRx422TxVar[6].updateValue = GetTemperatureCurve;
 	gRx422TxVar[7].updateValue = GetMotorAccelCurve;
 }
+
+void InitSciTxVar(void){
+	InitgRx422TxVar();
+	Init_gRS422TxQue();
+	InitgRx422TxEnableFlag();
+}
+
+
+
 int RX422TXEnQueue(char e){
 	if((gRS422TxQue.rear + 1) % TXMAXQSIZE == gRS422TxQue.front){
 		asm ("      ESTOP0");

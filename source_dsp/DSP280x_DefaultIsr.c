@@ -27,6 +27,7 @@
 #include "ecap.h"
 #include "timer0.h"
 #include "scirx.h"
+#include "scitx.h"
 
 // Connected to INT13 of CPU (use MINT13 mask):
 // Note CPU-Timer1 is reserved for TI use, however XINT13
@@ -37,8 +38,7 @@ interrupt void INT13_ISR(void)     // INT13 or CPU-Timer1
   
   // Next two lines for debug only to halt the processor here
   // Remove after inserting ISR Code
-  asm ("      ESTOP0");
-  for(;;);
+	Timer1_ISR_Thread();
 }
 
 // Note CPU-Timer2 is reserved for TI use.
@@ -314,7 +314,7 @@ interrupt void  ADCINT_ISR(void)     // ADC
 interrupt void  TINT0_ISR(void)      // CPU-Timer 0
 {
   // Insert ISR Code here
-
+	Timer0_ISR_Thread();
   // To receive more interrupts from this PIE group, acknowledge this interrupt 
    PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
   
@@ -855,14 +855,14 @@ interrupt void SCIRXINTB_ISR(void)     // SCI-B
 interrupt void SCITXINTB_ISR(void)     // SCI-B
 {
   // Insert ISR Code here
-
+	SciTxIsrThread();
   // To receive more interrupts from this PIE group, acknowledge this interrupt 
-  // PieCtrlRegs.PIEACK.all = PIEACK_GROUP9;
+   PieCtrlRegs.PIEACK.all = PIEACK_GROUP9;
 
   // Next two lines for debug only to halt the processor here
   // Remove after inserting ISR Code
-  asm ("      ESTOP0");
-  for(;;);
+//  asm ("      ESTOP0");
+//  for(;;);
 
 }
 

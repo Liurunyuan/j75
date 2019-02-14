@@ -7,6 +7,8 @@
 #include "global.h"
 #include "pwm.h"
 #include "scirx.h"
+#include "scitx.h"
+#include "adc.h"
 
 void InitPeripheral(){
 
@@ -24,11 +26,14 @@ void InitPeripheral(){
 }
 void InitGlobalVar(){
 	gSysInfo.duty = 0;
+	InitAdcVar();
+	Init_gRS422RxQue();
+	InitSciTxVar();
+
 }
 void MainLoop(){
 	FEED_WATCH_DOG = 1;
 	UnpackSciPackage(&gRS422RxQue);
-
 }
 
 void main(void) {

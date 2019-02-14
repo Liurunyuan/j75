@@ -3,12 +3,20 @@
 #include "global.h"
 #include "scirx.h"
 #include "scitx.h"
+#include <string.h>
 
 #define WAVE_AMOUNT (16)
 
 
 RS422RXQUE gRS422RxQue = {0};
 char rs422rxPack[16];
+
+
+void Init_gRS422RxQue(void) {
+	gRS422RxQue.front = 0;
+	gRS422RxQue.rear = 0;
+	memset(gRS422RxQue.rxBuff, 0, sizeof(gRS422RxQue.rxBuff));
+}
 static void WaveCommand(VAR16 a, int b, int c) {
 	int i;
 
