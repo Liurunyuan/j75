@@ -4,6 +4,7 @@
 #include "scirx.h"
 #include "scitx.h"
 #include <string.h>
+#include "pid.h"
 
 #define WAVE_AMOUNT (16)
 
@@ -35,9 +36,18 @@ static void WaveCommand(VAR16 a, int b, int c) {
 		}
 	}
 }
+static void SetTargetSpeed(VAR16 a, int b, int c) {
+	gTargetSpeed = a.value;
+}
 
 const functionMsgCodeUnpack msgInterface[] = {
 			WaveCommand,
+			SetTargetSpeed,
+			0,
+			0,
+			0,
+			0,
+			0,
 			0,
 			0
 };
