@@ -6,6 +6,7 @@
 #include "DSP280x_Examples.h"   // DSP280x Examples Include File
 #include "global.h"
 #include "pwm.h"
+#include "scirx.h"
 
 void InitPeripheral(){
 
@@ -26,6 +27,7 @@ void InitGlobalVar(){
 }
 void MainLoop(){
 	FEED_WATCH_DOG = 1;
+	UnpackSciPackage(&gRS422RxQue);
 
 }
 

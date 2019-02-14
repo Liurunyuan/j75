@@ -26,4 +26,5 @@ typedef struct _RS422RXQUE{
 extern RS422RXQUE gRS422RxQue;
 
 void SciRxIsrThread(RS422RXQUE *RS422RxQue);
+void UnpackSciPackage(RS422RXQUE *RS422RxQue);
 #endif
