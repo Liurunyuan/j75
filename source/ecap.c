@@ -69,7 +69,7 @@ int32 CalculateSpeed(Uint32 capCount){
 	//TODO calculate the motor speed
 	int32 speed32 = 0;
 	if(capCount <= 0){
-		return -1;
+		return 0;
 	}
 
 	speed32 = ((3000000000.0)/(float)capCount);//4500000000 = 75000000*60

@@ -12,7 +12,7 @@ RS422RXQUE gRS422RxQue = {0};
 char rs422rxPack[16];
 
 
-void Init_gRS422RxQue(void) {
+inline void Init_gRS422RxQue(void) {
 	gRS422RxQue.front = 0;
 	gRS422RxQue.rear = 0;
 	memset(gRS422RxQue.rxBuff, 0, sizeof(gRS422RxQue.rxBuff));
@@ -21,6 +21,7 @@ void Init_gRS422RxQue(void) {
 void InitSciRxVar(void){
 	Init_gRS422RxQue();
 }
+
 static void WaveCommand(VAR16 a, int b, int c) {
 	int i;
 
@@ -34,11 +35,13 @@ static void WaveCommand(VAR16 a, int b, int c) {
 		}
 	}
 }
+
 const functionMsgCodeUnpack msgInterface[] = {
 			WaveCommand,
 			0,
 			0
 };
+
 int EnQueue(int e, RS422RXQUE *RS422RxQue){
 
 	if((RS422RxQue->rear + 1) % MAXQSIZE == RS422RxQue->front){
