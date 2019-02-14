@@ -7,7 +7,6 @@
 #include "global.h"
 #include "pwm.h"
 
-int test = 0;
 void InitPeripheral(){
 
 	InitGpioForJ75();
@@ -43,6 +42,5 @@ void main(void) {
 	while(1){
 		MainLoop();
 		Delay(10000);
-		++test;
 	}
 }
