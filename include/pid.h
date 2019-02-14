@@ -14,7 +14,13 @@ typedef struct _PIDPARA{
 	int32 kd;
 	int32 targetPid;
 }PIDPARA;
+
+
 extern double gTargetSpeed;
+extern PIDPARA gPidPara;
+
+
+
 void InitPidVar(void);
 int16 PidOutput(double currentSpeed);
 

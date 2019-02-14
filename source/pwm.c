@@ -26,6 +26,12 @@ inline void DisablePwm3(void){
 	EPwm3Regs.AQCSFRC.bit.CSFB = 1;
 }
 
+void DisablePwmOutput(void){
+	DisablePwm1();
+	DisablePwm2();
+	DisablePwm3();
+}
+
 inline void CPositiveToBNegtive(void) {
 
 	DisablePwm1();
@@ -200,6 +206,24 @@ void SwitchDirection(void){
 			break;
 	}
 }
+
+void ThresholdProtectForDuty() {
+	if (currentpid < targetPid) {
+		++currentpid;
+	} else if (currentpid > targetPid) {
+		--currentpid;
+	} else {
+	}
+
+	if (currentpid > 400) {
+		currentpid = 400;
+	} else if (currentpid <= 0) {
+		currentpid = 0;
+	}
+
+	gSysInfo.duty = currentpid;
+}
+
 /**************************************************************
  *Name:						PwmIsrThread
  *Function:					PWM interrupt function
@@ -211,28 +235,19 @@ void SwitchDirection(void){
 void PwmIsrThread(void)
 {
 	ReadAnalogValue();
-	IsAnalogValueAbnormal();
-	targetPid  = PidOutput(gMotorSpeedEcap);
 
-	if(currentpid < targetPid){
-		++currentpid;
-	}
-	else if(currentpid > targetPid){
-		--currentpid;
+	IsAnalogValueAbnormal();
+
+	if(gSysState.currentstate == 1){
+
+		targetPid  = PidOutput(gMotorSpeedEcap);
+
+		ThresholdProtectForDuty();
+
+		SwitchDirection();
 	}
 	else{
-
+		DisablePwmOutput();
 	}
-
-	if(currentpid > 400){
-		currentpid = 400;
-	}
-	else if(currentpid <= 0){
-		currentpid = 0;
-	}
-	gSysInfo.duty = currentpid;
-
-
-	SwitchDirection();
 }
 

@@ -7,6 +7,11 @@
 long int  gECapCount = 0;
 double gMotorSpeedEcap = 0;
 
+void InitEcapVar(void){
+	gMotorSpeedEcap = 0;
+	gECapCount = 0;
+}
+
 int GetECap1Count(void){
 
 	if(ECap1Regs.ECFLG.bit.CEVT1){

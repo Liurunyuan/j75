@@ -14,21 +14,30 @@
 
 #define ENABLE_TX (1)
 #define DISABLE_TX (0)
+
 typedef struct{
 	Uint16 currentHallPosition;
 	Uint16 lastTimeHalllPosition;
 	int16 duty;
 }SYSINFO;
+
 typedef struct _DATA{
 	Uint16 l : 8;
 	Uint16 h : 8;
 }DATA;
+
 typedef union _VAR16{
 	DATA datahl;
 	Uint16 value;
 }VAR16;
 
+typedef struct _SYSSTATE{
+	int currentstate;
+}SYSSTATE;
+
 extern SYSINFO gSysInfo;
 
 void Delay(int time);
+void InitGlobalVar(void);
+extern SYSSTATE gSysState;
 #endif

@@ -27,17 +27,18 @@ void InitPeripheral(){
 
 	Init_CpuTimer_J75();
 }
-void InitGlobalVar(){
-	gSysInfo.duty = 0;
+void InitVar(){
+
 	InitAdcVar();
 	InitSciRxVar();
 	InitSciTxVar();
+	InitEcapVar();
 	InitPidVar();
+	InitGlobalVar();
 }
 void MainLoop(){
 	FEED_WATCH_DOG = 1;
 	UnpackSciPackage(&gRS422RxQue);
-//	gMotorSpeedEcap = CalculateSpeed(gECapCount);
 	gMotorSpeedEcap = (KalmanFilter(CalculateSpeed(gECapCount), KALMAN_Q, KALMAN_R));
 }
 
@@ -47,7 +48,7 @@ void main(void) {
 
 	InitPeripheral();
 
-	InitGlobalVar();
+	InitVar();
 
 	InitInterruptForJ75();
 
