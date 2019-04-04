@@ -829,13 +829,11 @@ interrupt void SCIRXINTA_ISR(void)     // SCI-A
   // Insert ISR Code here
 	SciRxIsrThread(&gRS422RxQue);
   // To receive more interrupts from this PIE group, acknowledge this interrupt 
-  // PieCtrlRegs.PIEACK.all = PIEACK_GROUP9;
+  SciaRegs.SCIFFRX.bit.RXFFINTCLR = 1;
+  PieCtrlRegs.PIEACK.all = PIEACK_GROUP9;
 
   // Next two lines for debug only to halt the processor here
   // Remove after inserting ISR Code
-  asm ("      ESTOP0");
-  for(;;);
-
 }
 
 // INT9.2
@@ -864,6 +862,7 @@ interrupt void SCIRXINTB_ISR(void)     // SCI-B
 
   // Next two lines for debug only to halt the processor here
   // Remove after inserting ISR Code
+  SciRxIsrThread(&gRS422RxQue);
   asm ("      ESTOP0");
   for(;;);
 
@@ -873,15 +872,10 @@ interrupt void SCIRXINTB_ISR(void)     // SCI-B
 interrupt void SCITXINTB_ISR(void)     // SCI-B
 {
   // Insert ISR Code here
-	SciTxIsrThread();
+  SciTxIsrThread();
   // To receive more interrupts from this PIE group, acknowledge this interrupt 
-   PieCtrlRegs.PIEACK.all = PIEACK_GROUP9;
-
-  // Next two lines for debug only to halt the processor here
-  // Remove after inserting ISR Code
-//  asm ("      ESTOP0");
-//  for(;;);
-
+  ScibRegs.SCIFFTX.bit.TXFFINTCLR = 1;
+  PieCtrlRegs.PIEACK.all = PIEACK_GROUP9;
 }
 
 // INT9.5
