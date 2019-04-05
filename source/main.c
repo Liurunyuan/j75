@@ -30,15 +30,22 @@ void InitPeripheral(){
 void InitVar(){
 
 	InitAdcVar();
+
 	InitSciRxVar();
+
 	InitSciTxVar();
+
 	InitEcapVar();
+
 	InitPidVar();
+
 	InitGlobalVar();
 }
 void MainLoop(){
 	FEED_WATCH_DOG = 1;
+
 	UnpackSciPackage(&gRS422RxQue);
+
 	gMotorSpeedEcap = (KalmanFilter(CalculateSpeed(gECapCount), KALMAN_Q, KALMAN_R));
 }
 
@@ -55,7 +62,6 @@ void main(void) {
 	while(1){
 		MainLoop();
 		Delay(10000);
-
 		//test github
 	}
 }
