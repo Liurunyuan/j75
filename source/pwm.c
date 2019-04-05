@@ -153,7 +153,7 @@ void SwitchDirection(void){
 	//3:A 2:B 1:C
 	switch (gSysInfo.currentHallPosition) {
 		case 3://C+ ---------------> B-
-			//本项目电机会进行正转和反转。所以需要判断HALL相邻两个位置是否一样。
+			
 			if((3 == gSysInfo.lastTimeHalllPosition )
 				|| (2 == gSysInfo.lastTimeHalllPosition)
 				|| (1 == gSysInfo.lastTimeHalllPosition)){
