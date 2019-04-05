@@ -4,6 +4,14 @@
 #include "ecap.h"
 
 
+long int  gECapCount = 0;
+double gMotorSpeedEcap = 0;
+
+void InitEcapVar(void){
+	gMotorSpeedEcap = 0;
+	gECapCount = 0;
+}
+
 int GetECap1Count(void){
 
 	if(ECap1Regs.ECFLG.bit.CEVT1){
@@ -65,17 +73,17 @@ int GetECap3Count(void){
 int32 CalculateSpeed(Uint32 capCount){
 	//TODO calculate the motor speed
 	int32 speed32 = 0;
-	if(capCount){
-		return -1;
+	if(capCount <= 0){
+		return 0;
 	}
 
-	speed32 = ((4500000000.0)/(float)capCount);//4500000000 = 75000000*60
+	speed32 = ((3000000000.0)/(float)capCount);//4500000000 = 75000000*60
 
 	if(speed32 < 19200){
 		return speed32;
 	}
 	else{
-		return -1;
+		return 0;
 	}
 }
 

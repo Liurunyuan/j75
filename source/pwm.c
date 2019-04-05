@@ -2,94 +2,127 @@
 #include "DSP280x_Examples.h"   // DSP280x Examples Include File
 #include "global.h"
 #include "pwm.h"
+#include "adc.h"
+#include "pid.h"
+#include "ecap.h"
 
-int test2 = 0;
 
+int currentpid = 0;
+int targetPid = 0;
 
-void InitTest2(void){
-	test2 = 5;
+inline void DisablePwm1(void){
+
+	EPwm1Regs.AQCSFRC.bit.CSFA = 2;
+	EPwm1Regs.AQCSFRC.bit.CSFB = 1;
+}
+inline void DisablePwm2(void){
+
+	EPwm2Regs.AQCSFRC.bit.CSFA = 2;
+	EPwm2Regs.AQCSFRC.bit.CSFB = 1;
+}
+inline void DisablePwm3(void){
+
+	EPwm3Regs.AQCSFRC.bit.CSFA = 2;
+	EPwm3Regs.AQCSFRC.bit.CSFB = 1;
 }
 
-void DisablePwm1(void){
-	EALLOW;
-	EPwm1Regs.TZFRC.bit.OST = 1;
-	EDIS;
-}
-void DisablePwm2(void){
-	EALLOW;
-	EPwm2Regs.TZFRC.bit.OST = 1;
-	EDIS;
-}
-void DisablePwm3(void){
-	EALLOW;
-	EPwm3Regs.TZFRC.bit.OST = 1;
-	EDIS;
-}
-void EnablePwm1(void){
-	EALLOW;
-	EPwm1Regs.TZCLR.all = 0x003f;
-	EDIS;
-}
-void EnablePwm2(void){
-	EALLOW;
-	EPwm2Regs.TZCLR.all = 0x003f;
-	EDIS;
-}
-void EnablePwm3(void){
-	EALLOW;
-	EPwm3Regs.TZCLR.all = 0x003f;
-	EDIS;
+void DisablePwmOutput(void){
+	DisablePwm1();
+	DisablePwm2();
+	DisablePwm3();
 }
 
 inline void CPositiveToBNegtive(void) {
 
 	DisablePwm1();
-	EPwm3Regs.CMPA.half.CMPA = EPWM2_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm2Regs.CMPA.half.CMPA = EPWM2_TIMER_HALF_TBPRD - gSysInfo.duty;
-	EnablePwm2();
-	EnablePwm3();
+
+	EPwm3Regs.AQCSFRC.bit.CSFB = 1;
+	EPwm3Regs.AQCSFRC.bit.CSFA = 3;
+
+	EPwm2Regs.AQCSFRC.bit.CSFA = 2;
+	EPwm2Regs.AQCSFRC.bit.CSFB = 3;
+
+	EPwm3Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
+	EPwm2Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
+
 }
 
 inline void CPositiveToANegtive(void) {
 	DisablePwm2();
-	EPwm3Regs.CMPA.half.CMPA = EPWM2_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm1Regs.CMPA.half.CMPA = EPWM2_TIMER_HALF_TBPRD - gSysInfo.duty;
-	EnablePwm1();
-	EnablePwm3();
+
+
+	EPwm3Regs.AQCSFRC.bit.CSFB = 1;
+	EPwm3Regs.AQCSFRC.bit.CSFA = 3;
+
+
+	EPwm1Regs.AQCSFRC.bit.CSFA = 2;
+	EPwm1Regs.AQCSFRC.bit.CSFB = 3;
+
+	EPwm3Regs.CMPA.half.CMPA =  1250 - gSysInfo.duty;
+	EPwm1Regs.CMPA.half.CMPA =  1250 - gSysInfo.duty;
+
 }
 
 inline void BPositiveToANegtive(void) {
 
 	DisablePwm3();
-	EPwm2Regs.CMPA.half.CMPA = EPWM2_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm1Regs.CMPA.half.CMPA = EPWM2_TIMER_HALF_TBPRD - gSysInfo.duty;
-	EnablePwm2();
-	EnablePwm1();
+
+
+	EPwm2Regs.AQCSFRC.bit.CSFB = 1;
+	EPwm2Regs.AQCSFRC.bit.CSFA = 3;
+
+
+	EPwm1Regs.AQCSFRC.bit.CSFA = 2;
+	EPwm1Regs.AQCSFRC.bit.CSFB = 3;
+
+	EPwm2Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
+	EPwm1Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
 }
 
 inline void BPositiveToCNegtive(void) {
 
 	DisablePwm1();
-	EPwm2Regs.CMPA.half.CMPA = EPWM2_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm3Regs.CMPA.half.CMPA = EPWM2_TIMER_HALF_TBPRD - gSysInfo.duty;
-	EnablePwm2();
-	EnablePwm3();
+
+
+	EPwm2Regs.AQCSFRC.bit.CSFB = 1;
+	EPwm2Regs.AQCSFRC.bit.CSFA = 3;
+
+
+	EPwm3Regs.AQCSFRC.bit.CSFA = 2;
+	EPwm3Regs.AQCSFRC.bit.CSFB = 3;
+
+	EPwm2Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
+	EPwm3Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
 }
 inline void APositiveToCNegtive(void) {
 
 	DisablePwm2();
-	EPwm1Regs.CMPA.half.CMPA = EPWM2_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm3Regs.CMPA.half.CMPA = EPWM2_TIMER_HALF_TBPRD - gSysInfo.duty;
-	EnablePwm1();
-	EnablePwm3();
+
+
+	EPwm1Regs.AQCSFRC.bit.CSFB = 1;
+	EPwm1Regs.AQCSFRC.bit.CSFA = 3;
+
+
+	EPwm3Regs.AQCSFRC.bit.CSFA = 2;
+	EPwm3Regs.AQCSFRC.bit.CSFB = 3;
+
+	EPwm1Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
+	EPwm3Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
 }
 inline void APositiveToBNegtive(void) {
 
 	DisablePwm3();
-	EPwm1Regs.CMPA.half.CMPA = EPWM2_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm2Regs.CMPA.half.CMPA = EPWM2_TIMER_HALF_TBPRD - gSysInfo.duty;
-	EnablePwm1();
-	EnablePwm2();
+
+
+	EPwm1Regs.AQCSFRC.bit.CSFB = 1;
+	EPwm1Regs.AQCSFRC.bit.CSFA = 3;
+
+
+	EPwm2Regs.AQCSFRC.bit.CSFA = 2;
+	EPwm2Regs.AQCSFRC.bit.CSFB = 3;
+
+	EPwm1Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
+	EPwm2Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
 }
 
 Uint16 GetCurrentHallValue(void){
@@ -99,9 +132,9 @@ Uint16 GetCurrentHallValue(void){
 	Uint16 b;
 	Uint16 c;
 //TODO fix later
-	a = GpioDataRegs.GPADAT.bit.GPIO27;
-	b = GpioDataRegs.GPADAT.bit.GPIO26;
-	c = GpioDataRegs.GPADAT.bit.GPIO25;
+	a = GpioDataRegs.GPADAT.bit.GPIO24;
+	b = GpioDataRegs.GPADAT.bit.GPIO25;
+	c = GpioDataRegs.GPADAT.bit.GPIO26;
 
 	temp = ((c << 2) + (b << 1) + a);
 	return temp;
@@ -125,15 +158,15 @@ void SwitchDirection(void){
 				|| (2 == gSysInfo.lastTimeHalllPosition)
 				|| (1 == gSysInfo.lastTimeHalllPosition)){
 
-				CPositiveToANegtive();
+				CPositiveToBNegtive();
 			}
 			break;
 		case 1://C+ ---------------> A-
 			if((1 == gSysInfo.lastTimeHalllPosition )
 				|| (3 == gSysInfo.lastTimeHalllPosition)
 				|| (5 == gSysInfo.lastTimeHalllPosition)){
+				CPositiveToANegtive();
 
-				CPositiveToBNegtive();
 			}
 			break;
 		case 5://B+ ---------------> A-
@@ -141,7 +174,7 @@ void SwitchDirection(void){
 				|| (1 == gSysInfo.lastTimeHalllPosition)
 				|| (4 == gSysInfo.lastTimeHalllPosition)){
 
-				APositiveToBNegtive();
+				BPositiveToANegtive();
 			}
 			break;
 		case 4://B+ ---------------> C-
@@ -149,23 +182,21 @@ void SwitchDirection(void){
 				|| (5 == gSysInfo.lastTimeHalllPosition)
 				|| (6 == gSysInfo.lastTimeHalllPosition)){
 
-				APositiveToCNegtive();
+				BPositiveToCNegtive();
 			}
 			break;
 		case 6://A+ ---------------> C-
 			if((6 == gSysInfo.lastTimeHalllPosition )
 				|| (4 == gSysInfo.lastTimeHalllPosition)
 				|| (2 == gSysInfo.lastTimeHalllPosition)){
-
-				BPositiveToCNegtive();
+				APositiveToCNegtive();
 			}
 			break;
 		case 2://A+ ---------------> B-
 			if((2 == gSysInfo.lastTimeHalllPosition )
 				|| (3 == gSysInfo.lastTimeHalllPosition)
 				|| (6 == gSysInfo.lastTimeHalllPosition)){
-
-				BPositiveToANegtive();
+				APositiveToBNegtive();
 			}
 			break;
 		default:
@@ -175,6 +206,24 @@ void SwitchDirection(void){
 			break;
 	}
 }
+
+void ThresholdProtectForDuty() {
+	if (currentpid < targetPid) {
+		++currentpid;
+	} else if (currentpid > targetPid) {
+		--currentpid;
+	} else {
+	}
+
+	if (currentpid > 400) {
+		currentpid = 400;
+	} else if (currentpid <= 0) {
+		currentpid = 0;
+	}
+
+	gSysInfo.duty = currentpid;
+}
+
 /**************************************************************
  *Name:						PwmIsrThread
  *Function:					PWM interrupt function
@@ -185,7 +234,20 @@ void SwitchDirection(void){
  **************************************************************/
 void PwmIsrThread(void)
 {
-	SwitchDirection();
-	++test2;
+	ReadAnalogValue();
+
+	IsAnalogValueAbnormal();
+
+	if(gSysState.currentstate == 1){
+
+		targetPid  = PidOutput(gMotorSpeedEcap);
+
+		ThresholdProtectForDuty();
+
+		SwitchDirection();
+	}
+	else{
+		DisablePwmOutput();
+	}
 }
 

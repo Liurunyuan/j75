@@ -6,8 +6,13 @@
 #include "DSP280x_Examples.h"   // DSP280x Examples Include File
 #include "global.h"
 #include "pwm.h"
+#include "scirx.h"
+#include "scitx.h"
+#include "adc.h"
+#include "ecap.h"
+#include "pid.h"
+#include "kalman.h"
 
-int test = 0;
 void InitPeripheral(){
 
 	InitGpioForJ75();
@@ -19,28 +24,38 @@ void InitPeripheral(){
 	InitSciForJ75();
 
 	InitEpwmForJ75();
+
+	Init_CpuTimer_J75();
 }
-void InitGlobalVar(){
-	InitTest2();
+void InitVar(){
+
+	InitAdcVar();
+	InitSciRxVar();
+	InitSciTxVar();
+	InitEcapVar();
+	InitPidVar();
+	InitGlobalVar();
 }
 void MainLoop(){
 	FEED_WATCH_DOG = 1;
-
+	UnpackSciPackage(&gRS422RxQue);
+	gMotorSpeedEcap = (KalmanFilter(CalculateSpeed(gECapCount), KALMAN_Q, KALMAN_R));
 }
 
 void main(void) {
-	/*system init*/
+
 	InitSysCtrl();
-	/*peripheral init*/
+
 	InitPeripheral();
 
-	InitGlobalVar();
+	InitVar();
 
 	InitInterruptForJ75();
 
 	while(1){
 		MainLoop();
 		Delay(10000);
-		++test;
+
+		//test github
 	}
 }

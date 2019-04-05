@@ -92,21 +92,21 @@ void InitECap2Gpio(void)
 // This will enable the pullups for the specified pins.
 // Comment out other unwanted lines.
 
-   GpioCtrlRegs.GPAPUD.bit.GPIO7 = 0;     // Enable pull-up on GPIO7 (CAP2)
-// GpioCtrlRegs.GPAPUD.bit.GPIO25 = 0;    // Enable pull-up on GPIO25 (CAP2)
+//   GpioCtrlRegs.GPAPUD.bit.GPIO7 = 0;     // Enable pull-up on GPIO7 (CAP2)
+ GpioCtrlRegs.GPAPUD.bit.GPIO25 = 0;    // Enable pull-up on GPIO25 (CAP2)
 
 // Inputs are synchronized to SYSCLKOUT by default.  
 // Comment out other unwanted lines.
 
-   GpioCtrlRegs.GPAQSEL1.bit.GPIO7 = 0;    // Synch to SYSCLKOUT GPIO7 (CAP2)
-// GpioCtrlRegs.GPAQSEL2.bit.GPIO25 = 0;   // Synch to SYSCLKOUT GPIO25 (CAP2)
+//   GpioCtrlRegs.GPAQSEL1.bit.GPIO7 = 0;    // Synch to SYSCLKOUT GPIO7 (CAP2)
+ GpioCtrlRegs.GPAQSEL2.bit.GPIO25 = 0;   // Synch to SYSCLKOUT GPIO25 (CAP2)
 
 /* Configure eCAP-2 pins using GPIO regs*/
 // This specifies which of the possible GPIO pins will be eCAP2 functional pins.
 // Comment out other unwanted lines.
 
-   GpioCtrlRegs.GPAMUX1.bit.GPIO7 = 3;    // Configure GPIO7 as CAP2
-// GpioCtrlRegs.GPAMUX2.bit.GPIO25 = 1;   // Configure GPIO25 as CAP2
+//   GpioCtrlRegs.GPAMUX1.bit.GPIO7 = 3;    // Configure GPIO7 as CAP2
+ GpioCtrlRegs.GPAMUX2.bit.GPIO25 = 1;   // Configure GPIO25 as CAP2
     
     EDIS;
 }
@@ -122,21 +122,21 @@ void InitECap3Gpio(void)
 // This will enable the pullups for the specified pins.
 // Comment out other unwanted lines.
 
-   GpioCtrlRegs.GPAPUD.bit.GPIO9 = 0;      // Enable pull-up on GPIO9 (CAP3)
-// GpioCtrlRegs.GPAPUD.bit.GPIO26 = 0;     // Enable pull-up on GPIO26 (CAP3)
+//   GpioCtrlRegs.GPAPUD.bit.GPIO9 = 0;      // Enable pull-up on GPIO9 (CAP3)
+ GpioCtrlRegs.GPAPUD.bit.GPIO26 = 0;     // Enable pull-up on GPIO26 (CAP3)
 
 // Inputs are synchronized to SYSCLKOUT by default.  
 // Comment out other unwanted lines.
 
-   GpioCtrlRegs.GPAQSEL1.bit.GPIO9 = 0;    // Synch to SYSCLKOUT GPIO9 (CAP3)
-// GpioCtrlRegs.GPAQSEL2.bit.GPIO26 = 0;   // Synch to SYSCLKOUT GPIO26 (CAP3)
+//   GpioCtrlRegs.GPAQSEL1.bit.GPIO9 = 0;    // Synch to SYSCLKOUT GPIO9 (CAP3)
+ GpioCtrlRegs.GPAQSEL2.bit.GPIO26 = 0;   // Synch to SYSCLKOUT GPIO26 (CAP3)
 
 /* Configure eCAP-3 pins using GPIO regs*/
 // This specifies which of the possible GPIO pins will be eCAP3 functional pins.
 // Comment out other unwanted lines.
 
-   GpioCtrlRegs.GPAMUX1.bit.GPIO9 = 3;     // Configure GPIO9 as CAP3
-// GpioCtrlRegs.GPAMUX2.bit.GPIO26 = 1;    // Configure GPIO26 as CAP3
+//   GpioCtrlRegs.GPAMUX1.bit.GPIO9 = 3;     // Configure GPIO9 as CAP3
+ GpioCtrlRegs.GPAMUX2.bit.GPIO26 = 1;    // Configure GPIO26 as CAP3
     
     EDIS;
 }
@@ -172,10 +172,127 @@ void InitECap4Gpio(void)
     EDIS;
 }   
 #endif // endif DSP28_ECAP4
+void ECap1Config(void){
+	 EALLOW;
+	 SysCtrlRegs.PCLKCR1.bit.ECAP1ENCLK = 1;
+	 EDIS;
+	 /* Initialize eCAP1/2/3 */
+	 ECap1Regs.ECEINT.all = 0x0000;             /* Disable all capture interrupts */
+	 ECap1Regs.ECCLR.all = 0xFFFF;              /* Clear all CAP interrupt flags  */
+	 ECap1Regs.ECCTL1.bit.CAPLDEN = 0;          /* disable CAP1-CAP4 register loads*/
+	 ECap1Regs.ECCTL2.bit.TSCTRSTOP = 0;        /* Make sure the counter is stopped*/
+
+	 /* Configure peripheral registers*/
+	 ECap1Regs.ECCTL2.bit.CONT_ONESHT = 0;
+
+	 ECap1Regs.ECCTL1.bit.CAP1POL = 0;
+	 ECap1Regs.ECCTL1.bit.CAP2POL = 0;
+	 ECap1Regs.ECCTL1.bit.CAP3POL = 0;
+	 ECap1Regs.ECCTL1.bit.CAP4POL = 0;
+
+	 ECap1Regs.ECCTL1.bit.CTRRST1 = 0;
+	 ECap1Regs.ECCTL1.bit.CTRRST2 = 0;
+	 ECap1Regs.ECCTL1.bit.CTRRST3 = 0;
+	 ECap1Regs.ECCTL1.bit.CTRRST4 = 1;
+
+	 ECap1Regs.ECCTL2.bit.SYNCI_EN = 0;
+	 ECap1Regs.ECCTL2.bit.SYNCO_SEL = 3;
+	 ECap1Regs.ECCTL1.bit.PRESCALE =0;
+	 ECap1Regs.ECCLR.all = 0xffff;
+
+	 ECap1Regs.ECEINT.bit.CEVT1 = 1;            // 2 events = interrupt
+	 ECap1Regs.ECEINT.bit.CEVT2 = 1;
+	 ECap1Regs.ECEINT.bit.CEVT3 = 1;
+	 ECap1Regs.ECEINT.bit.CEVT4 = 1;
+
+	 ECap1Regs.ECCTL1.bit.CAPLDEN = 1;          // Enable CAP1-CAP4 register loads
+	 ECap1Regs.ECCTL2.bit.TSCTRSTOP = 1;        /* Start Counter*/
+}
+
+void ECap2Config(void){
+	 EALLOW;
+	 SysCtrlRegs.PCLKCR1.bit.ECAP1ENCLK = 1;
+	 EDIS;
+	 /* Initialize eCAP1/2/3 */
+	 ECap2Regs.ECEINT.all = 0x0000;             /* Disable all capture interrupts */
+	 ECap2Regs.ECCLR.all = 0xFFFF;              /* Clear all CAP interrupt flags  */
+	 ECap2Regs.ECCTL1.bit.CAPLDEN = 0;          /* disable CAP1-CAP4 register loads*/
+	 ECap2Regs.ECCTL2.bit.TSCTRSTOP = 0;        /* Make sure the counter is stopped*/
+
+	 /* Configure peripheral registers*/
+	 ECap2Regs.ECCTL2.bit.CONT_ONESHT = 0;
+
+	 ECap2Regs.ECCTL1.bit.CAP1POL = 0;
+	 ECap2Regs.ECCTL1.bit.CAP2POL = 0;
+	 ECap2Regs.ECCTL1.bit.CAP3POL = 0;
+	 ECap2Regs.ECCTL1.bit.CAP4POL = 0;
 
 
+	 ECap2Regs.ECCTL1.bit.CTRRST1 = 0;
+	 ECap2Regs.ECCTL1.bit.CTRRST2 = 0;
+	 ECap2Regs.ECCTL1.bit.CTRRST3 = 0;
+	 ECap2Regs.ECCTL1.bit.CTRRST4 = 1;
+
+	 ECap2Regs.ECCTL2.bit.SYNCI_EN = 0;
+	 ECap2Regs.ECCTL2.bit.SYNCO_SEL = 3;
+	 ECap2Regs.ECCTL1.bit.PRESCALE =0;
+	 ECap2Regs.ECCLR.all = 0xffff;
+
+	 ECap2Regs.ECEINT.bit.CEVT1 = 1;            // 2 events = interrupt
+	 ECap2Regs.ECEINT.bit.CEVT2 = 1;
+	 ECap2Regs.ECEINT.bit.CEVT3 = 1;
+	 ECap2Regs.ECEINT.bit.CEVT4 = 1;
+
+	 ECap2Regs.ECCTL1.bit.CAPLDEN = 1;          // Enable CAP1-CAP4 register loads
+	 ECap2Regs.ECCTL2.bit.TSCTRSTOP = 1;        /* Start Counter*/
+}
+
+void ECap3Config(void){
+	 EALLOW;
+	 SysCtrlRegs.PCLKCR1.bit.ECAP1ENCLK = 1;
+	 EDIS;
+	 /* Initialize eCAP1/2/3 */
+	 ECap3Regs.ECEINT.all = 0x0000;             /* Disable all capture interrupts */
+	 ECap3Regs.ECCLR.all = 0xFFFF;              /* Clear all CAP interrupt flags  */
+	 ECap3Regs.ECCTL1.bit.CAPLDEN = 0;          /* disable CAP1-CAP4 register loads*/
+	 ECap3Regs.ECCTL2.bit.TSCTRSTOP = 0;        /* Make sure the counter is stopped*/
+
+	 /* Configure peripheral registers*/
+	 ECap3Regs.ECCTL2.bit.CONT_ONESHT = 0;
+
+	 ECap3Regs.ECCTL1.bit.CAP1POL = 0;
+	 ECap3Regs.ECCTL1.bit.CAP2POL = 0;
+	 ECap3Regs.ECCTL1.bit.CAP3POL = 0;
+	 ECap3Regs.ECCTL1.bit.CAP4POL = 0;
+
+
+	 ECap3Regs.ECCTL1.bit.CTRRST1 = 0;
+	 ECap3Regs.ECCTL1.bit.CTRRST2 = 0;
+	 ECap3Regs.ECCTL1.bit.CTRRST3 = 0;
+	 ECap3Regs.ECCTL1.bit.CTRRST4 = 1;
+
+	 ECap3Regs.ECCTL2.bit.SYNCI_EN = 0;
+	 ECap3Regs.ECCTL2.bit.SYNCO_SEL = 3;
+	 ECap3Regs.ECCTL1.bit.PRESCALE =0;
+	 ECap3Regs.ECCLR.all = 0xffff;
+
+	 ECap3Regs.ECEINT.bit.CEVT1 = 1;
+	 ECap3Regs.ECEINT.bit.CEVT2 = 1;
+	 ECap3Regs.ECEINT.bit.CEVT3 = 1;
+	 ECap3Regs.ECEINT.bit.CEVT4 = 1;
+
+	 ECap3Regs.ECCTL1.bit.CAPLDEN = 1;          // Enable CAP1-CAP4 register loads
+	 ECap3Regs.ECCTL2.bit.TSCTRSTOP = 1;        /* Start Counter*/
+}
+void ConfigEcap(void){
+	/*Read the data sheet and finish the CAP configuration coce here*/
+	ECap1Config();
+	ECap2Config();
+	ECap3Config();
+}
 void InitEcapForJ75(void){
 	InitECapGpio();
+	ConfigEcap();
 }
 
 

@@ -71,14 +71,30 @@ void EnableInterrupts()
     		
 	// Enables PIE to drive a pulse into the CPU 
 	PieCtrlRegs.PIEACK.all = 0xFFFF;  
-	PieCtrlRegs.PIEIER1.bit.INTx7 = 1;//¶¨Ê±Æ÷0ÖÐ¶Ï¡£
 
-	PieCtrlRegs.PIEIER3.bit.INTx1 = 1;//ePWM1ÖÐ¶Ï
+	PieCtrlRegs.PIEIER1.bit.INTx7 = 1;//ï¿½ï¿½Ê±ï¿½ï¿½0ï¿½Ð¶Ï¡ï¿½
+	PieCtrlRegs.PIEIER3.bit.INTx1 = 1;//ePWM1ï¿½Ð¶ï¿½
+	PieCtrlRegs.PIEIER4.bit.INTx1 = 1;//ECAP1
+	PieCtrlRegs.PIEIER4.bit.INTx2 = 1;//ECAP2
+	PieCtrlRegs.PIEIER4.bit.INTx3 = 1;//ECAP3
+
+	PieCtrlRegs.PIEIER8.bit.INTx5 = 1;//SCIC RX Interrupt
+	PieCtrlRegs.PIEIER8.bit.INTx6 = 1;//SCIC TX Interrupt
+	PieCtrlRegs.PIEIER9.bit.INTx3 = 1;//SCIB RX interrupt
+	PieCtrlRegs.PIEIER9.bit.INTx4 = 1;//SCIB TX interrupt
+
+	EPwm1Regs.ETSEL.bit.INTEN =1;
+
+	SciaRegs.SCIFFTX.bit.TXFFINTCLR = 1;
+	ScibRegs.SCIFFTX.bit.TXFFINTCLR = 1;
+	SciaRegs.SCIFFRX.bit.RXFFINTCLR = 1;
+	ScibRegs.SCIFFRX.bit.RXFFINTCLR = 1;
 
 
 	// Enable Interrupts at the CPU level 
     EINT;
     ERTM;
+	
 }
 
 void InitInterruptForJ75(void){

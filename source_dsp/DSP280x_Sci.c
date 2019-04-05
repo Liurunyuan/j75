@@ -82,7 +82,7 @@ void InitSciaGpio()
 #if DSP28_SCIB 
 void InitScibGpio()
 {
-   EALLOW;
+  EALLOW;
 	
 /* Enable internal pull-up for the selected pins */
 // Pull-ups can be enabled or disabled disabled by the user.  
@@ -90,14 +90,14 @@ void InitScibGpio()
 // Comment out other unwanted lines.
 
 //  GpioCtrlRegs.GPAPUD.bit.GPIO9 = 0;     // Enable pull-up for GPIO9  (SCITXDB)
-//  GpioCtrlRegs.GPAPUD.bit.GPIO14 = 0;    // Enable pull-up for GPIO14 (SCITXDB)
-	GpioCtrlRegs.GPAPUD.bit.GPIO18 = 0;	   // Enable pull-up for GPIO18 (SCITXDB)
+  GpioCtrlRegs.GPAPUD.bit.GPIO14 = 0;    // Enable pull-up for GPIO14 (SCITXDB)
+//	GpioCtrlRegs.GPAPUD.bit.GPIO18 = 0;	   // Enable pull-up for GPIO18 (SCITXDB)
 //  GpioCtrlRegs.GPAPUD.bit.GPIO22 = 0;    // Enable pull-up for GPIO22 (SCITXDB)
 
 	
 //  GpioCtrlRegs.GPAPUD.bit.GPIO11 = 0;    // Enable pull-up for GPIO11 (SCIRXDB)
-//  GpioCtrlRegs.GPAPUD.bit.GPIO15 = 0;    // Enable pull-up for GPIO15 (SCIRXDB)
-    GpioCtrlRegs.GPAPUD.bit.GPIO19 = 0;	   // Enable pull-up for GPIO19 (SCIRXDB)
+  GpioCtrlRegs.GPAPUD.bit.GPIO15 = 0;    // Enable pull-up for GPIO15 (SCIRXDB)
+//    GpioCtrlRegs.GPAPUD.bit.GPIO19 = 0;	   // Enable pull-up for GPIO19 (SCIRXDB)
 //  GpioCtrlRegs.GPAPUD.bit.GPIO23 = 0;    // Enable pull-up for GPIO23 (SCIRXDB)
 
 /* Set qualification for selected pins to asynch only */
@@ -105,8 +105,8 @@ void InitScibGpio()
 // Comment out other unwanted lines.
 
 //  GpioCtrlRegs.GPAQSEL1.bit.GPIO11 = 3;  // Asynch input GPIO11 (SCIRXDB)
-//  GpioCtrlRegs.GPAQSEL1.bit.GPIO15 = 3;  // Asynch input GPIO15 (SCIRXDB)
-	GpioCtrlRegs.GPAQSEL2.bit.GPIO19 = 3;  // Asynch input GPIO19 (SCIRXDB)
+  GpioCtrlRegs.GPAQSEL1.bit.GPIO15 = 3;  // Asynch input GPIO15 (SCIRXDB)
+//	GpioCtrlRegs.GPAQSEL2.bit.GPIO19 = 3;  // Asynch input GPIO19 (SCIRXDB)
 //  GpioCtrlRegs.GPAQSEL2.bit.GPIO23 = 3;  // Asynch input GPIO23 (SCIRXDB)
 
 /* Configure SCI-B pins using GPIO regs*/
@@ -114,16 +114,16 @@ void InitScibGpio()
 // Comment out other unwanted lines.
 
 //  GpioCtrlRegs.GPAMUX1.bit.GPIO9 = 2;    // Configure GPIO9 for SCITXDB operation
-//  GpioCtrlRegs.GPAMUX1.bit.GPIO14 = 2;   // Configure GPIO14 for SCITXDB operation
-	GpioCtrlRegs.GPAMUX2.bit.GPIO18 = 2;   // Configure GPIO18 for SCITXDB operation
+  GpioCtrlRegs.GPAMUX1.bit.GPIO14 = 2;   // Configure GPIO14 for SCITXDB operation
+//	GpioCtrlRegs.GPAMUX2.bit.GPIO18 = 2;   // Configure GPIO18 for SCITXDB operation
 //  GpioCtrlRegs.GPAMUX2.bit.GPIO22 = 3;   // Configure GPIO22 for SCITXDB operation
 	
 //  GpioCtrlRegs.GPAMUX1.bit.GPIO11 = 2;   // Configure GPIO11 for SCIRXDB operation
-//  GpioCtrlRegs.GPAMUX1.bit.GPIO15 = 2;   // Configure GPIO15 for SCIRXDB operation
-    GpioCtrlRegs.GPAMUX2.bit.GPIO19 = 2;   // Configure GPIO19 for SCIRXDB operation
+  GpioCtrlRegs.GPAMUX1.bit.GPIO15 = 2;   // Configure GPIO15 for SCIRXDB operation
+//    GpioCtrlRegs.GPAMUX2.bit.GPIO19 = 2;   // Configure GPIO19 for SCIRXDB operation
 //  GpioCtrlRegs.GPAMUX2.bit.GPIO23 = 3;   // Configure GPIO23 for SCIRXDB operation
 	
-    EDIS;
+  EDIS;
 }
 #endif // if DSP28_SCIB 
 void scia_loopback_init(void)
@@ -133,8 +133,8 @@ void scia_loopback_init(void)
 	SciaRegs.SCICTL2.all 			= 0x0003;
 	SciaRegs.SCICTL2.bit.TXINTENA 	= 1;
 	SciaRegs.SCICTL2.bit.RXBKINTENA = 1;
-    SciaRegs.SCIHBAUD    			= 0x00;//0x00;-------------------------0x01
-    SciaRegs.SCILBAUD    			= 0x1f;//0x1f:115200-------------------0x86:9600
+	SciaRegs.SCIHBAUD    			= 0x01;//0x00;-------------------------0x01
+  SciaRegs.SCILBAUD    			= 0x45;//0x1f:115200-------------------0x45:9600 100M
 	SciaRegs.SCICCR.bit.LOOPBKENA 	= 0; // enable loop back
 	SciaRegs.SCICTL1.all 			= 0x0023;     // Relinquish SCI from Reset
 }
@@ -145,36 +145,36 @@ void scib_loopback_init(void)
 	ScibRegs.SCICTL2.all 			= 0x0003;
 	ScibRegs.SCICTL2.bit.TXINTENA 	= 1;
 	ScibRegs.SCICTL2.bit.RXBKINTENA = 1;
-    ScibRegs.SCIHBAUD    			= 0x00;//0x00;-------------------------0x01
-    ScibRegs.SCILBAUD    			= 0x1f;//0x1f:115200-------------------0x86:9600
+  ScibRegs.SCIHBAUD    			= 0x01;//0x00;-------------------------0x01
+  ScibRegs.SCILBAUD    			= 0x45;//0x1f:115200-------------------0x45:9600 100M
 	ScibRegs.SCICCR.bit.LOOPBKENA 	= 0; // enable loop back
 	ScibRegs.SCICTL1.all 			= 0x0023;     // Relinquish SCI from Reset
 }
 void scia_fifo_init(void)
 {
-    SciaRegs.SCIFFTX.bit.TXFIFOXRESET	= 0;
-    SciaRegs.SCIFFRX.bit.RXFIFORESET	= 0;
-    SciaRegs.SCIFFTX.all				= 0xE028;
-    SciaRegs.SCIFFTX.bit.TXFFIENA		= 0;
+  SciaRegs.SCIFFTX.bit.TXFIFOXRESET	= 0;
+  SciaRegs.SCIFFRX.bit.RXFIFORESET	= 0;
+  SciaRegs.SCIFFTX.all				= 0xE028;
+  SciaRegs.SCIFFTX.bit.TXFFIENA		= 0;
 
-    SciaRegs.SCIFFTX.bit.TXFFINTCLR		= 1;
-    SciaRegs.SCIFFRX.all				= 0x2028;
+  SciaRegs.SCIFFTX.bit.TXFFINTCLR		= 1;
+  SciaRegs.SCIFFRX.all				= 0x2028;
 
-    SciaRegs.SCIFFRX.bit.RXFFIENA		= 1;
-    SciaRegs.SCIFFCT.all				= 0x0;
+  SciaRegs.SCIFFRX.bit.RXFFIENA		= 1;
+  SciaRegs.SCIFFCT.all				= 0x0;
 }
 void scib_fifo_init(void)
 {
-    ScibRegs.SCIFFTX.bit.TXFIFOXRESET	= 0;
-    ScibRegs.SCIFFRX.bit.RXFIFORESET	= 0;
-    ScibRegs.SCIFFTX.all				= 0xE028;
-    ScibRegs.SCIFFTX.bit.TXFFIENA		= 0;
+  ScibRegs.SCIFFTX.bit.TXFIFOXRESET	= 0;
+  ScibRegs.SCIFFRX.bit.RXFIFORESET	= 0;
+  ScibRegs.SCIFFTX.all				= 0xE028;
+  ScibRegs.SCIFFTX.bit.TXFFIENA		= 0;
 
-    ScibRegs.SCIFFTX.bit.TXFFINTCLR		= 1;
-    ScibRegs.SCIFFRX.all				= 0x2028;
+  ScibRegs.SCIFFTX.bit.TXFFINTCLR		= 1;
+  ScibRegs.SCIFFRX.all				= 0x2028;
 
-    ScibRegs.SCIFFRX.bit.RXFFIENA		= 1;
-    ScibRegs.SCIFFCT.all				= 0x0;
+  ScibRegs.SCIFFRX.bit.RXFFIENA		= 1;
+  ScibRegs.SCIFFCT.all				= 0x0;
 }
 
 void InitSciForJ75(void){
