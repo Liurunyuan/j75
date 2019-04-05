@@ -106,10 +106,10 @@ void ConfigCpuTimer(struct CPUTIMER_VARS *Timer, float Freq, float Period)
 
 void Init_CpuTimer_J75(void){
 	InitCpuTimers();
-	ConfigCpuTimer(&CpuTimer0, 120, 200);//t = freq * priod/150000000,0.2ms
+	ConfigCpuTimer(&CpuTimer0, 100, 100);//t = freq * priod/150000000,0.2ms
 	CpuTimer0Regs.TCR.bit.TIE= 1;
 	CpuTimer0Regs.TCR.bit.TSS = 0;
-	ConfigCpuTimer(&CpuTimer1, 120, 10000);
+	ConfigCpuTimer(&CpuTimer1, 100, 500000);//interupt cpu every 1s
     CpuTimer1Regs.TCR.bit.TIE= 1;
     CpuTimer1Regs.TCR.bit.TSS = 0;
 }
