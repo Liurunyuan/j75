@@ -43,7 +43,7 @@ void InitECap(void)
 
 void InitECapGpio()
 {
-
+	//j75 use ecap1 for HB, ecap2 for HC, ecap3 for HA, ecap4 for HD
    InitECap1Gpio();
 #if (DSP28_ECAP2)
    InitECap2Gpio();
