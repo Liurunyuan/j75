@@ -39,6 +39,17 @@ void InitEPwm(void)
 
 void InitEPwmGpio(void)
 {
+	/*
+	For J75:
+			GPIO0:	PWMAH
+			GPIO1:	PWMAL
+
+			GPIO2:	PWMBH
+			GPIO3:	PWMBL
+
+			GPIO4:	PWMCH
+			GPIO5:	PWMCL
+	*/
 	InitEPwm1Gpio();
 	InitEPwm2Gpio();
 	InitEPwm3Gpio();
