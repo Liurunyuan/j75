@@ -125,9 +125,9 @@ typedef long double         float64;
 #define DSP28_EPWM1 1
 #define DSP28_EPWM2 1
 #define DSP28_EPWM3 1
-#define DSP28_EPWM4 1
-#define DSP28_EPWM5 1
-#define DSP28_EPWM6 1
+#define DSP28_EPWM4 0
+#define DSP28_EPWM5 0
+#define DSP28_EPWM6 0
 #define DSP28_ECAP1 1
 #define DSP28_ECAP2 1
 #define DSP28_ECAP3 1
