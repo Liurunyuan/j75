@@ -210,11 +210,17 @@ void ScibTxByte(Uint16 t){
 
 }
 
+void SciaTxByte(Uint16 t){
+
+	SciaRegs.SCITXBUF = t;
+}
+
 void DisableSciTxInterrupt(void){
 
 	ScibRegs.SCIFFTX.bit.TXFFIENA = 0;
 
 }
+
 void SciTxIsrThread(void){
 	if(gRS422TxQue.front == gRS422TxQue.rear){
 		DisableSciTxInterrupt();//disable the tx interrupt when tx fifo empty
@@ -226,6 +232,7 @@ void SciTxIsrThread(void){
 		{
 			return;
 		}
+		
 		ScibTxByte(gRS422TxQue.txBuf[gRS422TxQue.front]);
 
 		if(RX422TXDeQueue() == 0){
