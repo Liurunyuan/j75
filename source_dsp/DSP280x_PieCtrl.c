@@ -85,11 +85,8 @@ void EnableInterrupts()
 
 	EPwm1Regs.ETSEL.bit.INTEN =1;
 
-	SciaRegs.SCIFFTX.bit.TXFFINTCLR = 1;
 	ScibRegs.SCIFFTX.bit.TXFFINTCLR = 1;
-	SciaRegs.SCIFFRX.bit.RXFFINTCLR = 1;
 	ScibRegs.SCIFFRX.bit.RXFFINTCLR = 1;
-
 
 	// Enable Interrupts at the CPU level 
     EINT;
