@@ -82,7 +82,7 @@ void InitSciaGpio()
 #if DSP28_SCIB 
 void InitScibGpio()
 {
-   EALLOW;
+  EALLOW;
 	
 /* Enable internal pull-up for the selected pins */
 // Pull-ups can be enabled or disabled disabled by the user.  
@@ -123,7 +123,7 @@ void InitScibGpio()
 //    GpioCtrlRegs.GPAMUX2.bit.GPIO19 = 2;   // Configure GPIO19 for SCIRXDB operation
 //  GpioCtrlRegs.GPAMUX2.bit.GPIO23 = 3;   // Configure GPIO23 for SCIRXDB operation
 	
-    EDIS;
+  EDIS;
 }
 #endif // if DSP28_SCIB 
 void scia_loopback_init(void)
@@ -133,8 +133,8 @@ void scia_loopback_init(void)
 	SciaRegs.SCICTL2.all 			= 0x0003;
 	SciaRegs.SCICTL2.bit.TXINTENA 	= 1;
 	SciaRegs.SCICTL2.bit.RXBKINTENA = 1;
-  SciaRegs.SCIHBAUD    			= 0x01;//0x00;-------------------------0x01
-  SciaRegs.SCILBAUD    			= 0x45;//0x1f:115200-------------------0x86:9600
+	SciaRegs.SCIHBAUD    			= 0x01;//0x00;-------------------------0x01
+  SciaRegs.SCILBAUD    			= 0x45;//0x1f:115200-------------------0x45:9600 100M
 	SciaRegs.SCICCR.bit.LOOPBKENA 	= 0; // enable loop back
 	SciaRegs.SCICTL1.all 			= 0x0023;     // Relinquish SCI from Reset
 }
@@ -146,35 +146,35 @@ void scib_loopback_init(void)
 	ScibRegs.SCICTL2.bit.TXINTENA 	= 1;
 	ScibRegs.SCICTL2.bit.RXBKINTENA = 1;
   ScibRegs.SCIHBAUD    			= 0x01;//0x00;-------------------------0x01
-  ScibRegs.SCILBAUD    			= 0x45;//0x1f:115200-------------------0x86:9600
+  ScibRegs.SCILBAUD    			= 0x45;//0x1f:115200-------------------0x45:9600 100M
 	ScibRegs.SCICCR.bit.LOOPBKENA 	= 0; // enable loop back
 	ScibRegs.SCICTL1.all 			= 0x0023;     // Relinquish SCI from Reset
 }
 void scia_fifo_init(void)
 {
-    SciaRegs.SCIFFTX.bit.TXFIFOXRESET	= 0;
-    SciaRegs.SCIFFRX.bit.RXFIFORESET	= 0;
-    SciaRegs.SCIFFTX.all				= 0xE028;
-    SciaRegs.SCIFFTX.bit.TXFFIENA		= 0;
+  SciaRegs.SCIFFTX.bit.TXFIFOXRESET	= 0;
+  SciaRegs.SCIFFRX.bit.RXFIFORESET	= 0;
+  SciaRegs.SCIFFTX.all				= 0xE028;
+  SciaRegs.SCIFFTX.bit.TXFFIENA		= 0;
 
-    SciaRegs.SCIFFTX.bit.TXFFINTCLR		= 1;
-    SciaRegs.SCIFFRX.all				= 0x2028;
+  SciaRegs.SCIFFTX.bit.TXFFINTCLR		= 1;
+  SciaRegs.SCIFFRX.all				= 0x2028;
 
-    SciaRegs.SCIFFRX.bit.RXFFIENA		= 1;
-    SciaRegs.SCIFFCT.all				= 0x0;
+  SciaRegs.SCIFFRX.bit.RXFFIENA		= 1;
+  SciaRegs.SCIFFCT.all				= 0x0;
 }
 void scib_fifo_init(void)
 {
-    ScibRegs.SCIFFTX.bit.TXFIFOXRESET	= 0;
-    ScibRegs.SCIFFRX.bit.RXFIFORESET	= 0;
-    ScibRegs.SCIFFTX.all				= 0xE028;
-    ScibRegs.SCIFFTX.bit.TXFFIENA		= 0;
+  ScibRegs.SCIFFTX.bit.TXFIFOXRESET	= 0;
+  ScibRegs.SCIFFRX.bit.RXFIFORESET	= 0;
+  ScibRegs.SCIFFTX.all				= 0xE028;
+  ScibRegs.SCIFFTX.bit.TXFFIENA		= 0;
 
-    ScibRegs.SCIFFTX.bit.TXFFINTCLR		= 1;
-    ScibRegs.SCIFFRX.all				= 0x2028;
+  ScibRegs.SCIFFTX.bit.TXFFINTCLR		= 1;
+  ScibRegs.SCIFFRX.all				= 0x2028;
 
-    ScibRegs.SCIFFRX.bit.RXFFIENA		= 1;
-    ScibRegs.SCIFFCT.all				= 0x0;
+  ScibRegs.SCIFFRX.bit.RXFFIENA		= 1;
+  ScibRegs.SCIFFCT.all				= 0x0;
 }
 
 void InitSciForJ75(void){
