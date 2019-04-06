@@ -15,6 +15,13 @@
 #define ENABLE_TX (1)
 #define DISABLE_TX (0)
 
+enum{
+	START,
+	STOP,
+	UNKNOWN
+};
+
+
 typedef struct{
 	Uint16 currentHallPosition;
 	Uint16 lastTimeHalllPosition;
