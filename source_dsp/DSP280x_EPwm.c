@@ -317,45 +317,6 @@ void InitEPwm1()
 	EPwm1Regs.TZCTL.bit.TZB = 1; //��������ʱPWMB����͵�ƽ
 	EDIS;
 
-	//	EPwm1Regs.TBPRD = EPWM1_TIMER_TBPRD;
-	//	EPwm1Regs.TBPHS.half.TBPHS = 0x0000;
-	//	EPwm1Regs.TBCTR = 0x0000;
-	//
-	//	EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD;
-	//	//EPwm1Regs.CMPB = EPWM2_TIMER_HALF_TBPRD;
-	//	EPwm1Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;
-	//	EPwm1Regs.TBCTL.bit.PHSEN = TB_DISABLE;
-	//	EPwm1Regs.TBCTL.bit.HSPCLKDIV = TB_DIV1;
-	//	EPwm1Regs.TBCTL.bit.CLKDIV = TB_DIV1;
-	//	EPwm1Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
-	//	EPwm1Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
-	//	EPwm1Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO_PRD;
-	//	EPwm1Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO_PRD;
-	//	EPwm1Regs.AQCTLA.bit.CAU = AQ_CLEAR;
-	//	EPwm1Regs.AQCTLA.bit.CAD = AQ_SET;
-	//	EPwm1Regs.AQCTLB.bit.CAU = AQ_SET;
-	//	EPwm1Regs.AQCTLB.bit.CAD = AQ_CLEAR;
-	//
-	//	EPwm1Regs.AQSFRC.bit.RLDCSF = 3;
-	//
-	//
-	////	EPwm1Regs.DBCTL.all = 0x000b;
-	//	EPwm1Regs.DBCTL.bit.IN_MODE = 2;//EPWMxA rising edge delay , EPWMXB falling edge delay
-	//	EPwm1Regs.DBCTL.bit.POLSEL = 2;  //EPWMxB  invert
-	//	EPwm1Regs.DBCTL.bit.OUT_MODE = 3;
-	//
-	//	EPwm1Regs.DBRED = 0;//180==1.5us
-	//	EPwm1Regs.DBFED = 0;//180==1.5us
-	//
-	//	EPwm1Regs.ETSEL.bit.INTSEL = ET_CTR_PRD;
-	//	EPwm1Regs.ETSEL.bit.INTEN = 1;
-	//	EPwm1Regs.ETPS.bit.INTPRD = ET_1ST;
-	//
-	//	EPwm1Regs.ETSEL.bit.SOCAEN = 1;
-	//	EPwm1Regs.ETSEL.bit.SOCASEL = ET_CTR_ZERO;
-	//	EPwm1Regs.ETPS.bit.SOCAPRD = 1;
-	//	EPwm1Regs.AQCSFRC.all = 0x0006;
-
 	EPwm1Regs.TBPRD = EPWM1_TIMER_TBPRD; // ���� Set timer period TBCLKs  40KHz, 25us
 										 //����ʱ����λ�Ĵ���TBPHS
 	EPwm1Regs.TBPHS.all = 0x0000;		 // ��ʼ��λΪ0
@@ -444,41 +405,7 @@ void InitEPwm2()
 	EPwm2Regs.TZCTL.bit.TZB = 1;
 	//	EPwm2Regs.TZEINT.bit.OST=1;
 	EDIS;
-	//
-	//	EPwm2Regs.TBPRD = EPWM1_TIMER_TBPRD;
-	//	EPwm2Regs.TBPHS.half.TBPHS = 0x0000;
-	//	EPwm2Regs.TBCTR = 0x0000;
-	//	EPwm2Regs.CMPA.half.CMPA =EPWM1_TIMER_HALF_TBPRD;
-	//	//EPwm2Regs.CMPB = EPWM1_TIMER_HALF_TBPRD;
-	//	EPwm2Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;
-	//	EPwm2Regs.TBCTL.bit.PHSEN = TB_DISABLE;
-	//	EPwm2Regs.TBCTL.bit.HSPCLKDIV = TB_DIV1;
-	//	EPwm2Regs.TBCTL.bit.CLKDIV = TB_DIV1;
-	//	EPwm2Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
-	//	EPwm2Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
-	//	EPwm2Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO_PRD;
-	//	EPwm2Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO_PRD;
-	//	EPwm2Regs.AQCTLA.bit.CAU = AQ_CLEAR;
-	//	EPwm2Regs.AQCTLA.bit.CAD = AQ_SET;
-	//	EPwm2Regs.AQCTLB.bit.CAU = AQ_SET;
-	//	EPwm2Regs.AQCTLB.bit.CAD = AQ_CLEAR;
-	//	EPwm2Regs.AQSFRC.bit.RLDCSF = 3;
-	//	EPwm2Regs.ETSEL.bit.INTSEL = ET_CTR_ZERO;
-	//	EPwm2Regs.ETSEL.bit.INTEN = 1;
-	//	EPwm2Regs.ETPS.bit.INTPRD = ET_1ST;
-	//
-	//
-	//	EPwm2Regs.DBCTL.bit.IN_MODE = 2;//EPWMxA rising edge delay , EPWMXB falling edge delay
-	//	EPwm2Regs.DBCTL.bit.POLSEL = 2;  //EPWMxB  invert
-	//	EPwm2Regs.DBCTL.bit.OUT_MODE = 3;
-	//	EPwm2Regs.DBRED = 0;
-	//	EPwm2Regs.DBFED = 0;
-	//	EPwm2Regs.AQCSFRC.all = 0x0006;
 
-	//��ʼ��EPWM2������B�ࡣBH��EPWM1A��BL-EPWM1B
-	//ʱ��ģ��Ĵ������ã�
-	// ����ʱ�����ڼĴ���TBPRD
-	//ע�⣺���������¼���ģʽ�У���ֵ��PWM���ڵ�1/2������ģʽ�¸�ֵ��PWM������
 	EPwm2Regs.TBPRD = EPWM1_TIMER_TBPRD; // ���� Set timer period TBCLKs  40KHz, 25us
 										 //����ʱ����λ�Ĵ���TBPHS
 	EPwm2Regs.TBPHS.all = 0x0000;		 // ��ʼ��λΪ0
@@ -561,42 +488,6 @@ void InitEPwm3()
 	//	EPwm3Regs.TZCTL.bit.TZB=1;
 	////	EPwm3Regs.TZEINT.bit.OST=1;
 	//	EDIS;
-	//
-	//	EPwm3Regs.TBPRD = EPWM1_TIMER_TBPRD;
-	//	EPwm3Regs.TBPHS.half.TBPHS = 0x0000;
-	//	EPwm3Regs.TBCTR = 0x0000;
-	//	EPwm3Regs.CMPA.half.CMPA =EPWM1_TIMER_HALF_TBPRD;
-	//	//EPwm3Regs.CMPB = EPWM1_TIMER_HALF_TBPRD;
-	//	EPwm3Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;
-	//	EPwm3Regs.TBCTL.bit.PHSEN = TB_DISABLE;
-	//	EPwm3Regs.TBCTL.bit.HSPCLKDIV = TB_DIV1;
-	//	EPwm3Regs.TBCTL.bit.CLKDIV = TB_DIV1;
-	//	EPwm3Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
-	//	EPwm3Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
-	//	EPwm3Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO_PRD;
-	//	EPwm3Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO_PRD;
-	//	EPwm3Regs.AQCTLA.bit.CAU = AQ_CLEAR;
-	//	EPwm3Regs.AQCTLA.bit.CAD = AQ_SET;
-	//	EPwm3Regs.AQCTLB.bit.CAU = AQ_SET;
-	//	EPwm3Regs.AQCTLB.bit.CAD = AQ_CLEAR;
-	//	EPwm3Regs.AQSFRC.bit.RLDCSF = 3;
-	//	EPwm3Regs.ETSEL.bit.INTSEL = ET_CTR_ZERO;
-	//	EPwm3Regs.ETSEL.bit.INTEN = 1;
-	//	EPwm3Regs.ETPS.bit.INTPRD = ET_1ST;
-	//
-	//
-	////	EPwm3Regs.DBCTL.all = 0xb;
-	//	EPwm3Regs.DBCTL.bit.IN_MODE = 2;//EPWMxA rising edge delay , EPWMXB falling edge delay
-	//	EPwm3Regs.DBCTL.bit.POLSEL = 2;  //EPWMxB  invert
-	//	EPwm3Regs.DBCTL.bit.OUT_MODE = 3;
-	//	EPwm3Regs.DBRED = 0;
-	//	EPwm3Regs.DBFED = 0;
-	//	EPwm3Regs.AQCSFRC.all = 0x0006;
-
-	//��ʼ��EPWM3������A�ࡣAH��EPWM1A��AL-EPWM1B
-	//ʱ��ģ��Ĵ������ã�
-	// ����ʱ�����ڼĴ���TBPRD
-	//ע�⣺���������¼���ģʽ�У���ֵ��PWM���ڵ�1/2������ģʽ�¸�ֵ��PWM������
 	EPwm3Regs.TBPRD = EPWM1_TIMER_TBPRD; // ���� Set timer period TBCLKs  40KHz, 25us
 										 //����ʱ����λ�Ĵ���TBPHS
 	EPwm3Regs.TBPHS.all = 0x0000;		 // ��ʼ��λΪ0

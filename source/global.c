@@ -5,12 +5,15 @@
 
 SYSINFO gSysInfo = {0};
 SYSSTATE gSysState = {0};
+SYSALARM gSysAlarm = {0};
 
 void InitGlobalVar(void){
-	gSysState.currentstate = 0;
+	gSysState.currentstate = INIT;
 	gSysInfo.duty = 0;
 	gSysInfo.currentHallPosition = 0;
 	gSysInfo.lastTimeHalllPosition = 0;
+
+	gSysAlarm.all = 0;
 }
 void Delay(int time){
 	int i;

@@ -5,6 +5,7 @@
 
 void PwmIsrThread(void);
 void InitTest2(void);
+void DisablePwmOutput(void);
 
 extern int test2;
 #endif
