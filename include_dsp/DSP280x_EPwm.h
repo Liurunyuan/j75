@@ -411,7 +411,7 @@ extern volatile struct EPWM_REGS EPwm3Regs;
 extern volatile struct EPWM_REGS EPwm4Regs;
 extern volatile struct EPWM_REGS EPwm5Regs;
 extern volatile struct EPWM_REGS EPwm6Regs;
-void Init_EPWM(void);
+void InitEpwmForJ75(void);
 #ifdef __cplusplus
 }
 #endif /* extern "C" */

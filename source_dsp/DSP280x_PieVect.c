@@ -74,7 +74,7 @@ const struct PIE_VECT_TABLE PieVectTableInit = {
       rsvd_ISR,        // 2.8
       
 // Group 3 PIE Vectors
-      EPWM1_INT_ISR,    /*3.1 EPWM-1 Interrupt,使用此中断*/
+      EPWM1_INT_ISR,   // 3.1 EPWM-1 Interrupt
       EPWM2_INT_ISR,   // 3.2 EPWM-2 Interrupt
       EPWM3_INT_ISR,   // 3.3 EPWM-3 Interrupt
       EPWM4_INT_ISR,   // 3.4 EPWM-4 Interrupt
@@ -183,7 +183,7 @@ const struct PIE_VECT_TABLE PieVectTableInit = {
 // This function initializes the PIE vector table to a known state.
 // This function must be executed after boot time.
 //
-/*中断向量表初始化函数*/
+
 void InitPieVectTable(void)
 {
 	int16	i;

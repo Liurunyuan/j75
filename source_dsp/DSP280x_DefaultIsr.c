@@ -23,6 +23,11 @@
 
 #include "DSP280x_Device.h"     // DSP280x Headerfile Include File
 #include "DSP280x_Examples.h"   // DSP280x Examples Include File
+#include "pwm.h"
+#include "ecap.h"
+#include "timer0.h"
+#include "scirx.h"
+#include "scitx.h"
 
 // Connected to INT13 of CPU (use MINT13 mask):
 // Note CPU-Timer1 is reserved for TI use, however XINT13
@@ -33,8 +38,7 @@ interrupt void INT13_ISR(void)     // INT13 or CPU-Timer1
   
   // Next two lines for debug only to halt the processor here
   // Remove after inserting ISR Code
-  asm ("      ESTOP0");
-  for(;;);
+	Timer1_ISR_Thread();
 }
 
 // Note CPU-Timer2 is reserved for TI use.
@@ -310,14 +314,14 @@ interrupt void  ADCINT_ISR(void)     // ADC
 interrupt void  TINT0_ISR(void)      // CPU-Timer 0
 {
   // Insert ISR Code here
-
+	Timer0_ISR_Thread();
   // To receive more interrupts from this PIE group, acknowledge this interrupt 
-  // PieCtrlRegs.PIEACK.all = PIEACK_GROUP1; 
+  PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
   
   // Next two lines for debug only to halt the processor here
   // Remove after inserting ISR Code
-  asm ("      ESTOP0");
-  for(;;);
+  //  asm ("      ESTOP0");
+  //  for(;;);
 }
 
 
@@ -434,23 +438,19 @@ interrupt void EPWM6_TZINT_ISR(void)   // EPWM-6
 // PIE Group 3 - MUXed into CPU INT3
 // -----------------------------------------------------------
    
-// INT 3.1
-/*EPWM中断线程根*/
+// INT 3.1         
 interrupt void EPWM1_INT_ISR(void)     // EPWM-1
 {
-/*调用PWM中断处理过程函数*/
-	// Clear INT flag for this timer
-	EPwm1Regs.ETCLR.bit.INT = 1;
-
-	// Acknowledge this interrupt to receive more interrupts from group 3
-	PieCtrlRegs.PIEACK.all = PIEACK_GROUP3;
   // Insert ISR Code here
-
+	PwmIsrThread();
+	EPwm1Regs.ETCLR.bit.INT = 1;
   // To receive more interrupts from this PIE group, acknowledge this interrupt 
-  // PieCtrlRegs.PIEACK.all = PIEACK_GROUP3;
+	PieCtrlRegs.PIEACK.all = PIEACK_GROUP3;
 
   // Next two lines for debug only to halt the processor here
   // Remove after inserting ISR Code
+  // asm ("      ESTOP0");
+  // for(;;);
 }
 
 // INT3.2
@@ -534,47 +534,61 @@ interrupt void EPWM6_INT_ISR(void)    // EPWM-6
 // INT 4.1
 interrupt void ECAP1_INT_ISR(void)    // ECAP-1
 {
-
   // Insert ISR Code here
+	ECap1_Isr();
   // To receive more interrupts from this PIE group, acknowledge this interrupt 
-  // PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;  
-  ECap1Regs.ECCLR.bit.CEVT1 = 1;
-  ECap1Regs.ECCLR.bit.INT = 1;
+	ECap1Regs.ECCLR.bit.CEVT1 = 1;
+	ECap1Regs.ECCLR.bit.CEVT2 = 1;
+	ECap1Regs.ECCLR.bit.CEVT3 = 1;
+	ECap1Regs.ECCLR.bit.CEVT4 = 1;
 
-  /*Acknowledge this interrupt to receive more interrupts from group 4 */
-     PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
+	ECap1Regs.ECCLR.bit.INT = 1;
+   PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
+
   // Next two lines for debug only to halt the processor here
   // Remove after inserting ISR Code
+  // asm ("      ESTOP0");
+  // for(;;);
 }
 
 // INT4.2
 interrupt void ECAP2_INT_ISR(void)    // ECAP-2
 {
-	// Insert ISR Code here
-	  // To receive more interrupts from this PIE group, acknowledge this interrupt
-	  // PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
-	  ECap2Regs.ECCLR.bit.CEVT1 = 1;
-	  ECap2Regs.ECCLR.bit.INT = 1;
+  // Insert ISR Code here
+	ECap2_Isr();
+	ECap2Regs.ECCLR.bit.CEVT1 = 1;
+	ECap2Regs.ECCLR.bit.CEVT2 = 1;
+	ECap2Regs.ECCLR.bit.CEVT3 = 1;
+	ECap2Regs.ECCLR.bit.CEVT4 = 1;
 
-	  /*Acknowledge this interrupt to receive more interrupts from group 4 */
-	     PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
-	  // Next two lines for debug only to halt the processor here
-	  // Remove after inserting ISR Code
+	ECap2Regs.ECCLR.bit.INT = 1;
+  // To receive more interrupts from this PIE group, acknowledge this interrupt 
+  PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
+
+  // Next two lines for debug only to halt the processor here
+  // Remove after inserting ISR Code
+  // asm ("      ESTOP0");
+  // for(;;);
 }
 
 // INT4.3
 interrupt void ECAP3_INT_ISR(void)    // ECAP-3
 {
-	// Insert ISR Code here
-	  // To receive more interrupts from this PIE group, acknowledge this interrupt
-	  // PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
-	  ECap3Regs.ECCLR.bit.CEVT1 = 1;
-	  ECap3Regs.ECCLR.bit.INT = 1;
+  // Insert ISR Code here
+	ECap3_Isr();
+	ECap3Regs.ECCLR.bit.CEVT1 = 1;
+	ECap3Regs.ECCLR.bit.CEVT2 = 1;
+	ECap3Regs.ECCLR.bit.CEVT3 = 1;
+	ECap3Regs.ECCLR.bit.CEVT4 = 1;
 
-	  /*Acknowledge this interrupt to receive more interrupts from group 4 */
-	     PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
-	  // Next two lines for debug only to halt the processor here
-	  // Remove after inserting ISR Code
+	ECap3Regs.ECCLR.bit.INT = 1;
+  // To receive more interrupts from this PIE group, acknowledge this interrupt 
+  PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
+  
+  // Next two lines for debug only to halt the processor here
+  // Remove after inserting ISR Code
+  // asm ("      ESTOP0");
+  // for(;;);
 }
 
 // INT4.4
@@ -813,7 +827,6 @@ interrupt void I2CINT2A_ISR(void)     // I2C-A
 interrupt void SCIRXINTA_ISR(void)     // SCI-A
 {
   // Insert ISR Code here
-
   // To receive more interrupts from this PIE group, acknowledge this interrupt 
   // PieCtrlRegs.PIEACK.all = PIEACK_GROUP9;
 
@@ -843,31 +856,17 @@ interrupt void SCITXINTA_ISR(void)     // SCI-A
 // INT9.3
 interrupt void SCIRXINTB_ISR(void)     // SCI-B
 {
-  // Insert ISR Code here
-
-  // To receive more interrupts from this PIE group, acknowledge this interrupt 
-  // PieCtrlRegs.PIEACK.all = PIEACK_GROUP9;
-
-  // Next two lines for debug only to halt the processor here
-  // Remove after inserting ISR Code
-  asm ("      ESTOP0");
-  for(;;);
-
+  SciRxIsrThread(&gRS422RxQue);
+  ScibRegs.SCIFFRX.bit.RXFFINTCLR = 1;
+  PieCtrlRegs.PIEACK.all = PIEACK_GROUP9;
 }
 
 // INT9.4
 interrupt void SCITXINTB_ISR(void)     // SCI-B
 {
-  // Insert ISR Code here
-
-  // To receive more interrupts from this PIE group, acknowledge this interrupt 
-  // PieCtrlRegs.PIEACK.all = PIEACK_GROUP9;
-
-  // Next two lines for debug only to halt the processor here
-  // Remove after inserting ISR Code
-  asm ("      ESTOP0");
-  for(;;);
-
+  SciTxIsrThread();
+  ScibRegs.SCIFFTX.bit.TXFFINTCLR = 1;
+  PieCtrlRegs.PIEACK.all = PIEACK_GROUP9;
 }
 
 // INT9.5

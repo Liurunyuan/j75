@@ -4,57 +4,100 @@
 
 #include "DSP280x_Device.h"     // DSP280x Headerfile Include File
 #include "DSP280x_Examples.h"   // DSP280x Examples Include File
-int test = 0;
-void Init_Peripheral(){
-	/*Init IO pin */
-	Init_GPIO();
-	/*Init and config ADC*/
-	Init_ADC();
-	/*Init and cnofig XINTF*/
-	//InitXINTF();
-	/*Init and config SCI RS422*/
-	//Init_SCI();
-	/*Init and config SPI*/
-	//InitSPI();
-	/*Init and config A-CAN and B-CAN */
-	//InitCAN();
-	/*Init and config I2C*/
-	//InitI2C();
-	/*Init and config CAP4,CAP5,CAP6*/
-	Init_ECAP();
-	/*Init and config QEP2*/
-	//InitQEP();
-	/*PWM IO init and config*/
-	Init_EPWM();
-	/*DMA init and config*/
-	//InitDMA();
-}
-void InitGlobalVar(){
+#include "global.h"
+#include "pwm.h"
+#include "scirx.h"
+#include "scitx.h"
+#include "adc.h"
+#include "ecap.h"
+#include "pid.h"
+#include "kalman.h"
 
-}
-void MainLoop(){
+void InitPeripheral(){
 
+	InitGpioForJ75();
 
+	InitAdcForJ75();
+
+	InitEcapForJ75();
+
+	InitSciForJ75();
+
+	InitEpwmForJ75();
+
+	Init_CpuTimer_J75();
 }
-void Delay(int time){
-	int i;
-	for(i = 0; i < time; ++i){
-		asm(" NOP");
-	}
-}
-void main(void) {
-	/*system init*/
-	InitSysCtrl();
-	/*peripheral init*/
-	Init_Peripheral();
+void InitVar(){
+
+	InitAdcVar();
+
+	InitSciRxVar();
+
+	InitSciTxVar();
+
+	InitEcapVar();
+
+	InitPidVar();
 
 	InitGlobalVar();
+}
 
-	Init_Interrupt();
+void StateMachine(void){
+	switch (gSysState.currentstate)
+	{
+		case INIT:
+			if(gSysAlarm.bit.InitFault == 0){
+				gSysState.currentstate = STOP;
+			}
+			else{
+				gSysState.currentstate = ALARM;
+			}
+			break;
+		case START:
+			/* code */
+			if(gSysAlarm.all != 0){
+				gSysState.currentstate = ALARM;
+			}
+			break;
+		case STOP:
+			if(gSysState.targetState == START){
+				gSysState.currentstate = START;
+			}
+
+			if(gSysAlarm.all != 0){
+				gSysState.currentstate = ALARM;
+			}
+			break;
+		case ALARM:
+			DisablePwmOutput();
+			break;
+		default:
+			gSysAlarm.bit.softwareFault = 1;
+			gSysState.currentstate = ALARM;
+			break;
+	}
+}
+void MainLoop(){
+	FEED_WATCH_DOG = 1;
+
+	UnpackSciPackage(&gRS422RxQue);
+	
+	gMotorSpeedEcap = (KalmanFilter(CalculateSpeed(gECapCount), KALMAN_Q, KALMAN_R));
+}
+
+void main(void) {
+
+	InitSysCtrl();
+
+	InitPeripheral();
+
+	InitVar();
+
+	InitInterruptForJ75();
 
 	while(1){
 		MainLoop();
 		Delay(10000);
-		++test;
+		//test github
 	}
 }

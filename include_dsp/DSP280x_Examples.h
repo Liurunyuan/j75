@@ -27,14 +27,14 @@ extern "C" {
       if CLKINDIV = 1: SYSCLKOUT = (OSCCLK * PLLCR)
 -----------------------------------------------------------------------------*/
 #define DSP28_CLKINDIV   0   // Enable /2 for SYSCLKOUT
-//#define DSP28_CLKINDIV   1 // Disable /2 for SYSCKOUT
+// #define DSP28_CLKINDIV   1 // Disable /2 for SYSCKOUT
 
-//#define DSP28_PLLCR   10
+#define DSP28_PLLCR   10
 //#define DSP28_PLLCR    9
-//#define DSP28_PLLCR    8  // 用于demo板Uncomment for 80 MHz devices [80 MHz = (20MHz * 8)/2]
+//#define DSP28_PLLCR    8
 //#define DSP28_PLLCR    7
-//#define DSP28_PLLCR    6
-  #define DSP28_PLLCR    5  // 用于项目Uncomment for 75 MHz devices [75 MHz = (30MHz * 5)/2]
+//#define DSP28_PLLCR    6  // Uncomment for 60 MHz devices [60 MHz = (20MHz * 6)/2]
+//#define DSP28_PLLCR    5
 //#define DSP28_PLLCR    4
 //#define DSP28_PLLCR    3
 //#define DSP28_PLLCR    2

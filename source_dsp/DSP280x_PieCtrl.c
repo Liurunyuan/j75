@@ -21,9 +21,10 @@
 //
 void InitPieCtrl(void)
 {
-	/*禁止CPU级中断,Disable Interrupts at the CPU level*/
+    // Disable Interrupts at the CPU level:
     DINT;
-    /*禁止PIE  Disable the PIE*/
+
+    // Disable the PIE
     PieCtrlRegs.PIECTRL.bit.ENPIE = 0;
 
 	// Clear all PIEIER registers:
@@ -71,32 +72,34 @@ void EnableInterrupts()
 	// Enables PIE to drive a pulse into the CPU 
 	PieCtrlRegs.PIEACK.all = 0xFFFF;  
 
-	PieCtrlRegs.PIEIER3.bit.INTx1 = 1;//使能epwm1中间级中断
+	PieCtrlRegs.PIEIER1.bit.INTx7 = 1;//锟斤拷时锟斤拷0锟叫断★拷
+	PieCtrlRegs.PIEIER3.bit.INTx1 = 1;//ePWM1锟叫讹拷
+	PieCtrlRegs.PIEIER4.bit.INTx1 = 1;//ECAP1
+	PieCtrlRegs.PIEIER4.bit.INTx2 = 1;//ECAP2
+	PieCtrlRegs.PIEIER4.bit.INTx3 = 1;//ECAP3
+
+	PieCtrlRegs.PIEIER8.bit.INTx5 = 1;//SCIC RX Interrupt
+	PieCtrlRegs.PIEIER8.bit.INTx6 = 1;//SCIC TX Interrupt
+	PieCtrlRegs.PIEIER9.bit.INTx3 = 1;//SCIB RX interrupt
+	PieCtrlRegs.PIEIER9.bit.INTx4 = 1;//SCIB TX interrupt
+
+	EPwm1Regs.ETSEL.bit.INTEN =1;
+
+	ScibRegs.SCIFFTX.bit.TXFFINTCLR = 1;
+	ScibRegs.SCIFFRX.bit.RXFFINTCLR = 1;
 
 	// Enable Interrupts at the CPU level 
     EINT;
-
+    ERTM;
+	
 }
-/*
- * Initialize all the Interrupt
- */
-void Init_Interrupt(void)
-{
-	//初始化CPU_T0
-//	InitCpuTimers();
-//	ConfigCpuTimer(&CpuTimer0, 120, 200);//t = freq * priod/150000000,0.2ms
-//    CpuTimer0Regs.TCR.bit.TIE= 1;
-//    CpuTimer0Regs.TCR.bit.TSS = 0;
-//	ConfigCpuTimer(&CpuTimer1, 120, 10000);
-//    CpuTimer1Regs.TCR.bit.TIE= 1;
-//    CpuTimer1Regs.TCR.bit.TSS = 0;
-    //中断配置
-    DINT;
-    InitPieCtrl();
-    IER = 0x0000;
- 	IFR = 0x0000;
- 	InitPieVectTable();
 
+void InitInterruptForJ75(void){
+	DINT;
+	InitPieCtrl();
+	IER = 0x0000;
+	IFR = 0x0000;
+	InitPieVectTable();
     IER |= M_INT1;
     IER |= M_INT2;
     IER |= M_INT3;
@@ -105,24 +108,8 @@ void Init_Interrupt(void)
  	IER |= M_INT8;//SCIc
     IER |= M_INT9;//SCIa//ECAN//scib
     IER |= M_INT13;//timer1
-
-    EnableInterrupts();
-    EINT;   // Enable Global interrupt INTM
-    ERTM;
-    AdcRegs.ADCST.bit.INT_SEQ1_CLR=1;//此句要有，否则进步了中断，应为在该行代码执行前，seq1中断标识已经被立起，此处需要清除
-
-    //ScibRegs.SCIFFTX.bit.TXFFINTCLR = 1;
-
-    ScibRegs.SCIFFRX.bit.RXFFINTCLR = 1;//此句做用同上
-
-
-    EALLOW;
-    EPwm1Regs.TZCLR.bit.CBC=1;//清除CBC时间标志位
-    EPwm1Regs.TZCLR.bit.INT=1;//清除中断标识位
-    EDIS;
-    EPwm1Regs.ETCLR.bit.INT = 1;
+	EnableInterrupts();
 }
-
 //===========================================================================
 // End of file.
 //===========================================================================

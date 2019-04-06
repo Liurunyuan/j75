@@ -250,8 +250,8 @@ struct ADC_RESULT_MIRROR_REGS
 //
 extern volatile struct ADC_REGS AdcRegs;
 extern volatile struct ADC_RESULT_MIRROR_REGS AdcMirror;
-void Init_ADC(void);
 
+void InitAdcForJ75(void);
 #ifdef __cplusplus
 }
 #endif /* extern "C" */

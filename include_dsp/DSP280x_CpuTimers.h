@@ -170,6 +170,7 @@ extern struct CPUTIMER_VARS CpuTimer2;
 #define ReadCpuTimer1Period() CpuTimer1Regs.PRD.all
 #define ReadCpuTimer2Period() CpuTimer2Regs.PRD.all
 
+void Init_CpuTimer_J75(void);
 
 #ifdef __cplusplus
 }
