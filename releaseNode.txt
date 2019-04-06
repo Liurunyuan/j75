@@ -1,11 +1,10 @@
 /***************************0.0.1*******************************/
 Version Number: 0.0.1
-Date: 2019/4/4
+Date: 2019/4/6
 Author:Simon
 
-New Feature:
-
-
+What new: 
+	1. Burned to the J75 board for the first time and can running
 Bug Fix:
 
 /***************************************************************/
