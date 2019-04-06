@@ -16,10 +16,39 @@
 #define DISABLE_TX (0)
 
 enum{
+	UNKNOWN,
 	START,
 	STOP,
-	UNKNOWN
+	ALARM,
+	INIT
 };
+
+typedef struct
+{
+	Uint16 overCurrent : 1;
+	Uint16 overBusVoltage : 1;
+	Uint16 overTemperature : 1;
+	Uint16 softwareFault : 1;
+	Uint16 InitFault : 1;
+	Uint16 f : 1;
+	Uint16 g : 1;
+	Uint16 h : 1;
+	Uint16 i : 1;
+	Uint16 j : 1;
+	Uint16 k : 1;
+	Uint16 l : 1;
+	Uint16 m : 1;
+	Uint16 n : 1;
+	Uint16 o : 1;
+	Uint16 p : 1;
+}ALARMBIT;
+
+typedef union
+{
+	Uint16 all;
+	ALARMBIT bit;
+}SYSALARM;
+
 
 
 typedef struct{
@@ -40,9 +69,11 @@ typedef union _VAR16{
 
 typedef struct _SYSSTATE{
 	int currentstate;
+	int targetState;
 }SYSSTATE;
 
 extern SYSINFO gSysInfo;
+extern SYSALARM gSysAlarm;
 
 void Delay(int time);
 void InitGlobalVar(void);

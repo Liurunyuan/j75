@@ -41,7 +41,7 @@ static void SetTargetSpeed(VAR16 a, int b, int c) {
 }
 
 static void SetSystemState(VAR16 a, int b, int c) {
-	gSysState.currentstate = a.value;
+	gSysState.targetState = a.value;
 }
 
 static void SetPidKp(VAR16 a, int b, int c) {
@@ -58,10 +58,10 @@ static void SetPidKd(VAR16 a, int b, int c) {
 
 const functionMsgCodeUnpack msgInterface[] = {
 			0,
-			0,
-			WaveCommand,
-			SetTargetSpeed,
 			SetSystemState,
+			SetTargetSpeed,
+			WaveCommand,
+			0,
 			0,						//5
 			0,						//6
 			0,						//7
@@ -119,7 +119,7 @@ const functionMsgCodeUnpack msgInterface[] = {
 			0,						//59
 			0,						//60
 			0,						//61
-			SetSystemState,			//62
+			0,						//62
 			0,						//63
 			0,						//64
 			0,						//65
@@ -138,7 +138,7 @@ const functionMsgCodeUnpack msgInterface[] = {
 			0,
 			0,
 			0,
-			SetTargetSpeed,
+			0,
 			0
 
 };
