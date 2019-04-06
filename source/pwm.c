@@ -234,9 +234,9 @@ void PwmIsrThread(void)
 
 	if(gSysState.currentstate == START){
 
-		targetPid  = PidOutput(gMotorSpeedEcap);
+		// targetPid  = PidOutput(gMotorSpeedEcap);
 
-		ThresholdProtectForDuty();
+		// ThresholdProtectForDuty();
 
 		SwitchDirection();
 	}
