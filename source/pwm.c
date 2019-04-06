@@ -42,8 +42,8 @@ inline void CPositiveToBNegtive(void) {
 	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm2Regs.AQCSFRC.bit.CSFB = 3;
 
-	EPwm3Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
-	EPwm2Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
+	EPwm3Regs.CMPA.half.CMPA = gSysInfo.duty;
+	EPwm2Regs.CMPA.half.CMPA = gSysInfo.duty;
 
 }
 
@@ -56,8 +56,8 @@ inline void CPositiveToANegtive(void) {
 	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm1Regs.AQCSFRC.bit.CSFB = 3;
 
-	EPwm3Regs.CMPA.half.CMPA =  1250 - gSysInfo.duty;
-	EPwm1Regs.CMPA.half.CMPA =  1250 - gSysInfo.duty;
+	EPwm3Regs.CMPA.half.CMPA =  gSysInfo.duty;
+	EPwm1Regs.CMPA.half.CMPA =  gSysInfo.duty;
 
 }
 
@@ -71,8 +71,8 @@ inline void BPositiveToANegtive(void) {
 	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm1Regs.AQCSFRC.bit.CSFB = 3;
 
-	EPwm2Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
-	EPwm1Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
+	EPwm2Regs.CMPA.half.CMPA = gSysInfo.duty;
+	EPwm1Regs.CMPA.half.CMPA = gSysInfo.duty;
 }
 
 inline void BPositiveToCNegtive(void) {
@@ -85,8 +85,8 @@ inline void BPositiveToCNegtive(void) {
 	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm3Regs.AQCSFRC.bit.CSFB = 3;
 
-	EPwm2Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
-	EPwm3Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
+	EPwm2Regs.CMPA.half.CMPA = gSysInfo.duty;
+	EPwm3Regs.CMPA.half.CMPA = gSysInfo.duty;
 }
 inline void APositiveToCNegtive(void) {
 
@@ -98,8 +98,8 @@ inline void APositiveToCNegtive(void) {
 	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm3Regs.AQCSFRC.bit.CSFB = 3;
 
-	EPwm1Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
-	EPwm3Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
+	EPwm1Regs.CMPA.half.CMPA = gSysInfo.duty;
+	EPwm3Regs.CMPA.half.CMPA = gSysInfo.duty;
 }
 inline void APositiveToBNegtive(void) {
 
@@ -111,8 +111,8 @@ inline void APositiveToBNegtive(void) {
 	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm2Regs.AQCSFRC.bit.CSFB = 3;
 
-	EPwm1Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
-	EPwm2Regs.CMPA.half.CMPA = 1250 - gSysInfo.duty;
+	EPwm1Regs.CMPA.half.CMPA = gSysInfo.duty;
+	EPwm2Regs.CMPA.half.CMPA = gSysInfo.duty;
 }
 
 Uint16 GetCurrentHallValue(void){
