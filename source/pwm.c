@@ -232,7 +232,7 @@ void PwmIsrThread(void)
 
 	IsAnalogValueAbnormal();
 
-	if(gSysState.currentstate == 1){
+	if(gSysState.currentstate == START){
 
 		targetPid  = PidOutput(gMotorSpeedEcap);
 

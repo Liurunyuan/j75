@@ -63,6 +63,10 @@ void StateMachine(void){
 			if(gSysState.targetState == START){
 				gSysState.currentstate = START;
 			}
+
+			if(gSysAlarm.all != 0){
+				gSysState.currentstate = ALARM;
+			}
 			break;
 		case ALARM:
 			DisablePwmOutput();
