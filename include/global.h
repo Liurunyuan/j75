@@ -77,5 +77,6 @@ extern SYSALARM gSysAlarm;
 
 void Delay(int time);
 void InitGlobalVar(void);
+void clearHardwareErro(void);
 extern SYSSTATE gSysState;
 #endif

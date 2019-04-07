@@ -58,6 +58,10 @@ void StateMachine(void){
 			if(gSysAlarm.all != 0){
 				gSysState.currentstate = ALARM;
 			}
+			else if(gSysState.targetState == STOP){
+				gSysState.currentstate = STOP;
+				DisablePwmOutput();
+			}
 			break;
 		case STOP:
 			if(gSysState.targetState == START){
@@ -80,6 +84,8 @@ void StateMachine(void){
 void MainLoop(){
 	FEED_WATCH_DOG = 1;
 
+	StateMachine();
+
 	UnpackSciPackage(&gRS422RxQue);
 	
 	gMotorSpeedEcap = (KalmanFilter(CalculateSpeed(gECapCount), KALMAN_Q, KALMAN_R));
@@ -94,6 +100,8 @@ void main(void) {
 	InitVar();
 
 	InitInterruptForJ75();
+
+	clearHardwareErro();
 
 	while(1){
 		MainLoop();
