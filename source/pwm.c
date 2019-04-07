@@ -195,15 +195,15 @@ void SwitchDirection(void){
 			if((3 == gSysInfo.lastTimeHalllPosition )
 				|| (2 == gSysInfo.lastTimeHalllPosition)
 				|| (1 == gSysInfo.lastTimeHalllPosition)){
+				APositiveToBNegtive();
 
-				CPositiveToBNegtive();
 			}
 			break;
 		case 1://C+ ---------------> A-
 			if((1 == gSysInfo.lastTimeHalllPosition )
 				|| (3 == gSysInfo.lastTimeHalllPosition)
 				|| (5 == gSysInfo.lastTimeHalllPosition)){
-				CPositiveToANegtive();
+				APositiveToCNegtive();
 
 			}
 			break;
@@ -211,30 +211,30 @@ void SwitchDirection(void){
 			if((5 == gSysInfo.lastTimeHalllPosition )
 				|| (1 == gSysInfo.lastTimeHalllPosition)
 				|| (4 == gSysInfo.lastTimeHalllPosition)){
+				BPositiveToCNegtive();
 
-				BPositiveToANegtive();
 			}
 			break;
 		case 4://B+ ---------------> C-
 			if((4 == gSysInfo.lastTimeHalllPosition )
 				|| (5 == gSysInfo.lastTimeHalllPosition)
 				|| (6 == gSysInfo.lastTimeHalllPosition)){
+				BPositiveToANegtive();
 
-				BPositiveToCNegtive();
 			}
 			break;
 		case 6://A+ ---------------> C-
 			if((6 == gSysInfo.lastTimeHalllPosition )
 				|| (4 == gSysInfo.lastTimeHalllPosition)
 				|| (2 == gSysInfo.lastTimeHalllPosition)){
-				APositiveToCNegtive();
+				CPositiveToANegtive();
 			}
 			break;
 		case 2://A+ ---------------> B-
 			if((2 == gSysInfo.lastTimeHalllPosition )
 				|| (3 == gSysInfo.lastTimeHalllPosition)
 				|| (6 == gSysInfo.lastTimeHalllPosition)){
-				APositiveToBNegtive();
+				CPositiveToBNegtive();
 			}
 			break;
 		default:
