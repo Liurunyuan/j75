@@ -122,13 +122,13 @@ inline void APositiveToBNegtive(void) {
 Uint16 GetCurrentHallValue(void){
 
 	Uint16 temp;
-	Uint16 a;
-	Uint16 b;
-	Uint16 c;
+	Uint16 a = 0;
+	Uint16 b = 0;
+	Uint16 c = 0;
 //TODO fix later
-	a = GpioDataRegs.GPADAT.bit.GPIO24;
-	b = GpioDataRegs.GPADAT.bit.GPIO25;
-	c = GpioDataRegs.GPADAT.bit.GPIO26;
+	a = GpioDataRegs.GPADAT.bit.GPIO26;
+	b = GpioDataRegs.GPADAT.bit.GPIO24;
+	c = GpioDataRegs.GPADAT.bit.GPIO25;
 
 	temp = ((c << 2) + (b << 1) + a);
 	return temp;
