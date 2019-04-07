@@ -313,87 +313,47 @@ void InitTzGpio(void)
 void InitEPwm1()
 {
 	EALLOW;
-	EPwm1Regs.TZCTL.bit.TZA = 1; //��������ʱPWMA����͵�ƽ
-	EPwm1Regs.TZCTL.bit.TZB = 1; //��������ʱPWMB����͵�ƽ
+	EPwm1Regs.TZCTL.bit.TZA = 1;
+	EPwm1Regs.TZCTL.bit.TZB = 1;
 	EDIS;
 
-	EPwm1Regs.TBPRD = EPWM1_TIMER_TBPRD; // ���� Set timer period TBCLKs  40KHz, 25us
-										 //����ʱ����λ�Ĵ���TBPHS
-	EPwm1Regs.TBPHS.all = 0x0000;		 // ��ʼ��λΪ0
-										 //����ʱ��������TBCTR
-	EPwm1Regs.TBCTR = 0x0000;			 // ����ʱ��������
-	//����ʱ�����ƼĴ���
-	EPwm1Regs.TBCTL.bit.PHSEN = 0;	 //��λ�ǿ��ƽ�ֹ
-	EPwm1Regs.TBCTL.bit.HSPCLKDIV = 0; //����ʱ��Ԥ��Ƶ,0:����Ƶ
-	EPwm1Regs.TBCTL.bit.CLKDIV = 0;	//ʱ��Ԥ��Ƶ�����ã�TBCLK=SYSCLKOUT/(HSPCLKDIV*CLKDIV)��0:����Ƶ
-
-	EPwm1Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_DISABLE; //��ֹͬ���ź����
-	EPwm1Regs.TBCTL.bit.PRDLD = TB_SHADOW;			//����ʱ�����ڼĴ���ʱʹ�û���Ĵ�������ʹ��ʱ�����ڼĴ�����Ӱ�ӼĴ���
-	EPwm1Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;  //����ģʽΪ��������������
-
-	//�����Ƚ�ģ��Ĵ�������:
-	//�����ȽϿ��ƼĴ���CMPCTL����
-	EPwm1Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;   //����ռ�ձȼ����Ƚ�BӰ�ӼĴ���
-	EPwm1Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;   //����ռ�ձȼ����Ƚ�AӰ�ӼĴ���
-	EPwm1Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO; //��������Ϊ0ʱ���رȽϼĴ���B
-	EPwm1Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO; //��������Ϊ0ʱ���رȽϼĴ���A
-
-	//���ģ�����ã�
-	//���A���ƼĴ���AQCTLA����
-	//���ü�����ֵ���ڱȽ��趨ֵCMPAʱ��EPWM1A����:���¼�����Ƚ�ֵ���ʱ�ø�
-	EPwm1Regs.AQCTLA.bit.CAD = AQ_SET; //AQ_SET;
-	//���ü�����ֵ���ڱȽ��趨ֵCMPAʱ��EPWM1A����:���ϼ�����Ƚ�ֵ���ʱ�õ�
-	EPwm1Regs.AQCTLA.bit.CAU = AQ_CLEAR; //AQ_CLEAR;
-	//���ü�����ֵ����ռ�ձ��趨ֵCMPBʱ��EPWM1A����:����Ӧ
-	EPwm1Regs.AQCTLA.bit.CBD = AQ_NO_ACTION; //AQ_NO_ACTION;
-	//���ü�����ֵ����ռ�ձ��趨ֵCMPBʱ��EPWM1A����:����Ӧ
-	EPwm1Regs.AQCTLA.bit.CBU = AQ_NO_ACTION; //AQ_NO_ACTION;
-	//���ü�����ֵ����ʱ������ʱEPWM1A����������Ӧ
+	EPwm1Regs.TBPRD = EPWM1_TIMER_TBPRD;
+	EPwm1Regs.TBPHS.all = 0x0000;
+	EPwm1Regs.TBCTR = 0x0000;
+	EPwm1Regs.TBCTL.bit.PHSEN = 0;
+	EPwm1Regs.TBCTL.bit.HSPCLKDIV = 0;
+	EPwm1Regs.TBCTL.bit.CLKDIV = 0;
+	EPwm1Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_DISABLE;
+	EPwm1Regs.TBCTL.bit.PRDLD = TB_SHADOW;
+	EPwm1Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;
+	EPwm1Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
+	EPwm1Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
+	EPwm1Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;
+	EPwm1Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;
+	EPwm1Regs.AQCTLA.bit.CAD = AQ_SET;
+	EPwm1Regs.AQCTLA.bit.CAU = AQ_CLEAR;
+	EPwm1Regs.AQCTLA.bit.CBD = AQ_NO_ACTION;
+	EPwm1Regs.AQCTLA.bit.CBU = AQ_NO_ACTION;
 	EPwm1Regs.AQCTLA.bit.PRD = AQ_NO_ACTION;
-	//���ü�����ֵ����0ʱEPWM1A����������Ӧ
 	EPwm1Regs.AQCTLA.bit.ZRO = AQ_NO_ACTION;
-
-	//���B���ƼĴ���AQCTLB����
-	//���ü�����ֵ���ڱȽ��趨ֵCMPAʱ��EPWM1B����:���¼�����Ƚ�ֵ���ʱ�ø�
-	EPwm1Regs.AQCTLB.bit.CAD = AQ_CLEAR; //AQ_CLEAR;
-	//���ü�����ֵ���ڱȽ��趨ֵCMPAʱ��EPWM1B����:���ϼ�����Ƚ�ֵ���ʱ�õ�
-	EPwm1Regs.AQCTLB.bit.CAU = AQ_SET; //AQ_SET;
-	//���ü�����ֵ���ڱȽ��趨ֵCMPBʱ��E/PWM1B����:����Ӧ
+	EPwm1Regs.AQCTLB.bit.CAD = AQ_CLEAR;
+	EPwm1Regs.AQCTLB.bit.CAU = AQ_SET;
 	EPwm1Regs.AQCTLB.bit.CBD = AQ_NO_ACTION;
-	//���ü�����ֵ���ڱȽ��趨ֵCMPBʱ��EPWM1B����:����Ӧ
 	EPwm1Regs.AQCTLB.bit.CBU = AQ_NO_ACTION;
-	//���ü�����ֵ����ʱ������ʱEPWM1A����������Ӧ
 	EPwm1Regs.AQCTLB.bit.PRD = AQ_NO_ACTION;
-	//���ü�����ֵ����0ʱEPWM1A����������Ӧ
 	EPwm1Regs.AQCTLB.bit.ZRO = AQ_NO_ACTION;
-
-	EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD; //��ʼ����50%��ռ�ձ�
-													   //����������������ǿ��������ƼĴ���AQSFRC����
-	EPwm1Regs.AQSFRC.bit.RLDCSF = 3;				   //��������
-	//�ر�PWM1
-	//EPwm1Regs.AQCSFRC.all = 0x0009;   //�����������Ϲ��Ӻ��¹��Ӷ��������ֵ͵�ƽ
-
-	EPwm1Regs.DBCTL.bit.IN_MODE = 2;  //EPWMxA��������,B�½����ӳ��ź�Դ
-	EPwm1Regs.DBCTL.bit.POLSEL = 2;   //���Կ��ƣ�EPWMxB ��ת��EPWMxA����ת
-	EPwm1Regs.DBCTL.bit.OUT_MODE = 3; //�������ģʽ����
-
-	//�����������ӳټĴ���DBRED����
-	EPwm1Regs.DBRED = 0; //����ʱ��:1us=DBFED*TTBCLK
-	//�����½����ӳټĴ���DBFED����
-	EPwm1Regs.DBFED = 0; //����ʱ��: 1us=DBFED*TTBCLK
-
-	//PWMն�����ƼĴ���PCCTL���ã��ݲ���
-	//���ϲ�׽�����ã��ݲ���
-
-	EPwm1Regs.ETPS.bit.INTPRD = ET_1ST;		 //PWM�жϴ�����1��
-	EPwm1Regs.ETSEL.bit.INTSEL = ET_CTR_PRD; //pwm�ж�ʱ�̣�������ֵ=����ֵ
-	EPwm1Regs.ETSEL.bit.INTEN = 0;			 //disable INT
-
-	/*ʹ��EPWMxSOCA��Ϊ ADC ת����������*/
+	EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD;
+	EPwm1Regs.AQSFRC.bit.RLDCSF = 3;
+	EPwm1Regs.DBCTL.bit.IN_MODE = 2;
+	EPwm1Regs.DBCTL.bit.POLSEL = 2;
+	EPwm1Regs.DBCTL.bit.OUT_MODE = 3;
+	EPwm1Regs.DBRED = 0;
+	EPwm1Regs.DBFED = 0;
+	EPwm1Regs.ETPS.bit.INTPRD = ET_1ST;
+	EPwm1Regs.ETSEL.bit.INTSEL = ET_CTR_PRD;
+	EPwm1Regs.ETSEL.bit.INTEN = 0;
 	EPwm1Regs.ETSEL.bit.SOCAEN = 1;
-	/*TBCTR=0ʱ����SOCA�ź�*/
 	EPwm1Regs.ETSEL.bit.SOCASEL = 1;
-	/*��һ���¼�����ʱ������SOCA�ź�*/
 	EPwm1Regs.ETPS.bit.SOCAPRD = 1;
 }
 void InitEPwm2()
@@ -406,77 +366,41 @@ void InitEPwm2()
 	//	EPwm2Regs.TZEINT.bit.OST=1;
 	EDIS;
 
-	EPwm2Regs.TBPRD = EPWM1_TIMER_TBPRD; // ���� Set timer period TBCLKs  40KHz, 25us
-										 //����ʱ����λ�Ĵ���TBPHS
-	EPwm2Regs.TBPHS.all = 0x0000;		 // ��ʼ��λΪ0
-										 //����ʱ��������TBCTR
-	EPwm2Regs.TBCTR = 0x0000;			 // ����ʱ��������
-	//����ʱ�����ƼĴ���
-	EPwm2Regs.TBCTL.bit.PHSEN = 0;	 //��λ�ǿ��ƽ�ֹ
-	EPwm2Regs.TBCTL.bit.HSPCLKDIV = 0; //����ʱ��Ԥ��Ƶ,0:����Ƶ
-	EPwm2Regs.TBCTL.bit.CLKDIV = 0;	//ʱ��Ԥ��Ƶ�����ã�TBCLK=SYSCLKOUT/(HSPCLKDIV*CLKDIV)��0:����Ƶ
-
-	EPwm2Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_DISABLE; //��ֹͬ���ź����
-	EPwm2Regs.TBCTL.bit.PRDLD = TB_SHADOW;			//����ʱ�����ڼĴ���ʱʹ�û���Ĵ�������ʹ��ʱ�����ڼĴ�����Ӱ�ӼĴ���
-	EPwm2Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;  //����ģʽΪ��������������
-
-	//�����Ƚ�ģ��Ĵ�������:
-	//�����ȽϿ��ƼĴ���CMPCTL����
-	EPwm2Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;   //����ռ�ձȼ����Ƚ�BӰ�ӼĴ���
-	EPwm2Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;   //����ռ�ձȼ����Ƚ�AӰ�ӼĴ���
-	EPwm2Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO; //��������Ϊ0ʱ���رȽϼĴ���B
-	EPwm2Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO; //��������Ϊ0ʱ���رȽϼĴ���A
-
-	//���ģ�����ã�
-	//���A���ƼĴ���AQCTLA����
-	//���ü�����ֵ���ڱȽ��趨ֵCMPAʱ��EPWM1A����:���¼�����Ƚ�ֵ���ʱ�ø�
-	EPwm2Regs.AQCTLA.bit.CAD = AQ_SET; //AQ_SET;
-	//���ü�����ֵ���ڱȽ��趨ֵCMPAʱ��EPWM1A����:���ϼ�����Ƚ�ֵ���ʱ�õ�
-	EPwm2Regs.AQCTLA.bit.CAU = AQ_CLEAR; //AQ_CLEAR;
-	//���ü�����ֵ����ռ�ձ��趨ֵCMPBʱ��EPWM1A����:����Ӧ
-	EPwm2Regs.AQCTLA.bit.CBD = AQ_NO_ACTION; //AQ_NO_ACTION;
-	//���ü�����ֵ����ռ�ձ��趨ֵCMPBʱ��EPWM1A����:����Ӧ
-	EPwm2Regs.AQCTLA.bit.CBU = AQ_NO_ACTION; //AQ_NO_ACTION;
-	//���ü�����ֵ����ʱ������ʱEPWM1A����������Ӧ
+	EPwm2Regs.TBPRD = EPWM1_TIMER_TBPRD;
+	EPwm2Regs.TBPHS.all = 0x0000;
+	EPwm2Regs.TBCTR = 0x0000;
+	EPwm2Regs.TBCTL.bit.PHSEN = 0;
+	EPwm2Regs.TBCTL.bit.HSPCLKDIV = 0;
+	EPwm2Regs.TBCTL.bit.CLKDIV = 0;
+	EPwm2Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_DISABLE;
+	EPwm2Regs.TBCTL.bit.PRDLD = TB_SHADOW;
+	EPwm2Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;
+	EPwm2Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
+	EPwm2Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
+	EPwm2Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;
+	EPwm2Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;
+	EPwm2Regs.AQCTLA.bit.CAD = AQ_SET;
+	EPwm2Regs.AQCTLA.bit.CAU = AQ_CLEAR;
+	EPwm2Regs.AQCTLA.bit.CBD = AQ_NO_ACTION;
+	EPwm2Regs.AQCTLA.bit.CBU = AQ_NO_ACTION;
 	EPwm2Regs.AQCTLA.bit.PRD = AQ_NO_ACTION;
-	//���ü�����ֵ����0ʱEPWM1A����������Ӧ
 	EPwm2Regs.AQCTLA.bit.ZRO = AQ_NO_ACTION;
-
-	//���B���ƼĴ���AQCTLB����
-	//���ü�����ֵ���ڱȽ��趨ֵCMPAʱ��EPWM1B����:���¼�����Ƚ�ֵ���ʱ�ø�
-	EPwm2Regs.AQCTLB.bit.CAD = AQ_CLEAR; //AQ_CLEAR;
-	//���ü�����ֵ���ڱȽ��趨ֵCMPAʱ��EPWM1B����:���ϼ�����Ƚ�ֵ���ʱ�õ�
-	EPwm2Regs.AQCTLB.bit.CAU = AQ_SET; //AQ_SET;
-	//���ü�����ֵ���ڱȽ��趨ֵCMPBʱ��E/PWM1B����:����Ӧ
+	EPwm2Regs.AQCTLB.bit.CAD = AQ_CLEAR;
+	EPwm2Regs.AQCTLB.bit.CAU = AQ_SET;
 	EPwm2Regs.AQCTLB.bit.CBD = AQ_NO_ACTION;
-	//���ü�����ֵ���ڱȽ��趨ֵCMPBʱ��EPWM1B����:����Ӧ
 	EPwm2Regs.AQCTLB.bit.CBU = AQ_NO_ACTION;
-	//���ü�����ֵ����ʱ������ʱEPWM1A����������Ӧ
 	EPwm2Regs.AQCTLB.bit.PRD = AQ_NO_ACTION;
-	//���ü�����ֵ����0ʱEPWM1A����������Ӧ
 	EPwm2Regs.AQCTLB.bit.ZRO = AQ_NO_ACTION;
-
-	EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD / 2; //��ʼ����50%��ռ�ձ�
-														   //����������������ǿ��������ƼĴ���AQSFRC����
-	EPwm2Regs.AQSFRC.bit.RLDCSF = 3;					   //��������
-	//�ر�PWM2
-	//EPwm2Regs.AQCSFRC.all = 0x0009;   //�����������Ϲ��Ӻ��¹��Ӷ��������ֵ͵�ƽ
-
-	EPwm2Regs.DBCTL.bit.IN_MODE = 2;  //EPWMxA��������,B�½����ӳ��ź�Դ
-	EPwm2Regs.DBCTL.bit.POLSEL = 2;   //���Կ��ƣ�EPWMxB ��ת��EPWMxA����ת
-	EPwm2Regs.DBCTL.bit.OUT_MODE = 3; //�������ģʽ����
-
-	//�����������ӳټĴ���DBRED����
-	EPwm2Regs.DBRED = 0; //����ʱ��:1us=DBFED*TTBCLK
-	//�����½����ӳټĴ���DBFED����
-	EPwm2Regs.DBFED = 0; //����ʱ��: 1us=DBFED*TTBCLK
-
-	//PWMն�����ƼĴ���PCCTL���ã��ݲ���
-	//���ϲ�׽�����ã��ݲ���
-
-	EPwm2Regs.ETPS.bit.INTPRD = ET_1ST;		  //PWM�жϴ�����1��
-	EPwm2Regs.ETSEL.bit.INTSEL = ET_CTR_ZERO; //pwm�ж�ʱ�̣�������ֵ=0
-	EPwm2Regs.ETSEL.bit.INTEN = 0;			  //disable INT
+	EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD;
+	EPwm2Regs.AQSFRC.bit.RLDCSF = 3;
+	EPwm2Regs.DBCTL.bit.IN_MODE = 2;
+	EPwm2Regs.DBCTL.bit.POLSEL = 2;
+	EPwm2Regs.DBCTL.bit.OUT_MODE = 3;
+	EPwm2Regs.DBRED = 0;
+	EPwm2Regs.DBFED = 0;
+	EPwm2Regs.ETPS.bit.INTPRD = ET_1ST;
+	EPwm2Regs.ETSEL.bit.INTSEL = ET_CTR_ZERO;
+	EPwm2Regs.ETSEL.bit.INTEN = 0;
 }
 
 void InitEPwm3()
@@ -488,78 +412,41 @@ void InitEPwm3()
 	//	EPwm3Regs.TZCTL.bit.TZB=1;
 	////	EPwm3Regs.TZEINT.bit.OST=1;
 	//	EDIS;
-	EPwm3Regs.TBPRD = EPWM1_TIMER_TBPRD; // ���� Set timer period TBCLKs  40KHz, 25us
-										 //����ʱ����λ�Ĵ���TBPHS
-	EPwm3Regs.TBPHS.all = 0x0000;		 // ��ʼ��λΪ0
-										 //����ʱ��������TBCTREPWM1_TIMER_HALF_TBPRD
-	EPwm3Regs.TBCTR = 0x0000;			 // ����ʱ��������
-	//����ʱ�����ƼĴ���
-	EPwm3Regs.TBCTL.bit.PHSEN = 0;	 //��λ�ǿ��ƽ�ֹ
-	EPwm3Regs.TBCTL.bit.HSPCLKDIV = 0; //����ʱ��Ԥ��Ƶ,0:����Ƶ
-	EPwm3Regs.TBCTL.bit.CLKDIV = 0;	//ʱ��Ԥ��Ƶ�����ã�TBCLK=SYSCLKOUT/(HSPCLKDIV*CLKDIV)��0:����Ƶ
-
-	EPwm3Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_DISABLE; //��ֹͬ���ź����
-	EPwm3Regs.TBCTL.bit.PRDLD = TB_SHADOW;			//����ʱ�����ڼĴ���ʱʹ�û���Ĵ�������ʹ��ʱ�����ڼĴ�����Ӱ�ӼĴ���
-	EPwm3Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;  //����ģʽΪ��������������
-
-	//�����Ƚ�ģ��Ĵ�������:
-	//�����ȽϿ��ƼĴ���CMPCTL����
-	EPwm3Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;   //����ռ�ձȼ����Ƚ�BӰ�ӼĴ���
-	EPwm3Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;   //����ռ�ձȼ����Ƚ�AӰ�ӼĴ���
-	EPwm3Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO; //��������Ϊ0ʱ���رȽϼĴ���B
-	EPwm3Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO; //��������Ϊ0ʱ���رȽϼĴ���A
-
-	//���ģ�����ã�
-	//���A���ƼĴ���AQCTLA����
-	//���ü�����ֵ���ڱȽ��趨ֵCMPAʱ��EPWM1A����:���¼�����Ƚ�ֵ���ʱ�ø�
-	EPwm3Regs.AQCTLA.bit.CAD = AQ_SET; //AQ_SET;
-	//���ü�����ֵ���ڱȽ��趨ֵCMPAʱ��EPWM1A����:���ϼ�����Ƚ�ֵ���ʱ�õ�
-	EPwm3Regs.AQCTLA.bit.CAU = AQ_CLEAR; //AQ_CLEAR;
-	//���ü�����ֵ����ռ�ձ��趨ֵCMPBʱ��EPWM1A����:����Ӧ
-	EPwm3Regs.AQCTLA.bit.CBD = AQ_NO_ACTION; //AQ_NO_ACTION;
-	//���ü�����ֵ����ռ�ձ��趨ֵCMPBʱ��EPWM1A����:����Ӧ
-	EPwm3Regs.AQCTLA.bit.CBU = AQ_NO_ACTION; //AQ_NO_ACTION;
-	//���ü�����ֵ����ʱ������ʱEPWM1A����������Ӧ
+	EPwm3Regs.TBPRD = EPWM1_TIMER_TBPRD;
+	EPwm3Regs.TBPHS.all = 0x0000;
+	EPwm3Regs.TBCTR = 0x0000;
+	EPwm3Regs.TBCTL.bit.PHSEN = 0;
+	EPwm3Regs.TBCTL.bit.HSPCLKDIV = 0;
+	EPwm3Regs.TBCTL.bit.CLKDIV = 0;
+	EPwm3Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_DISABLE;
+	EPwm3Regs.TBCTL.bit.PRDLD = TB_SHADOW;
+	EPwm3Regs.TBCTL.bit.CTRMODE = TB_COUNT_UPDOWN;
+	EPwm3Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
+	EPwm3Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
+	EPwm3Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;
+	EPwm3Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;
+	EPwm3Regs.AQCTLA.bit.CAD = AQ_SET;
+	EPwm3Regs.AQCTLA.bit.CAU = AQ_CLEAR;
+	EPwm3Regs.AQCTLA.bit.CBD = AQ_NO_ACTION;
+	EPwm3Regs.AQCTLA.bit.CBU = AQ_NO_ACTION;
 	EPwm3Regs.AQCTLA.bit.PRD = AQ_NO_ACTION;
-	//���ü�����ֵ����0ʱEPWM1A����������Ӧ
 	EPwm3Regs.AQCTLA.bit.ZRO = AQ_NO_ACTION;
-
-	//���B���ƼĴ���AQCTLB����
-	//���ü�����ֵ���ڱȽ��趨ֵCMPAʱ��EPWM1B����:���¼�����Ƚ�ֵ���ʱ�ø�
-	EPwm3Regs.AQCTLB.bit.CAD = AQ_CLEAR; //AQ_CLEAR;
-	//���ü�����ֵ���ڱȽ��趨ֵCMPAʱ��EPWM1B����:���ϼ�����Ƚ�ֵ���ʱ�õ�
-	EPwm3Regs.AQCTLB.bit.CAU = AQ_SET; //AQ_SET;
-	//���ü�����ֵ���ڱȽ��趨ֵCMPBʱ��E/PWM1B����:����Ӧ
+	EPwm3Regs.AQCTLB.bit.CAD = AQ_CLEAR;
+	EPwm3Regs.AQCTLB.bit.CAU = AQ_SET;
 	EPwm3Regs.AQCTLB.bit.CBD = AQ_NO_ACTION;
-	//���ü�����ֵ���ڱȽ��趨ֵCMPBʱ��EPWM1B����:����Ӧ
 	EPwm3Regs.AQCTLB.bit.CBU = AQ_NO_ACTION;
-	//���ü�����ֵ����ʱ������ʱEPWM1A����������Ӧ
 	EPwm3Regs.AQCTLB.bit.PRD = AQ_NO_ACTION;
-	//���ü�����ֵ����0ʱEPWM1A����������Ӧ
 	EPwm3Regs.AQCTLB.bit.ZRO = AQ_NO_ACTION;
-
-	EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD / 3; //��ʼ����50%��ռ�ձ�
-														   //����������������ǿ��������ƼĴ���AQSFRC����
-	EPwm3Regs.AQSFRC.bit.RLDCSF = 3;					   //��������
-	//�ر�PWM3
-	//EPwm3Regs.AQCSFRC.all = 0x0009;   //�����������Ϲ��Ӻ��¹��Ӷ��������ֵ͵�ƽ
-
-	EPwm3Regs.DBCTL.bit.IN_MODE = 2;  //EPWMxA��������,B�½����ӳ��ź�Դ
-	EPwm3Regs.DBCTL.bit.POLSEL = 2;   //���Կ��ƣ�EPWMxB ��ת��EPWMxA����ת
-	EPwm3Regs.DBCTL.bit.OUT_MODE = 3; //�������ģʽ����
-
-	//�����������ӳټĴ���DBRED����
-	EPwm3Regs.DBRED = 0; //����ʱ��:1us=DBFED*TTBCLK
-	//�����½����ӳټĴ���DBFED����
-	EPwm3Regs.DBFED = 0; //����ʱ��: 1us=DBFED*TTBCLK
-
-	//PWMն�����ƼĴ���PCCTL���ã��ݲ���
-	//���ϲ�׽�����ã��ݲ���
-
-	EPwm3Regs.ETPS.bit.INTPRD = ET_1ST;		  //PWM�жϴ�����1��
-	EPwm3Regs.ETSEL.bit.INTSEL = ET_CTR_ZERO; //pwm�ж�ʱ�̣�������ֵ=0
-	EPwm3Regs.ETSEL.bit.INTEN = 0;			  //disable INT
-	//
+	EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD;  
+	EPwm3Regs.AQSFRC.bit.RLDCSF = 3;
+	EPwm3Regs.DBCTL.bit.IN_MODE = 2;
+	EPwm3Regs.DBCTL.bit.POLSEL = 2;
+	EPwm3Regs.DBCTL.bit.OUT_MODE = 3;
+	EPwm3Regs.DBRED = 0;
+	EPwm3Regs.DBFED = 0;
+	EPwm3Regs.ETPS.bit.INTPRD = ET_1ST;
+	EPwm3Regs.ETSEL.bit.INTSEL = ET_CTR_ZERO;
+	EPwm3Regs.ETSEL.bit.INTEN = 0;
 }
 void InitEpwmForJ75(void)
 {
