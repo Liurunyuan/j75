@@ -4,10 +4,10 @@
 
 #define FEED_WATCH_DOG  GpioDataRegs.GPATOGGLE.bit.GPIO23
 
-#define EPWM1_TIMER_TBPRD 1250   //1250
-#define EPWM2_TIMER_TBPRD 1250	//1250
-#define EPWM1_TIMER_HALF_TBPRD  625 //625
-#define EPWM2_TIMER_HALF_TBPRD  625 //625
+#define EPWM1_TIMER_TBPRD 1124   //1124
+#define EPWM2_TIMER_TBPRD 1124	//1124
+#define EPWM1_TIMER_HALF_TBPRD  562 //625
+#define EPWM2_TIMER_HALF_TBPRD  562 //625
 
 #define SUCCESS 1
 #define FAIL 0
@@ -77,5 +77,6 @@ extern SYSALARM gSysAlarm;
 
 void Delay(int time);
 void InitGlobalVar(void);
+void clearHardwareErro(void);
 extern SYSSTATE gSysState;
 #endif
