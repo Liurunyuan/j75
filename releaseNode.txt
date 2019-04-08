@@ -1,3 +1,16 @@
+/***************************0.0.2*******************************/
+Version Number: 0.0.2
+Date: 2019/4/8
+Author:Simon
+
+What new: 
+	1. Black Motor rotated on this version
+	2. Set baud rate as 115200
+	3. Set system clock as 90MHz
+	4. Add clear hardware error function to let pwm output
+	5. Modified the switch direction and pwm configuration
+Bug Fix:
+	1. Hardware bug: HALLC abnormal, has been fixed by Runtian by change the direction of a diode
 /***************************0.0.1*******************************/
 Version Number: 0.0.1
 Date: 2019/4/6
