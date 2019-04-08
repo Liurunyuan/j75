@@ -133,8 +133,8 @@ void scia_loopback_init(void)
 	SciaRegs.SCICTL2.all 			= 0x0003;
 	SciaRegs.SCICTL2.bit.TXINTENA 	= 1;
 	SciaRegs.SCICTL2.bit.RXBKINTENA = 1;
-	SciaRegs.SCIHBAUD    			= 0x01;//0x00;-------------------------0x01
-  SciaRegs.SCILBAUD    			= 0x45;//0x1f:115200-------------------0x45:9600 100M
+	SciaRegs.SCIHBAUD    			= 0x00;//0x00;-------------------------0x01
+	SciaRegs.SCILBAUD    			= 0x17;//0x17:115200-------------------0x24:9600 90M
 	SciaRegs.SCICCR.bit.LOOPBKENA 	= 0; // enable loop back
 	SciaRegs.SCICTL1.all 			= 0x0023;     // Relinquish SCI from Reset
 }
@@ -145,8 +145,8 @@ void scib_loopback_init(void)
 	ScibRegs.SCICTL2.all 			= 0x0003;
 	ScibRegs.SCICTL2.bit.TXINTENA 	= 1;
 	ScibRegs.SCICTL2.bit.RXBKINTENA = 1;
-  ScibRegs.SCIHBAUD    			= 0x01;//0x00;-------------------------0x01
-  ScibRegs.SCILBAUD    			= 0x45;//0x1f:115200-------------------0x45:9600 100M
+	ScibRegs.SCIHBAUD    			= 0x00;//0x00;-------------------------0x01
+	ScibRegs.SCILBAUD    			= 0x17;//0x17:115200-------------------0x24:9600 90M
 	ScibRegs.SCICCR.bit.LOOPBKENA 	= 0; // enable loop back
 	ScibRegs.SCICTL1.all 			= 0x0023;     // Relinquish SCI from Reset
 }

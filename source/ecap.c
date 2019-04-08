@@ -77,7 +77,7 @@ int32 CalculateSpeed(Uint32 capCount){
 		return 0;
 	}
 
-	speed32 = ((3000000000.0)/(float)capCount);//4500000000 = 75000000*60
+	speed32 = ((2700000000.0)/(float)capCount);//4500000000 = 75000000*60
 
 	if(speed32 < 19200){
 		return speed32;

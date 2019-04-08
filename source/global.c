@@ -21,3 +21,20 @@ void Delay(int time){
 		asm(" NOP");
 	}
 }
+
+
+void clearHardwareErro(void){
+	GpioDataRegs.GPADAT.bit.GPIO29 = 1;
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	GpioDataRegs.GPADAT.bit.GPIO29 = 0;
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	GpioDataRegs.GPADAT.bit.GPIO29 = 1;
+}

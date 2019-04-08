@@ -56,12 +56,18 @@ static void SetPidKd(VAR16 a, int b, int c) {
 	gPidPara.kd = a.value;
 }
 
+static void SetDutyForTest(VAR16 a, int b, int c){
+	if(a.value >= 0){
+		gSysInfo.duty = a.value;
+	}
+}
+
 const functionMsgCodeUnpack msgInterface[] = {
-			0,
-			SetSystemState,
-			SetTargetSpeed,
-			WaveCommand,
-			0,
+			0,					   	//0
+			SetSystemState,		   	//1
+			SetTargetSpeed,		   	//2
+			WaveCommand,		   	//3
+			0,					   	//4
 			0,						//5
 			0,						//6
 			0,						//7
@@ -135,11 +141,11 @@ const functionMsgCodeUnpack msgInterface[] = {
 			SetPidKp,				//75
 			SetPidKi,				//76
 			SetPidKd,				//77
-			0,
-			0,
-			0,
-			0,
-			0
+			0,						//78
+			SetDutyForTest,			//79
+			0,						//80
+			0,						//81
+			0						//82
 
 };
 

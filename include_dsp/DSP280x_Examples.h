@@ -29,11 +29,11 @@ extern "C" {
 #define DSP28_CLKINDIV   0   // Enable /2 for SYSCLKOUT
 // #define DSP28_CLKINDIV   1 // Disable /2 for SYSCKOUT
 
-#define DSP28_PLLCR   10
+// #define DSP28_PLLCR   10
 //#define DSP28_PLLCR    9
 //#define DSP28_PLLCR    8
 //#define DSP28_PLLCR    7
-//#define DSP28_PLLCR    6  // Uncomment for 60 MHz devices [60 MHz = (20MHz * 6)/2]
+#define DSP28_PLLCR    6  // Uncomment for 90 MHz devices [90 MHz = (30MHz * 6)/2]
 //#define DSP28_PLLCR    5
 //#define DSP28_PLLCR    4
 //#define DSP28_PLLCR    3

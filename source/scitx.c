@@ -139,14 +139,14 @@ void PackRS422TxData(void){
 			asm ("      ESTOP0");
 			return;
 		}
-		// if(RX422TXEnQueue(0xff) == 0){
-		// 	asm ("      ESTOP0");
-		// 	return;
-		// }
-		// if(RX422TXEnQueue(0xff) == 0){
-		// 	asm ("      ESTOP0");
-		// 	return;
-		// }
+		if(RX422TXEnQueue(0xff) == 0){
+			asm ("      ESTOP0");
+			return;
+		}
+		if(RX422TXEnQueue(0xff) == 0){
+			asm ("      ESTOP0");
+			return;
+		}
 		updateTxEnableFlag();
 	}
 
