@@ -3,6 +3,7 @@
 #include <string.h>
 #include "global.h"
 #include "scitx.h"
+#include "ecap.h"
 
 #define S (0)
 
@@ -14,7 +15,7 @@ void GetTorqueCurve(int a, int b, int c){
 	gRx422TxVar[0].value = 500;
 }
 void GetMotorSpeedCurve(int a, int b, int c){
-	gRx422TxVar[1].value = 0;
+	gRx422TxVar[1].value = gMotorSpeedEcap;
 }
 void GetDisplacementCurve(int a, int b, int c){
 	gRx422TxVar[2].value = 1;
