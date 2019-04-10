@@ -55,6 +55,8 @@ typedef struct{
 	Uint16 currentHallPosition;
 	Uint16 lastTimeHalllPosition;
 	int16 duty;
+	int16 dutyUp;
+	int16 dutyDown;
 }SYSINFO;
 
 typedef struct _DATA{
