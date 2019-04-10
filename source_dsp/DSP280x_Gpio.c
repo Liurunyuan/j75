@@ -152,6 +152,9 @@ void InitOutputPin(void){
 	GpioCtrlRegs.GPAMUX1.bit.GPIO9 = GPIO;
 	GpioCtrlRegs.GPADIR.bit.GPIO9 = OUTPUT;
 
+	GpioCtrlRegs.GPAMUX2.bit.GPIO23 = GPIO;
+	GpioCtrlRegs.GPADIR.bit.GPIO23 = OUTPUT;
+
 	EDIS;
 }
 void InitInputPin(void){
