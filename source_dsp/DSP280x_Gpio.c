@@ -97,61 +97,10 @@ void InitOutputPin(void){
 	GpioCtrlRegs.GPADIR.bit.GPIO6 = OUTPUT;
 
 	/*
-	 * GPIO2
-	 * Pin index:			45
-	 * Name in circuit:		PAMBH
+	 * GPIO23
+	 * Pin index:			
+	 * Name in circuit:		WDI
 	 */
-	GpioCtrlRegs.GPAMUX1.bit.GPIO2 = GPIO;
-	GpioCtrlRegs.GPADIR.bit.GPIO2 = OUTPUT;
-
-	/*
-	 * GPIO0
-	 * Pin index:			47
-	 * Name in circuit:		PWMAH
-	 */
-	GpioCtrlRegs.GPAMUX1.bit.GPIO0 = GPIO;
-	GpioCtrlRegs.GPADIR.bit.GPIO0 = OUTPUT;
-
-	/*
-	 * GPIO1
-	 * Pin index:			44
-	 * Name in circuit:		PWMAL
-	 */
-	GpioCtrlRegs.GPAMUX1.bit.GPIO1 = GPIO;
-	GpioCtrlRegs.GPADIR.bit.GPIO1 = OUTPUT;
-
-	/*
-	 * GPIO3
-	 * Pin index:			48
-	 * Name in circuit:		PWMBL
-	 */
-	GpioCtrlRegs.GPAMUX1.bit.GPIO3 = GPIO;
-	GpioCtrlRegs.GPADIR.bit.GPIO3 = OUTPUT;
-
-	/*
-	 * GPIO4
-	 * Pin index:			51
-	 * Name in circuit:		PWMCH
-	 */
-	GpioCtrlRegs.GPAMUX1.bit.GPIO4 = GPIO;
-	GpioCtrlRegs.GPADIR.bit.GPIO4 = OUTPUT;
-
-	/*
-	 * GPIO5
-	 * Pin index:			53
-	 * Name in circuit:		PWMCL
-	 */
-	GpioCtrlRegs.GPAMUX1.bit.GPIO5 = GPIO;
-	GpioCtrlRegs.GPADIR.bit.GPIO5 = OUTPUT;
-
-	/*
-	 * GPIO9
-	 * Pin index:			61
-	 * Name in circuit:		TX_D
-	 */
-	GpioCtrlRegs.GPAMUX1.bit.GPIO9 = GPIO;
-	GpioCtrlRegs.GPADIR.bit.GPIO9 = OUTPUT;
-
 	GpioCtrlRegs.GPAMUX2.bit.GPIO23 = GPIO;
 	GpioCtrlRegs.GPADIR.bit.GPIO23 = OUTPUT;
 
@@ -194,44 +143,12 @@ void InitInputPin(void){
 	GpioCtrlRegs.GPADIR.bit.GPIO16 = INPUT;
 
 	/*
-	 * GPIO26
-	 * Pin index:			99
-	 * Name in circuit:		HA_3_3V
-	 */
-	// GpioCtrlRegs.GPAMUX2.bit.GPIO26 = GPIO;
-	// GpioCtrlRegs.GPADIR.bit.GPIO26 = INPUT;
-
-	/*
 	 * GPIO15
 	 * Pin index:			9
 	 * Name in circuit:		HARD_ERR_3V3
 	 */
 	GpioCtrlRegs.GPAMUX1.bit.GPIO15 = GPIO;
 	GpioCtrlRegs.GPADIR.bit.GPIO15 = INPUT;
-
-	/*
-	 * GPIO24
-	 * Pin index:			83
-	 * Name in circuit:		HB_3_3V
-	 */
-	// GpioCtrlRegs.GPAMUX2.bit.GPIO24 = GPIO;
-	// GpioCtrlRegs.GPADIR.bit.GPIO24 = INPUT;
-
-	/*
-	 * GPIO25
-	 * Pin index:			91
-	 * Name in circuit:		HC_3_3V
-	 */
-	// GpioCtrlRegs.GPAMUX2.bit.GPIO25 = GPIO;
-	// GpioCtrlRegs.GPADIR.bit.GPIO25 = INPUT;
-
-	/*
-	 * GPIO11
-	 * Pin index:			70
-	 * Name in circuit:		HD_3_3V
-	 */
-	// GpioCtrlRegs.GPAMUX1.bit.GPIO11 = GPIO;
-	// GpioCtrlRegs.GPADIR.bit.GPIO11 = INPUT;
 
 	/*
 	 * GPIO28
@@ -248,14 +165,6 @@ void InitInputPin(void){
 	 */
 	GpioCtrlRegs.GPAMUX1.bit.GPIO13 = GPIO;
 	GpioCtrlRegs.GPADIR.bit.GPIO13 = INPUT;
-
-	/*
-	 * GPIO19
-	 * Pin index:			57
-	 * Name in circuit:		RX_D
-	 */
-	// GpioCtrlRegs.GPAMUX2.bit.GPIO19 = GPIO;
-	// GpioCtrlRegs.GPADIR.bit.GPIO19 = INPUT;
 
 	/*
 	 * GPIO32
