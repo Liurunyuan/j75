@@ -4,7 +4,7 @@
 #include "global.h"
 #include "timer0.h"
 #include "scitx.h"
-#define N (1000)
+#define N (300)
 
 
 
