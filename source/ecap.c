@@ -14,6 +14,8 @@ void InitEcapVar(void){
 
 int GetECap1Count(void){
 
+	gSysInfo.isEcapRefresh = 1;
+
 	if(ECap1Regs.ECFLG.bit.CEVT1){
 		gECapCount = ECap1Regs.CAP1;
 	}
@@ -32,6 +34,8 @@ int GetECap1Count(void){
 	return gECapCount;
 }
 int GetECap2Count(void){
+
+	gSysInfo.isEcapRefresh = 1;
 
 	if(ECap2Regs.ECFLG.bit.CEVT1){
 		gECapCount = ECap2Regs.CAP1;
@@ -52,6 +56,8 @@ int GetECap2Count(void){
 }
 
 int GetECap3Count(void){
+
+	gSysInfo.isEcapRefresh = 1;
 
 	if(ECap3Regs.ECFLG.bit.CEVT1){
 		gECapCount = ECap3Regs.CAP1;
@@ -74,16 +80,16 @@ int32 CalculateSpeed(Uint32 capCount){
 	//TODO calculate the motor speed
 	int32 speed32 = 0;
 	if(capCount <= 0){
-		return 0;
+		return -1;
 	}
 
-	speed32 = ((2700000000.0)/(float)capCount);//4500000000 = 75000000*60
+	speed32 = ((2700000000.0)/(float)capCount);//2700000000 = 90000000*60/2
 
 	if(speed32 < 19200){
 		return speed32;
 	}
 	else{
-		return 0;
+		return -1;
 	}
 }
 
