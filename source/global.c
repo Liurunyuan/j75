@@ -40,3 +40,13 @@ void clearHardwareErro(void){
 	asm(" NOP");
 	GpioDataRegs.GPADAT.bit.GPIO29 = 1;
 }
+
+
+void enablePwmOutput(void){
+	GpioDataRegs.GPADAT.bit.GPIO31 = 0;
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+}

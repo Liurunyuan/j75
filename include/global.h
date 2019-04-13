@@ -80,5 +80,6 @@ extern SYSALARM gSysAlarm;
 void Delay(int time);
 void InitGlobalVar(void);
 void clearHardwareErro(void);
+void enablePwmOutput(void);
 extern SYSSTATE gSysState;
 #endif
