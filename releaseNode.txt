@@ -1,11 +1,38 @@
-/***************************0.0.1*******************************/
-Version Number: 0.0.1
-Date: 2019/4/4
+/***************************0.0.3*******************************/
+Version Number: 0.0.3
+Date: 2019/4/13
 Author:Simon
 
-New Feature:
+What new: 
+	1. Provided standard motor rotated on this version
+	2. You can use UI to control the motor start and stop
+	3. You can use UI to change the duty and target speed
+	4. Burn firmware to the flash succeed.
+Bug Fix:
+	1. Hardware found a TVS is intalled reversed. has been fixed.
+	2. Fix watch dog GPIO init.
+	3. Remove wrong GPIO configuration
+	4. Enable PWM output GPIO
+/***************************0.0.2*******************************/
+Version Number: 0.0.2
+Date: 2019/4/8
+Author:Simon
 
+What new: 
+	1. Black Motor rotated on this version
+	2. Set baud rate as 115200
+	3. Set system clock as 90MHz
+	4. Add clear hardware error function to let pwm output
+	5. Modified the switch direction and pwm configuration
+Bug Fix:
+	1. Hardware bug: HALLC abnormal, has been fixed by Runtian by change the direction of a diode
+/***************************0.0.1*******************************/
+Version Number: 0.0.1
+Date: 2019/4/6
+Author:Simon
 
+What new: 
+	1. Burned to the J75 board for the first time and can running
 Bug Fix:
 
 /***************************************************************/

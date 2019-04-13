@@ -14,6 +14,7 @@ void InitGlobalVar(void){
 	gSysInfo.dutyDown = 0;
 	gSysInfo.currentHallPosition = 0;
 	gSysInfo.lastTimeHalllPosition = 0;
+	gSysInfo.isEcapRefresh = 0;
 
 	gSysAlarm.all = 0;
 }
