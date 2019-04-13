@@ -55,6 +55,8 @@ typedef struct{
 	Uint16 currentHallPosition;
 	Uint16 lastTimeHalllPosition;
 	int16 duty;
+	int16 dutyUp;
+	int16 dutyDown;
 }SYSINFO;
 
 typedef struct _DATA{
@@ -78,5 +80,6 @@ extern SYSALARM gSysAlarm;
 void Delay(int time);
 void InitGlobalVar(void);
 void clearHardwareErro(void);
+void enablePwmOutput(void);
 extern SYSSTATE gSysState;
 #endif

@@ -18,6 +18,7 @@
 
 #include "DSP280x_Device.h"     // Headerfile Include File
 #include "DSP280x_Examples.h"   // Examples Include File
+#define FLASH
 
 // Functions that will be run from RAM need to be assigned to
 // a different section.  This section will then be mapped to a load and
@@ -51,7 +52,7 @@ void InitSysCtrl(void)
 
 void if_flash_init(void)
 {
-	#ifdef FLASH  	//обть
+	#ifdef FLASH  	//О©╫О©╫О©╫О©╫
 		memcpy(	&RamfuncsRunStart,
 				&RamfuncsLoadStart,
 				&RamfuncsLoadEnd - &RamfuncsLoadStart);

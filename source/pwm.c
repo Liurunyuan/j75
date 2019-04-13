@@ -47,8 +47,8 @@ inline void CPositiveToBNegtive(void) {
 	// EPwm2Regs.AQCSFRC.all = 0x000d;
 
 	EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm3Regs.AQCSFRC.bit.CSFA = 3;
 	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
+    EPwm3Regs.AQCSFRC.bit.CSFA = 3;
 
 	EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
 	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
@@ -69,8 +69,8 @@ inline void CPositiveToANegtive(void) {
 	// EPwm1Regs.AQCSFRC.all = 0x000d;
 
 	EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+    EPwm3Regs.AQCSFRC.bit.CSFB = 2;
 	EPwm3Regs.AQCSFRC.bit.CSFA = 3;
-	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
 
 	EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
 	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
@@ -91,8 +91,8 @@ inline void BPositiveToANegtive(void) {
 	// EPwm1Regs.AQCSFRC.bit.CSFB = 3;
 	// EPwm1Regs.AQCSFRC.all = 0x000d;
 	EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm2Regs.AQCSFRC.bit.CSFA = 3;
 	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
+    EPwm2Regs.AQCSFRC.bit.CSFA = 3;
 
 	EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
 	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
@@ -113,8 +113,8 @@ inline void BPositiveToCNegtive(void) {
 	// EPwm3Regs.AQCSFRC.bit.CSFB = 3;
 	// EPwm3Regs.AQCSFRC.all = 0x000d;
 	EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm2Regs.AQCSFRC.bit.CSFA = 3;
 	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
+    EPwm2Regs.AQCSFRC.bit.CSFA = 3;
 
 	EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
 	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
@@ -134,8 +134,8 @@ inline void APositiveToCNegtive(void) {
 	// EPwm3Regs.AQCSFRC.bit.CSFB = 3;
 	// EPwm3Regs.AQCSFRC.all = 0x000d;
 	EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm1Regs.AQCSFRC.bit.CSFA = 3;
 	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
+    EPwm1Regs.AQCSFRC.bit.CSFA = 3;
 
 	EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
 	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
@@ -155,8 +155,8 @@ inline void APositiveToBNegtive(void) {
 	// EPwm2Regs.AQCSFRC.bit.CSFB = 3;
 	// EPwm2Regs.AQCSFRC.all = 0x000d;
 	EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm1Regs.AQCSFRC.bit.CSFA = 3;
 	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
+    EPwm1Regs.AQCSFRC.bit.CSFA = 3;
 
 	EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
 	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
@@ -195,7 +195,7 @@ void SwitchDirection(void){
 			if((3 == gSysInfo.lastTimeHalllPosition )
 				|| (2 == gSysInfo.lastTimeHalllPosition)
 				|| (1 == gSysInfo.lastTimeHalllPosition)){
-				APositiveToBNegtive();
+				BPositiveToCNegtive();
 
 			}
 			break;
@@ -211,15 +211,15 @@ void SwitchDirection(void){
 			if((5 == gSysInfo.lastTimeHalllPosition )
 				|| (1 == gSysInfo.lastTimeHalllPosition)
 				|| (4 == gSysInfo.lastTimeHalllPosition)){
-				BPositiveToCNegtive();
-
+				APositiveToBNegtive();
+			
 			}
 			break;
 		case 4://B+ ---------------> C-
 			if((4 == gSysInfo.lastTimeHalllPosition )
 				|| (5 == gSysInfo.lastTimeHalllPosition)
 				|| (6 == gSysInfo.lastTimeHalllPosition)){
-				BPositiveToANegtive();
+				CPositiveToBNegtive();
 
 			}
 			break;
@@ -234,7 +234,7 @@ void SwitchDirection(void){
 			if((2 == gSysInfo.lastTimeHalllPosition )
 				|| (3 == gSysInfo.lastTimeHalllPosition)
 				|| (6 == gSysInfo.lastTimeHalllPosition)){
-				CPositiveToBNegtive();
+				BPositiveToANegtive();
 			}
 			break;
 		default:

@@ -99,7 +99,11 @@ void main(void) {
 
 	InitVar();
 
+	DisablePwmOutput();
+
 	InitInterruptForJ75();
+
+	enablePwmOutput();
 
 	clearHardwareErro();
 
