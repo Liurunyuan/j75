@@ -1,3 +1,18 @@
+/***************************0.0.3*******************************/
+Version Number: 0.0.3
+Date: 2019/4/13
+Author:Simon
+
+What new: 
+	1. Provided standard motor rotated on this version
+	2. You can use UI to control the motor start and stop
+	3. You can use UI to change the duty and target speed
+	4. Burn firmware to the flash succeed.
+Bug Fix:
+	1. Hardware found a TVS is intalled reversed. has been fixed.
+	2. Fix watch dog GPIO init.
+	3. Remove wrong GPIO configuration
+	4. Enable PWM output GPIO
 /***************************0.0.2*******************************/
 Version Number: 0.0.2
 Date: 2019/4/8
