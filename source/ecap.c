@@ -22,14 +22,17 @@ int GetECap1Count(void){
 	else if(ECap1Regs.ECFLG.bit.CEVT2){
 		gECapCount = ECap1Regs.CAP2 - ECap1Regs.CAP1;
 	}
-	else if(ECap4Regs.ECFLG.bit.CEVT3){
+	else if(ECap1Regs.ECFLG.bit.CEVT3){
 		gECapCount = ECap1Regs.CAP3 - ECap1Regs.CAP2;
 	}
-	else if(ECap4Regs.ECFLG.bit.CEVT4){
+	else if(ECap1Regs.ECFLG.bit.CEVT4){
 		gECapCount = ECap1Regs.CAP4 - ECap1Regs.CAP3;
 	}
+	else if(ECap1Regs.ECFLG.bit.CTROVF){
+		//TODO
+	}
 	else{
-		// gSysInfo.isEcapRefresh = 0;
+		gSysAlarm.bit.softwareFault = 1;
 	}
 	return gECapCount;
 }
@@ -49,8 +52,11 @@ int GetECap2Count(void){
 	else if(ECap2Regs.ECFLG.bit.CEVT4){
 		gECapCount = ECap2Regs.CAP4 - ECap2Regs.CAP3;
 	}
+	else if(ECap2Regs.ECFLG.bit.CTROVF){
+		//TODO
+	}
 	else{
-		// gSysInfo.isEcapRefresh = 0;
+		gSysAlarm.bit.softwareFault = 1;
 	}
 	return gECapCount;
 }
@@ -71,8 +77,11 @@ int GetECap3Count(void){
 	else if(ECap3Regs.ECFLG.bit.CEVT4){
 		gECapCount = ECap3Regs.CAP4 - ECap3Regs.CAP3;
 	}
+	else if(ECap3Regs.ECFLG.bit.CTROVF){
+		//TODO
+	}
 	else{
-		// gSysInfo.isEcapRefresh = 0;
+		gSysAlarm.bit.softwareFault = 1;
 	}
 	return gECapCount;
 }

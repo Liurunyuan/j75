@@ -51,3 +51,21 @@ void enablePwmOutput(void){
 	asm(" NOP");
 	asm(" NOP");
 }
+
+void enableEcapInterrupt(void){
+	PieCtrlRegs.PIEIER4.bit.INTx1 = 1;//ECAP1
+	PieCtrlRegs.PIEIER4.bit.INTx2 = 1;//ECAP2
+	PieCtrlRegs.PIEIER4.bit.INTx3 = 1;//ECAP3
+	ECap1Regs.ECCTL2.bit.TSCTRSTOP = 1; 
+	ECap2Regs.ECCTL2.bit.TSCTRSTOP = 1; 
+	ECap3Regs.ECCTL2.bit.TSCTRSTOP = 1; 
+}
+
+void disableEcapInterrupt(void){
+	PieCtrlRegs.PIEIER4.bit.INTx1 = 0;//ECAP1
+	PieCtrlRegs.PIEIER4.bit.INTx2 = 0;//ECAP2
+	PieCtrlRegs.PIEIER4.bit.INTx3 = 0;//ECAP3
+	ECap1Regs.ECCTL2.bit.TSCTRSTOP = 0; 
+	ECap2Regs.ECCTL2.bit.TSCTRSTOP = 0; 
+	ECap3Regs.ECCTL2.bit.TSCTRSTOP = 0; 
+}

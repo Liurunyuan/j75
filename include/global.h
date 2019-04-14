@@ -82,5 +82,7 @@ void Delay(int time);
 void InitGlobalVar(void);
 void clearHardwareErro(void);
 void enablePwmOutput(void);
+void enableEcapInterrupt(void);
+void disableEcapInterrupt(void);
 extern SYSSTATE gSysState;
 #endif
