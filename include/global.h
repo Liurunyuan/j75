@@ -58,6 +58,8 @@ typedef struct{
 	int16 dutyUp;
 	int16 dutyDown;
 	int16 isEcapRefresh;
+	int16 targetDuty;
+	int16 currentDuty;
 }SYSINFO;
 
 typedef struct _DATA{

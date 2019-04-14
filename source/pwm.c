@@ -6,10 +6,6 @@
 #include "pid.h"
 #include "ecap.h"
 
-
-int currentpid = 0;
-int targetPid = 0;
-
 inline void DisablePwm1(void){
 
 	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
@@ -188,24 +184,6 @@ void SwitchDirection(void){
 			break;
 	}
 }
-
-void ThresholdProtectForDuty() {
-	if (currentpid < targetPid) {
-		++currentpid;
-	} else if (currentpid > targetPid) {
-		--currentpid;
-	} else {
-	}
-
-	if (currentpid > 400) {
-		currentpid = 400;
-	} else if (currentpid <= 0) {
-		currentpid = 0;
-	}
-
-	gSysInfo.duty = currentpid;
-}
-
 /**************************************************************
  *Name:						PwmIsrThread
  *Function:					PWM interrupt function
@@ -221,11 +199,6 @@ void PwmIsrThread(void)
 	IsAnalogValueAbnormal();
 
 	if(gSysState.currentstate == START){
-
-		// targetPid  = PidOutput(gMotorSpeedEcap);
-
-		// ThresholdProtectForDuty();
-
 		SwitchDirection();
 	}
 	else{

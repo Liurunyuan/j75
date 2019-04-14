@@ -6,11 +6,31 @@
 #include "scitx.h"
 #include "ecap.h"
 #include "kalman.h"
+#include "pid.h"
 #define N (10)
 
 #define CALSPEED (3)
 
 
+
+void ThresholdProtectForDuty(void) {
+	if (gSysInfo.currentDuty < gSysInfo.targetDuty) {
+		gSysInfo.currentDuty++;
+	} 
+	else if (gSysInfo.currentDuty > gSysInfo.targetDuty) {
+		gSysInfo.currentDuty--;
+	} 
+	else {
+	}
+
+	if (gSysInfo.currentDuty > 400) {
+		gSysInfo.currentDuty = 400;
+	} 
+	else if (gSysInfo.currentDuty <= 0) {
+		gSysInfo.currentDuty = 0;
+	}
+	// gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
+}
 
 void MotorSpeed()
 {
@@ -43,6 +63,9 @@ void Timer0_ISR_Thread(void){
 		PackRS422TxData();
 		count = 0;
 	}
+
+	gSysInfo.targetDuty =  PidOutput(gMotorSpeedEcap);
+	ThresholdProtectForDuty(); 
 }
 
 void Timer1_ISR_Thread(void){

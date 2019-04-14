@@ -109,7 +109,7 @@ void Init_CpuTimer_J75(void){
 	ConfigCpuTimer(&CpuTimer0, 90, 1800);//t = freq * priod/150000000,0.2ms
 	CpuTimer0Regs.TCR.bit.TIE= 1;
 	CpuTimer0Regs.TCR.bit.TSS = 0;
-	ConfigCpuTimer(&CpuTimer1, 90, 18000);//interupt cpu every 10ms
+	ConfigCpuTimer(&CpuTimer1, 90, 18000);//interupt cpu every 20ms
     CpuTimer1Regs.TCR.bit.TIE= 1;
     CpuTimer1Regs.TCR.bit.TSS = 0;
 }
