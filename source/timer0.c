@@ -8,7 +8,7 @@
 #include "kalman.h"
 #define N (10)
 
-#define CALSPEED (5)
+#define CALSPEED (3)
 
 
 
