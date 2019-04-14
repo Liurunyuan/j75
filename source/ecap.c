@@ -29,7 +29,7 @@ int GetECap1Count(void){
 		gECapCount = ECap1Regs.CAP4 - ECap1Regs.CAP3;
 	}
 	else{
-
+		// gSysInfo.isEcapRefresh = 0;
 	}
 	return gECapCount;
 }
@@ -50,7 +50,7 @@ int GetECap2Count(void){
 		gECapCount = ECap2Regs.CAP4 - ECap2Regs.CAP3;
 	}
 	else{
-
+		// gSysInfo.isEcapRefresh = 0;
 	}
 	return gECapCount;
 }
@@ -72,7 +72,7 @@ int GetECap3Count(void){
 		gECapCount = ECap3Regs.CAP4 - ECap3Regs.CAP3;
 	}
 	else{
-
+		// gSysInfo.isEcapRefresh = 0;
 	}
 	return gECapCount;
 }

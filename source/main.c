@@ -82,26 +82,7 @@ void StateMachine(void){
 	}
 }
 
-void MotorSpeed()
-{
-    int calSpeed = 0;
-    if (gSysInfo.isEcapRefresh == 1)
-    {
-        gSysInfo.isEcapRefresh = 0;
-        calSpeed = CalculateSpeed(gECapCount);
-        if (calSpeed != -1)
-        {
-            gMotorSpeedEcap = (KalmanFilter(calSpeed, KALMAN_Q, KALMAN_R));
-        }
-    }
-    else
-    {
-        gMotorSpeedEcap = 0;
-    }
-}
-
 void MainLoop(){
-
 
 	FEED_WATCH_DOG = 1;
 
@@ -109,7 +90,6 @@ void MainLoop(){
 
 	UnpackSciPackage(&gRS422RxQue);
 	
-	MotorSpeed();
 }
 
 void main(void) {
