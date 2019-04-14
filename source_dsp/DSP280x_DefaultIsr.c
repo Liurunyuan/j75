@@ -535,40 +535,18 @@ interrupt void EPWM6_INT_ISR(void)    // EPWM-6
 interrupt void ECAP1_INT_ISR(void)    // ECAP-1
 {
   // Insert ISR Code here
-	ECap1_Isr();
-  // To receive more interrupts from this PIE group, acknowledge this interrupt 
-	ECap1Regs.ECCLR.bit.CEVT1 = 1;
-	ECap1Regs.ECCLR.bit.CEVT2 = 1;
-	ECap1Regs.ECCLR.bit.CEVT3 = 1;
-	ECap1Regs.ECCLR.bit.CEVT4 = 1;
-
-	ECap1Regs.ECCLR.bit.INT = 1;
-   PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
-
-  // Next two lines for debug only to halt the processor here
-  // Remove after inserting ISR Code
-  // asm ("      ESTOP0");
-  // for(;;);
+  ECap1_Isr();
+  ECap1Regs.ECCLR.all = 0xFFFF;
+  PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
 }
 
 // INT4.2
 interrupt void ECAP2_INT_ISR(void)    // ECAP-2
 {
   // Insert ISR Code here
-	ECap2_Isr();
-	ECap2Regs.ECCLR.bit.CEVT1 = 1;
-	ECap2Regs.ECCLR.bit.CEVT2 = 1;
-	ECap2Regs.ECCLR.bit.CEVT3 = 1;
-	ECap2Regs.ECCLR.bit.CEVT4 = 1;
-
-	ECap2Regs.ECCLR.bit.INT = 1;
-  // To receive more interrupts from this PIE group, acknowledge this interrupt 
+  ECap2_Isr();
+  ECap2Regs.ECCLR.all = 0xFFFF;
   PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
-
-  // Next two lines for debug only to halt the processor here
-  // Remove after inserting ISR Code
-  // asm ("      ESTOP0");
-  // for(;;);
 }
 
 // INT4.3
@@ -576,19 +554,8 @@ interrupt void ECAP3_INT_ISR(void)    // ECAP-3
 {
   // Insert ISR Code here
 	ECap3_Isr();
-	ECap3Regs.ECCLR.bit.CEVT1 = 1;
-	ECap3Regs.ECCLR.bit.CEVT2 = 1;
-	ECap3Regs.ECCLR.bit.CEVT3 = 1;
-	ECap3Regs.ECCLR.bit.CEVT4 = 1;
-
-	ECap3Regs.ECCLR.bit.INT = 1;
-  // To receive more interrupts from this PIE group, acknowledge this interrupt 
+	ECap3Regs.ECCLR.all = 0xFFFF;
   PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
-  
-  // Next two lines for debug only to halt the processor here
-  // Remove after inserting ISR Code
-  // asm ("      ESTOP0");
-  // for(;;);
 }
 
 // INT4.4

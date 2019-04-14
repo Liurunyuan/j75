@@ -199,6 +199,7 @@ void ECap1Config(void){
 	 ECap1Regs.ECCTL2.bit.SYNCO_SEL = 3;
 	 ECap1Regs.ECCTL1.bit.PRESCALE =0;
 	 ECap1Regs.ECCLR.all = 0xffff;
+	 ECap1Regs.ECCTL2.bit.CAP_APWM = 0;
 
 	 ECap1Regs.ECEINT.bit.CEVT1 = 1;            // 2 events = interrupt
 	 ECap1Regs.ECEINT.bit.CEVT2 = 1;
@@ -240,6 +241,7 @@ void ECap2Config(void){
 	 ECap2Regs.ECCTL2.bit.SYNCO_SEL = 3;
 	 ECap2Regs.ECCTL1.bit.PRESCALE =0;
 	 ECap2Regs.ECCLR.all = 0xffff;
+	 ECap2Regs.ECCTL2.bit.CAP_APWM = 0;
 
 	 ECap2Regs.ECEINT.bit.CEVT1 = 1;            // 2 events = interrupt
 	 ECap2Regs.ECEINT.bit.CEVT2 = 1;
@@ -281,6 +283,7 @@ void ECap3Config(void){
 	 ECap3Regs.ECCTL2.bit.SYNCO_SEL = 3;
 	 ECap3Regs.ECCTL1.bit.PRESCALE =0;
 	 ECap3Regs.ECCLR.all = 0xffff;
+	 ECap3Regs.ECCTL2.bit.CAP_APWM = 0;
 
 	 ECap3Regs.ECEINT.bit.CEVT1 = 1;
 	 ECap3Regs.ECEINT.bit.CEVT2 = 1;
