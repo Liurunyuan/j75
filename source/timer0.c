@@ -6,7 +6,7 @@
 #include "scitx.h"
 #include "ecap.h"
 #include "kalman.h"
-#define N (300)
+#define N (10)
 
 #define CALSPEED (5)
 
