@@ -84,7 +84,7 @@ void StateMachine(void){
 void MainLoop(){
 	FEED_WATCH_DOG = 1;
 
-	StateMachine();
+//	StateMachine();
 
 	UnpackSciPackage(&gRS422RxQue);
 	
