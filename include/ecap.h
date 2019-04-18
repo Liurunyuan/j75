@@ -9,6 +9,6 @@ int32 CalculateSpeed(Uint32 capCount);
 void InitEcapVar(void);
 
 
-extern long int  gECapCount;
-extern double gMotorSpeedEcap;
+extern Uint64  gECapCount;
+extern int16 gMotorSpeedEcap;
 #endif

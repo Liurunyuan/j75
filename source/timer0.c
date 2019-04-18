@@ -7,9 +7,9 @@
 #include "ecap.h"
 #include "kalman.h"
 #include "pid.h"
-#define N (10)
+#define N (45)
 
-#define CALSPEED (3)
+#define CALSPEED (60)
 
 
 
@@ -23,27 +23,24 @@ void ThresholdProtectForDuty(void) {
 	else {
 	}
 
-	if (gSysInfo.currentDuty > 400) {
-		gSysInfo.currentDuty = 400;
+	if (gSysInfo.currentDuty > 300) {
+		gSysInfo.currentDuty = 300;
 	} 
 	else if (gSysInfo.currentDuty <= 0) {
 		gSysInfo.currentDuty = 0;
 	}
-	// gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
+//	gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
 }
 
 void MotorSpeed()
 {
-    int calSpeed = 0;
     if (gSysInfo.isEcapRefresh == 1){
-        gSysInfo.isEcapRefresh = 0;
-        calSpeed = CalculateSpeed(gECapCount);
-        if (calSpeed != -1){
-            gMotorSpeedEcap = (KalmanFilter(calSpeed, KALMAN_Q, KALMAN_R));
-        }
+		// gMotorSpeedEcap = (KalmanFilter(CalculateSpeed(gECapCount),KALMAN_Q,KALMAN_R));
+		gMotorSpeedEcap = CalculateSpeed(gECapCount);
+		gSysInfo.isEcapRefresh = 0;
     }
     else{
-        gMotorSpeedEcap = 0;
+        // gMotorSpeedEcap = 0;
     }
 }
 
@@ -63,9 +60,8 @@ void Timer0_ISR_Thread(void){
 		PackRS422TxData();
 		count = 0;
 	}
-
-	gSysInfo.targetDuty =  PidOutput(gMotorSpeedEcap);
-	ThresholdProtectForDuty(); 
+	// gSysInfo.targetDuty =  PidOutput(gMotorSpeedEcap);
+	// ThresholdProtectForDuty(); 
 }
 
 void Timer1_ISR_Thread(void){
@@ -73,7 +69,7 @@ void Timer1_ISR_Thread(void){
 
 	++count;
 
-	if(count == CALSPEED){
+	if(count >= CALSPEED){
 		count = 0;
 		MotorSpeed();
 	}

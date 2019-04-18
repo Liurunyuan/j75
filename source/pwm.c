@@ -194,15 +194,14 @@ void SwitchDirection(void){
  **************************************************************/
 void PwmIsrThread(void)
 {
-	ReadAnalogValue();
-
-	IsAnalogValueAbnormal();
-
 	if(gSysState.currentstate == START){
 		SwitchDirection();
 	}
 	else{
 		DisablePwmOutput();
 	}
+	// ReadAnalogValue();
+
+	// IsAnalogValueAbnormal();
 }
 
