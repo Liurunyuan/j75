@@ -123,7 +123,7 @@ void PackRS422TxData(void){
 	static int crc = 0;
 	char tmp[3] = {0};
 	int lenPosition = 0;
-	Uint16 total = 0;
+	Uint16 total = 1;
 
 	if(count == 0){
 		if(RX422TXEnQueue(0x5a) == 0){
@@ -149,23 +149,23 @@ void PackRS422TxData(void){
 			return;
 		}
 
-		// tmp[0] = 0x02;
-		// tmp[1] = gSysAlarm.all >> 8;
-		// tmp[2] = gSysAlarm.all;
+		tmp[0] = 0x02;
+		tmp[1] = gSysAlarm.all >> 8;
+		tmp[2] = gSysAlarm.all;
 		
-		// if(RX422TXEnQueue(0x02) == 0){
-		// 	asm ("      ESTOP0");
-		// 	return;
-		// }
-		// if(RX422TXEnQueue(tmp[1]) == 0){
-		// 	asm ("      ESTOP0");
-		// 	return;
-		// }
-		// if(RX422TXEnQueue(tmp[2]) == 0){
-		// 	asm ("      ESTOP0");
-		// 	return;
-		// }
-		// crc = calCrc(crc, tmp, 3);
+		if(RX422TXEnQueue(0x02) == 0){
+			asm ("      ESTOP0");
+			return;
+		}
+		if(RX422TXEnQueue(tmp[1]) == 0){
+			asm ("      ESTOP0");
+			return;
+		}
+		if(RX422TXEnQueue(tmp[2]) == 0){
+			asm ("      ESTOP0");
+			return;
+		}
+		crc = calCrc(crc, tmp, 3);
 
 		updateTxEnableFlag();
 	}

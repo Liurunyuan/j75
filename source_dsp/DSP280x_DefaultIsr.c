@@ -536,12 +536,7 @@ interrupt void ECAP1_INT_ISR(void)    // ECAP-1
 {
   // Insert ISR Code here
   ECap1_Isr();
-  ECap1Regs.ECCLR.bit.CEVT1 = 1;
-  ECap1Regs.ECCLR.bit.CEVT2 = 1;
-  ECap1Regs.ECCLR.bit.CEVT3 = 1;
-  ECap1Regs.ECCLR.bit.CEVT4 = 1;
-  ECap1Regs.ECCLR.bit.CTROVF =1;
-  ECap1Regs.ECCLR.bit.INT = 1;
+  ECap1Regs.ECCLR.all = 0xffff;
   PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
 }
 
@@ -550,12 +545,7 @@ interrupt void ECAP2_INT_ISR(void)    // ECAP-2
 {
   // Insert ISR Code here
   ECap2_Isr();
-  ECap2Regs.ECCLR.bit.CEVT1 = 1;
-  ECap2Regs.ECCLR.bit.CEVT2 = 1;
-  ECap2Regs.ECCLR.bit.CEVT3 = 1;
-  ECap2Regs.ECCLR.bit.CEVT4 = 1;
-  ECap2Regs.ECCLR.bit.INT = 1;
-  ECap2Regs.ECCLR.bit.CTROVF =1;
+  ECap2Regs.ECCLR.all = 0xffff;
   PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
 }
 
@@ -564,12 +554,7 @@ interrupt void ECAP3_INT_ISR(void)    // ECAP-3
 {
   // Insert ISR Code here
   ECap3_Isr();
-  ECap3Regs.ECCLR.bit.CEVT1 = 1;
-  ECap3Regs.ECCLR.bit.CEVT2 = 1;
-  ECap3Regs.ECCLR.bit.CEVT3 = 1;
-  ECap3Regs.ECCLR.bit.CEVT4 = 1;
-  ECap3Regs.ECCLR.bit.INT = 1;
-  ECap3Regs.ECCLR.bit.CTROVF =1;
+  ECap3Regs.ECCLR.all = 0xffff;
   PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
 }
 

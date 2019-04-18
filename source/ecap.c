@@ -33,7 +33,7 @@ int GetECap1Count(void){
 		// ECap1Regs.ECCTL2.bit.REARM = 1;
 	}
 	else{
-		// gSysAlarm.bit.softwareFault = 1;
+		
 	}
 	return gECapCount;
 }
@@ -58,7 +58,7 @@ int GetECap2Count(void){
 		// ECap2Regs.ECCTL2.bit.REARM = 1;
 	}
 	else{
-		// gSysAlarm.bit.softwareFault = 1;
+
 	}
 	return gECapCount;
 }
@@ -84,27 +84,25 @@ int GetECap3Count(void){
 		// ECap3Regs.ECCTL2.bit.REARM = 1;
 	}
 	else{
-		// gSysAlarm.bit.softwareFault = 1;
+	
 	}
 	return gECapCount;
 }
 int32 CalculateSpeed(Uint32 capCount){
 	//TODO calculate the motor speed
-	double speed = 0;
+	int32 speed32 = 0;
 	if(capCount <= 0){
-		return -100;
+		return -1;
 	}
 
-	speed = ((double)2700000000)/capCount;//2700000000 = 90000000*60/2
+	speed32 = ((double)2700000000)/capCount;//2700000000 = 90000000*60/2
 
-	return (int32)speed;
-
-	// if(speed32 < 19200){
-	// 	return speed32;
-	// }
-	// else{
-	// 	return -500;
-	// }
+	if(speed32 < 19200){
+		return speed32;
+	}
+	else{
+		return -1;
+	}
 }
 
 void ECap1_Isr(void){

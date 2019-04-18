@@ -200,8 +200,8 @@ void PwmIsrThread(void)
 	else{
 		DisablePwmOutput();
 	}
-	// ReadAnalogValue();
+	ReadAnalogValue();
 
-	// IsAnalogValueAbnormal();
+	IsAnalogValueAbnormal();
 }
 
