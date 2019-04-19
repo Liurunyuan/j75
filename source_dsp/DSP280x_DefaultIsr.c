@@ -831,9 +831,31 @@ interrupt void SCIRXINTB_ISR(void)     // SCI-B
 // INT9.4
 interrupt void SCITXINTB_ISR(void)     // SCI-B
 {
+  Uint16 TempPIEIER; //enable scirxb interrput this isr
+  Uint16 TempPIEIER2;//enable pwm interrupt this isr
+  TempPIEIER = PieCtrlRegs.PIEIER9.all;
+  IER |= 0x100;
+  IER |= 0x100;
+  PieCtrlRegs.PIEIER9.all &= 0x0004;
+  PieCtrlRegs.PIEACK.all = 0xffff;
+  asm(" NOP");
+  EINT;
+
+  TempPIEIER2 = PieCtrlRegs.PIEIER3.all;
+  IER |= 0x004;
+  IER |= 0x004;
+  PieCtrlRegs.PIEIER3.all &= 0x0001;
+  PieCtrlRegs.PIEACK.all = 0xffff;
+  asm(" NOP");
+  EINT;
+
   SciTxIsrThread();
   ScibRegs.SCIFFTX.bit.TXFFINTCLR = 1;
   PieCtrlRegs.PIEACK.all = PIEACK_GROUP9;
+
+  DINT;
+  PieCtrlRegs.PIEIER9.all = TempPIEIER;
+  PieCtrlRegs.PIEIER3.all = TempPIEIER2;
 }
 
 // INT9.5
