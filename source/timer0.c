@@ -7,7 +7,7 @@
 #include "ecap.h"
 #include "kalman.h"
 #include "pid.h"
-#define N (10)
+#define N (0)
 
 #define CALSPEED (5)
 
