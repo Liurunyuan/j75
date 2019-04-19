@@ -9,7 +9,8 @@ SYSALARM gSysAlarm = {0};
 
 void InitGlobalVar(void){
 	gSysState.currentstate = INIT;
-	gSysInfo.duty = 100;
+	gSysState.targetState = INIT;
+	gSysInfo.duty = 0;
 	gSysInfo.dutyUp = 0;
 	gSysInfo.dutyDown = 0;
 	gSysInfo.currentHallPosition = 0;
