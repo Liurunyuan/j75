@@ -3,9 +3,9 @@
 #include "global.h"
 
 
-SYSINFO gSysInfo = {0};
-SYSSTATE gSysState = {0};
-SYSALARM gSysAlarm = {0};
+volatile SYSINFO gSysInfo = {0};
+volatile SYSSTATE gSysState = {0};
+volatile SYSALARM gSysAlarm = {0};
 
 void InitGlobalVar(void){
 	gSysState.currentstate = INIT;

@@ -4,8 +4,8 @@
 #include "ecap.h"
 
 
-Uint64  gECapCount = 0;
-int16 gMotorSpeedEcap = 0;
+volatile Uint64  gECapCount = 0;
+volatile int16 gMotorSpeedEcap = 0;
 
 void InitEcapVar(void){
 	gMotorSpeedEcap = 0;

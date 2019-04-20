@@ -57,7 +57,9 @@ static void SetPidKd(VAR16 a, int b, int c) {
 }
 
 static void SetDutyForTest(VAR16 a, int b, int c){
-	if(a.value >= 0){
+	int duty =  0;
+	duty = (int16)a.value;
+	if(duty >= 0){
 		gSysInfo.duty = a.value;
 	}
 }

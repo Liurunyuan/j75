@@ -77,8 +77,9 @@ typedef struct _SYSSTATE{
 	int targetState;
 }SYSSTATE;
 
-extern SYSINFO gSysInfo;
-extern SYSALARM gSysAlarm;
+extern volatile SYSINFO gSysInfo;
+extern volatile SYSALARM gSysAlarm;
+extern volatile SYSSTATE gSysState;
 
 void Delay(int time);
 void InitGlobalVar(void);
@@ -87,5 +88,4 @@ void enablePwmOutput(void);
 void enableEcapInterrupt(void);
 void disableEcapInterrupt(void);
 void clearScibOverflow(void);
-extern SYSSTATE gSysState;
 #endif

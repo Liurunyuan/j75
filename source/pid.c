@@ -1,7 +1,7 @@
 /*
  * pid.c
  *
- *  Created on: 2019Äê2ÔÂ14ÈÕ
+ *  Created on: 2019ï¿½ï¿½2ï¿½ï¿½14ï¿½ï¿½
  *      Author: Administrator
  */
 
@@ -10,7 +10,8 @@
 #include "global.h"
 #include "pid.h"
 
-PIDPARA gPidPara = {0};
+volatile PIDPARA gPidPara = {0};
+volatile double gTargetSpeed = 0;
 
 void InitPidVar(void){
 	gPidPara.kp = 2000;
@@ -20,7 +21,7 @@ void InitPidVar(void){
 
 	gTargetSpeed = 0;
 }
-double gTargetSpeed = 0;
+
 int32 sek = 0;
 int32 sektest = 0;
 
