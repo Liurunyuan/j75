@@ -72,3 +72,11 @@ void disableEcapInterrupt(void){
 	ECap2Regs.ECCTL2.bit.TSCTRSTOP = 0; 
 	ECap3Regs.ECCTL2.bit.TSCTRSTOP = 0; 
 }
+
+void clearScibOverflow(void){
+	if(ScibRegs.SCIFFRX.bit.RXFFOVF == 1){
+		ScibRegs.SCIFFRX.bit.RXFFOVRCLR = 1;
+		ScibRegs.SCIFFRX.bit.RXFFOVF = 1;
+		gSysAlarm.bit.InitFault = 1;
+	}
+}

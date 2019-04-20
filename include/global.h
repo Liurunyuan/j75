@@ -86,5 +86,6 @@ void clearHardwareErro(void);
 void enablePwmOutput(void);
 void enableEcapInterrupt(void);
 void disableEcapInterrupt(void);
+void clearScibOverflow(void);
 extern SYSSTATE gSysState;
 #endif

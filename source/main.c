@@ -89,6 +89,8 @@ void MainLoop(){
 	StateMachine();
 
 	UnpackSciPackage(&gRS422RxQue);
+
+	clearScibOverflow();
 	
 }
 
