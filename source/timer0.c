@@ -29,7 +29,7 @@ void ThresholdProtectForDuty(void) {
 	else if (gSysInfo.currentDuty <= 0) {
 		gSysInfo.currentDuty = 0;
 	}
-	// gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
+	gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
 }
 
 void MotorSpeed(){
