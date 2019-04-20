@@ -1,3 +1,18 @@
+/***************************0.0.4*******************************/
+Version Number: 0.0.4
+Date: 2019/4/20
+Author:Simon
+
+What new: 
+	1. Motor speed closed loop control, but still need to modify the parameters of PID 
+	2. You can use UI to set the target speed 
+	3. Add interface for UI to clear alarm info, but UI doesn't support now. 
+	4. Set PWM frequency to 15k 
+	5. Add clear SCIB RX overflow flag in main loop 
+	6. Calculate Motor speed every 5ms  
+	7. Set timer0 period to 20ms 
+Bug Fix:
+	1. Allow EPwm and SCI RX interrupt SCI TX isr
 /***************************0.0.3*******************************/
 Version Number: 0.0.3
 Date: 2019/4/13
