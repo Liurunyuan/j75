@@ -4,10 +4,10 @@
 
 #define FEED_WATCH_DOG  GpioDataRegs.GPATOGGLE.bit.GPIO23
 
-#define EPWM1_TIMER_TBPRD 1124   //1124
-#define EPWM2_TIMER_TBPRD 1124	//1124
-#define EPWM1_TIMER_HALF_TBPRD  562 //625
-#define EPWM2_TIMER_HALF_TBPRD  562 //625
+#define EPWM1_TIMER_TBPRD 3000   		//1124:40k	 2250:20k   3000:15k
+#define EPWM2_TIMER_TBPRD 3000			//1124:40k	 2250:20k	3000:15k
+#define EPWM1_TIMER_HALF_TBPRD  1500 	//625 :40k	 1125:20k	1500:15k
+#define EPWM2_TIMER_HALF_TBPRD  1500 	//625 :40k	 1125:20k	1500:15k
 
 #define SUCCESS 1
 #define FAIL 0
@@ -57,6 +57,9 @@ typedef struct{
 	int16 duty;
 	int16 dutyUp;
 	int16 dutyDown;
+	int16 isEcapRefresh;
+	int16 targetDuty;
+	int16 currentDuty;
 }SYSINFO;
 
 typedef struct _DATA{
@@ -74,12 +77,15 @@ typedef struct _SYSSTATE{
 	int targetState;
 }SYSSTATE;
 
-extern SYSINFO gSysInfo;
-extern SYSALARM gSysAlarm;
+extern volatile SYSINFO gSysInfo;
+extern volatile SYSALARM gSysAlarm;
+extern volatile SYSSTATE gSysState;
 
 void Delay(int time);
 void InitGlobalVar(void);
 void clearHardwareErro(void);
 void enablePwmOutput(void);
-extern SYSSTATE gSysState;
+void enableEcapInterrupt(void);
+void disableEcapInterrupt(void);
+void clearScibOverflow(void);
 #endif

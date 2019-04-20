@@ -4,8 +4,8 @@
 #include "ecap.h"
 
 
-long int  gECapCount = 0;
-double gMotorSpeedEcap = 0;
+volatile Uint64  gECapCount = 0;
+volatile int16 gMotorSpeedEcap = 0;
 
 void InitEcapVar(void){
 	gMotorSpeedEcap = 0;
@@ -14,24 +14,32 @@ void InitEcapVar(void){
 
 int GetECap1Count(void){
 
+	gSysInfo.isEcapRefresh = 1;
+
 	if(ECap1Regs.ECFLG.bit.CEVT1){
 		gECapCount = ECap1Regs.CAP1;
 	}
 	else if(ECap1Regs.ECFLG.bit.CEVT2){
 		gECapCount = ECap1Regs.CAP2 - ECap1Regs.CAP1;
 	}
-	else if(ECap4Regs.ECFLG.bit.CEVT3){
+	else if(ECap1Regs.ECFLG.bit.CEVT3){
 		gECapCount = ECap1Regs.CAP3 - ECap1Regs.CAP2;
 	}
-	else if(ECap4Regs.ECFLG.bit.CEVT4){
+	else if(ECap1Regs.ECFLG.bit.CEVT4){
 		gECapCount = ECap1Regs.CAP4 - ECap1Regs.CAP3;
 	}
+	else if(ECap1Regs.ECFLG.bit.CTROVF){
+		//TODO
+		// ECap1Regs.ECCTL2.bit.REARM = 1;
+	}
 	else{
-
+		
 	}
 	return gECapCount;
 }
 int GetECap2Count(void){
+
+	gSysInfo.isEcapRefresh = 1;
 
 	if(ECap2Regs.ECFLG.bit.CEVT1){
 		gECapCount = ECap2Regs.CAP1;
@@ -45,6 +53,10 @@ int GetECap2Count(void){
 	else if(ECap2Regs.ECFLG.bit.CEVT4){
 		gECapCount = ECap2Regs.CAP4 - ECap2Regs.CAP3;
 	}
+	else if(ECap2Regs.ECFLG.bit.CTROVF){
+		//TODO
+		// ECap2Regs.ECCTL2.bit.REARM = 1;
+	}
 	else{
 
 	}
@@ -52,6 +64,8 @@ int GetECap2Count(void){
 }
 
 int GetECap3Count(void){
+
+	gSysInfo.isEcapRefresh = 1;
 
 	if(ECap3Regs.ECFLG.bit.CEVT1){
 		gECapCount = ECap3Regs.CAP1;
@@ -65,8 +79,12 @@ int GetECap3Count(void){
 	else if(ECap3Regs.ECFLG.bit.CEVT4){
 		gECapCount = ECap3Regs.CAP4 - ECap3Regs.CAP3;
 	}
+	else if(ECap3Regs.ECFLG.bit.CTROVF){
+		//TODO
+		// ECap3Regs.ECCTL2.bit.REARM = 1;
+	}
 	else{
-
+	
 	}
 	return gECapCount;
 }
@@ -74,16 +92,16 @@ int32 CalculateSpeed(Uint32 capCount){
 	//TODO calculate the motor speed
 	int32 speed32 = 0;
 	if(capCount <= 0){
-		return 0;
+		return -1;
 	}
 
-	speed32 = ((2700000000.0)/(float)capCount);//4500000000 = 75000000*60
+	speed32 = ((double)2700000000)/capCount;//2700000000 = 90000000*60/2
 
 	if(speed32 < 19200){
 		return speed32;
 	}
 	else{
-		return 0;
+		return -1;
 	}
 }
 

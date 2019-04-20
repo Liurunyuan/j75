@@ -535,60 +535,27 @@ interrupt void EPWM6_INT_ISR(void)    // EPWM-6
 interrupt void ECAP1_INT_ISR(void)    // ECAP-1
 {
   // Insert ISR Code here
-	ECap1_Isr();
-  // To receive more interrupts from this PIE group, acknowledge this interrupt 
-	ECap1Regs.ECCLR.bit.CEVT1 = 1;
-	ECap1Regs.ECCLR.bit.CEVT2 = 1;
-	ECap1Regs.ECCLR.bit.CEVT3 = 1;
-	ECap1Regs.ECCLR.bit.CEVT4 = 1;
-
-	ECap1Regs.ECCLR.bit.INT = 1;
-   PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
-
-  // Next two lines for debug only to halt the processor here
-  // Remove after inserting ISR Code
-  // asm ("      ESTOP0");
-  // for(;;);
+  ECap1_Isr();
+  ECap1Regs.ECCLR.all = 0xffff;
+  PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
 }
 
 // INT4.2
 interrupt void ECAP2_INT_ISR(void)    // ECAP-2
 {
   // Insert ISR Code here
-	ECap2_Isr();
-	ECap2Regs.ECCLR.bit.CEVT1 = 1;
-	ECap2Regs.ECCLR.bit.CEVT2 = 1;
-	ECap2Regs.ECCLR.bit.CEVT3 = 1;
-	ECap2Regs.ECCLR.bit.CEVT4 = 1;
-
-	ECap2Regs.ECCLR.bit.INT = 1;
-  // To receive more interrupts from this PIE group, acknowledge this interrupt 
+  ECap2_Isr();
+  ECap2Regs.ECCLR.all = 0xffff;
   PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
-
-  // Next two lines for debug only to halt the processor here
-  // Remove after inserting ISR Code
-  // asm ("      ESTOP0");
-  // for(;;);
 }
 
 // INT4.3
 interrupt void ECAP3_INT_ISR(void)    // ECAP-3
 {
   // Insert ISR Code here
-	ECap3_Isr();
-	ECap3Regs.ECCLR.bit.CEVT1 = 1;
-	ECap3Regs.ECCLR.bit.CEVT2 = 1;
-	ECap3Regs.ECCLR.bit.CEVT3 = 1;
-	ECap3Regs.ECCLR.bit.CEVT4 = 1;
-
-	ECap3Regs.ECCLR.bit.INT = 1;
-  // To receive more interrupts from this PIE group, acknowledge this interrupt 
+  ECap3_Isr();
+  ECap3Regs.ECCLR.all = 0xffff;
   PieCtrlRegs.PIEACK.all = PIEACK_GROUP4;
-  
-  // Next two lines for debug only to halt the processor here
-  // Remove after inserting ISR Code
-  // asm ("      ESTOP0");
-  // for(;;);
 }
 
 // INT4.4
@@ -864,9 +831,28 @@ interrupt void SCIRXINTB_ISR(void)     // SCI-B
 // INT9.4
 interrupt void SCITXINTB_ISR(void)     // SCI-B
 {
+  Uint16 TempPIEIER; //enable scirxb interrput this isr
+  Uint16 TempPIEIER2;//enable pwm interrupt this isr
+  TempPIEIER = PieCtrlRegs.PIEIER9.all;
+  IER |= 0x100;
+  IER |= 0x100;
+  PieCtrlRegs.PIEIER9.all &= 0x0004;
+
+  TempPIEIER2 = PieCtrlRegs.PIEIER3.all;
+  IER |= 0x004;
+  IER |= 0x004;
+  PieCtrlRegs.PIEIER3.all &= 0x0001;
+  PieCtrlRegs.PIEACK.all = 0xffff;
+  asm(" NOP");
+  EINT;
+
   SciTxIsrThread();
   ScibRegs.SCIFFTX.bit.TXFFINTCLR = 1;
   PieCtrlRegs.PIEACK.all = PIEACK_GROUP9;
+
+  DINT;
+  PieCtrlRegs.PIEIER9.all = TempPIEIER;
+  PieCtrlRegs.PIEIER3.all = TempPIEIER2;
 }
 
 // INT9.5

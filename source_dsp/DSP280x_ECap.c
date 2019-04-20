@@ -198,12 +198,15 @@ void ECap1Config(void){
 	 ECap1Regs.ECCTL2.bit.SYNCI_EN = 0;
 	 ECap1Regs.ECCTL2.bit.SYNCO_SEL = 3;
 	 ECap1Regs.ECCTL1.bit.PRESCALE =0;
-	 ECap1Regs.ECCLR.all = 0xffff;
+	 ECap1Regs.ECCTL2.bit.CAP_APWM = 0;
 
 	 ECap1Regs.ECEINT.bit.CEVT1 = 1;            // 2 events = interrupt
 	 ECap1Regs.ECEINT.bit.CEVT2 = 1;
 	 ECap1Regs.ECEINT.bit.CEVT3 = 1;
 	 ECap1Regs.ECEINT.bit.CEVT4 = 1;
+	 ECap1Regs.ECEINT.bit.CTR_EQ_CMP = 0;
+	 ECap1Regs.ECEINT.bit.CTR_EQ_PRD = 0;
+	 ECap1Regs.ECEINT.bit.CTROVF =1;
 
 	 ECap1Regs.ECCTL1.bit.CAPLDEN = 1;          // Enable CAP1-CAP4 register loads
 	 ECap1Regs.ECCTL2.bit.TSCTRSTOP = 1;        /* Start Counter*/
@@ -211,7 +214,7 @@ void ECap1Config(void){
 
 void ECap2Config(void){
 	 EALLOW;
-	 SysCtrlRegs.PCLKCR1.bit.ECAP1ENCLK = 1;
+	 SysCtrlRegs.PCLKCR1.bit.ECAP2ENCLK = 1;
 	 EDIS;
 	 /* Initialize eCAP1/2/3 */
 	 ECap2Regs.ECEINT.all = 0x0000;             /* Disable all capture interrupts */
@@ -236,12 +239,15 @@ void ECap2Config(void){
 	 ECap2Regs.ECCTL2.bit.SYNCI_EN = 0;
 	 ECap2Regs.ECCTL2.bit.SYNCO_SEL = 3;
 	 ECap2Regs.ECCTL1.bit.PRESCALE =0;
-	 ECap2Regs.ECCLR.all = 0xffff;
+	 ECap2Regs.ECCTL2.bit.CAP_APWM = 0;
 
 	 ECap2Regs.ECEINT.bit.CEVT1 = 1;            // 2 events = interrupt
 	 ECap2Regs.ECEINT.bit.CEVT2 = 1;
 	 ECap2Regs.ECEINT.bit.CEVT3 = 1;
 	 ECap2Regs.ECEINT.bit.CEVT4 = 1;
+	 ECap2Regs.ECEINT.bit.CTR_EQ_CMP = 0;
+	 ECap2Regs.ECEINT.bit.CTR_EQ_PRD = 0;
+	 ECap2Regs.ECEINT.bit.CTROVF =1;
 
 	 ECap2Regs.ECCTL1.bit.CAPLDEN = 1;          // Enable CAP1-CAP4 register loads
 	 ECap2Regs.ECCTL2.bit.TSCTRSTOP = 1;        /* Start Counter*/
@@ -249,7 +255,7 @@ void ECap2Config(void){
 
 void ECap3Config(void){
 	 EALLOW;
-	 SysCtrlRegs.PCLKCR1.bit.ECAP1ENCLK = 1;
+	 SysCtrlRegs.PCLKCR1.bit.ECAP3ENCLK = 1;
 	 EDIS;
 	 /* Initialize eCAP1/2/3 */
 	 ECap3Regs.ECEINT.all = 0x0000;             /* Disable all capture interrupts */
@@ -274,12 +280,15 @@ void ECap3Config(void){
 	 ECap3Regs.ECCTL2.bit.SYNCI_EN = 0;
 	 ECap3Regs.ECCTL2.bit.SYNCO_SEL = 3;
 	 ECap3Regs.ECCTL1.bit.PRESCALE =0;
-	 ECap3Regs.ECCLR.all = 0xffff;
+	 ECap3Regs.ECCTL2.bit.CAP_APWM = 0;
 
 	 ECap3Regs.ECEINT.bit.CEVT1 = 1;
 	 ECap3Regs.ECEINT.bit.CEVT2 = 1;
 	 ECap3Regs.ECEINT.bit.CEVT3 = 1;
 	 ECap3Regs.ECEINT.bit.CEVT4 = 1;
+	 ECap3Regs.ECEINT.bit.CTR_EQ_CMP = 0;
+	 ECap3Regs.ECEINT.bit.CTR_EQ_PRD = 0;
+	 ECap3Regs.ECEINT.bit.CTROVF =1;
 
 	 ECap3Regs.ECCTL1.bit.CAPLDEN = 1;          // Enable CAP1-CAP4 register loads
 	 ECap3Regs.ECCTL2.bit.TSCTRSTOP = 1;        /* Start Counter*/

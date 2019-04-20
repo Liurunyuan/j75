@@ -21,7 +21,7 @@ void GetDisplacementCurve(int a, int b, int c){
 	gRx422TxVar[2].value = 1;
 }
 void GetMotorCurrentCurve(int a, int b, int c){
-	gRx422TxVar[3].value = 2;
+	gRx422TxVar[3].value = gSysInfo.targetDuty;
 }
 void GetDynamoVoltageCurve(int a, int b, int c){
 	gRx422TxVar[4].value = 1;
@@ -123,7 +123,7 @@ void PackRS422TxData(void){
 	static int crc = 0;
 	char tmp[3] = {0};
 	int lenPosition = 0;
-	Uint16 total =0;
+	Uint16 total = 1;
 
 	if(count == 0){
 		if(RX422TXEnQueue(0x5a) == 0){
@@ -148,6 +148,25 @@ void PackRS422TxData(void){
 			asm ("      ESTOP0");
 			return;
 		}
+
+		tmp[0] = 0x02;
+		tmp[1] = gSysAlarm.all >> 8;
+		tmp[2] = gSysAlarm.all;
+		
+		if(RX422TXEnQueue(0x02) == 0){
+			asm ("      ESTOP0");
+			return;
+		}
+		if(RX422TXEnQueue(tmp[1]) == 0){
+			asm ("      ESTOP0");
+			return;
+		}
+		if(RX422TXEnQueue(tmp[2]) == 0){
+			asm ("      ESTOP0");
+			return;
+		}
+		crc = calCrc(crc, tmp, 3);
+
 		updateTxEnableFlag();
 	}
 
@@ -209,11 +228,6 @@ void ScibTxByte(Uint16 t){
 
 	ScibRegs.SCITXBUF = t;
 
-}
-
-void SciaTxByte(Uint16 t){
-
-	SciaRegs.SCITXBUF = t;
 }
 
 void DisableScibTxInterrupt(void){
