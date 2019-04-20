@@ -110,6 +110,5 @@ void main(void) {
 
 	while(1){
 		MainLoop();
-		// Delay(10000);
 	}
 }
