@@ -74,6 +74,9 @@ void StateMachine(void){
 			break;
 		case ALARM:
 			DisablePwmOutput();
+			if(gSysAlarm.all == 0){
+				gSysState.currentstate = STOP;
+			}
 			break;
 		default:
 			gSysAlarm.bit.softwareFault = 1;
