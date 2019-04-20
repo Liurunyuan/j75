@@ -21,7 +21,7 @@ void GetDisplacementCurve(int a, int b, int c){
 	gRx422TxVar[2].value = 1;
 }
 void GetMotorCurrentCurve(int a, int b, int c){
-	gRx422TxVar[3].value = 2;
+	gRx422TxVar[3].value = gSysInfo.targetDuty;
 }
 void GetDynamoVoltageCurve(int a, int b, int c){
 	gRx422TxVar[4].value = 1;
@@ -228,11 +228,6 @@ void ScibTxByte(Uint16 t){
 
 	ScibRegs.SCITXBUF = t;
 
-}
-
-void SciaTxByte(Uint16 t){
-
-	SciaRegs.SCITXBUF = t;
 }
 
 void DisableScibTxInterrupt(void){

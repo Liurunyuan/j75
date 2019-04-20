@@ -4,8 +4,8 @@
 #include "ecap.h"
 
 
-long int  gECapCount = 0;
-double gMotorSpeedEcap = 0;
+volatile Uint64  gECapCount = 0;
+volatile int16 gMotorSpeedEcap = 0;
 
 void InitEcapVar(void){
 	gMotorSpeedEcap = 0;
@@ -30,9 +30,10 @@ int GetECap1Count(void){
 	}
 	else if(ECap1Regs.ECFLG.bit.CTROVF){
 		//TODO
+		// ECap1Regs.ECCTL2.bit.REARM = 1;
 	}
 	else{
-		gSysAlarm.bit.softwareFault = 1;
+		
 	}
 	return gECapCount;
 }
@@ -54,9 +55,10 @@ int GetECap2Count(void){
 	}
 	else if(ECap2Regs.ECFLG.bit.CTROVF){
 		//TODO
+		// ECap2Regs.ECCTL2.bit.REARM = 1;
 	}
 	else{
-		gSysAlarm.bit.softwareFault = 1;
+
 	}
 	return gECapCount;
 }
@@ -79,9 +81,10 @@ int GetECap3Count(void){
 	}
 	else if(ECap3Regs.ECFLG.bit.CTROVF){
 		//TODO
+		// ECap3Regs.ECCTL2.bit.REARM = 1;
 	}
 	else{
-		gSysAlarm.bit.softwareFault = 1;
+	
 	}
 	return gECapCount;
 }
@@ -92,7 +95,7 @@ int32 CalculateSpeed(Uint32 capCount){
 		return -1;
 	}
 
-	speed32 = ((2700000000.0)/(float)capCount);//2700000000 = 90000000*60/2
+	speed32 = ((double)2700000000)/capCount;//2700000000 = 90000000*60/2
 
 	if(speed32 < 19200){
 		return speed32;

@@ -57,8 +57,18 @@ static void SetPidKd(VAR16 a, int b, int c) {
 }
 
 static void SetDutyForTest(VAR16 a, int b, int c){
-	if(a.value >= 0){
+	int duty =  0;
+	duty = (int16)a.value;
+	if(duty >= 0){
 		gSysInfo.duty = a.value;
+	}
+}
+
+static void ClearAlarmInfo(VAR16 a, int b, int c){
+	int clearAlarm = 0;
+	clearAlarm = a.value;
+	if(clearAlarm == 1){
+		gSysAlarm.all = 0;
 	}
 }
 
@@ -67,7 +77,7 @@ const functionMsgCodeUnpack msgInterface[] = {
 			SetSystemState,		   	//1
 			SetTargetSpeed,		   	//2
 			WaveCommand,		   	//3
-			0,					   	//4
+			ClearAlarmInfo,			//4
 			0,						//5
 			0,						//6
 			0,						//7

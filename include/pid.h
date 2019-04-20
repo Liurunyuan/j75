@@ -1,7 +1,7 @@
 /*
  * pid.h
  *
- *  Created on: 2019Äê2ÔÂ14ÈÕ
+ *  Created on: 2019ï¿½ï¿½2ï¿½ï¿½14ï¿½ï¿½
  *      Author: Administrator
  */
 
@@ -16,8 +16,8 @@ typedef struct _PIDPARA{
 }PIDPARA;
 
 
-extern double gTargetSpeed;
-extern PIDPARA gPidPara;
+extern volatile double gTargetSpeed;
+extern volatile PIDPARA gPidPara;
 
 
 
