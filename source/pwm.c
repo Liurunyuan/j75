@@ -8,18 +8,21 @@
 
 inline void DisablePwm1(void){
 
-	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
-	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
+	// EPwm1Regs.AQCSFRC.bit.CSFA = 1;
+	// EPwm1Regs.AQCSFRC.bit.CSFB = 2;
+	EPwm1Regs.AQCSFRC.all = 0x0009;
 }
 inline void DisablePwm2(void){
 
-	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
-	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
+	// EPwm2Regs.AQCSFRC.bit.CSFA = 1;
+	// EPwm2Regs.AQCSFRC.bit.CSFB = 2;
+	EPwm2Regs.AQCSFRC.all = 0x0009;
 }
 inline void DisablePwm3(void){
 
-	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
-	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
+	// EPwm3Regs.AQCSFRC.bit.CSFA = 1;
+	// EPwm3Regs.AQCSFRC.bit.CSFB = 2;
+	EPwm3Regs.AQCSFRC.all = 0x0009;
 }
 
 void DisablePwmOutput(void){
@@ -32,75 +35,113 @@ inline void CPositiveToBNegtive(void) {
 
 	DisablePwm1();
 
-	EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
-    EPwm3Regs.AQCSFRC.bit.CSFA = 3;
+	// EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+	// EPwm3Regs.AQCSFRC.bit.CSFB = 2;
+    // EPwm3Regs.AQCSFRC.bit.CSFA = 3;
 
-	EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
-	EPwm2Regs.AQCSFRC.bit.CSFB = 3;
+
+
+	// EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+	// EPwm2Regs.AQCSFRC.bit.CSFA = 1;
+	// EPwm2Regs.AQCSFRC.bit.CSFB = 3;
+
+
+	EPwm3Regs.AQCSFRC.all = 0x000B;
+	EPwm2Regs.AQCSFRC.all = 0x000D;
+
+	EPwm3Regs.CMPA.half.CMPA = gSysInfo.duty;
+	EPwm2Regs.CMPA.half.CMPA = gSysInfo.duty;
 }
 
 inline void CPositiveToANegtive(void) {
 	DisablePwm2();
 
-	EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-    EPwm3Regs.AQCSFRC.bit.CSFB = 2;
-	EPwm3Regs.AQCSFRC.bit.CSFA = 3;
+	// EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+    // EPwm3Regs.AQCSFRC.bit.CSFB = 2;
+	// EPwm3Regs.AQCSFRC.bit.CSFA = 3;
 
-	EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
-	EPwm1Regs.AQCSFRC.bit.CSFB = 3;
+	// EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+	// EPwm1Regs.AQCSFRC.bit.CSFA = 1;
+	// EPwm1Regs.AQCSFRC.bit.CSFB = 3;
+
+	EPwm3Regs.AQCSFRC.all = 0x000B;
+	EPwm1Regs.AQCSFRC.all = 0x000D;
+
+	EPwm3Regs.CMPA.half.CMPA = gSysInfo.duty;
+	EPwm1Regs.CMPA.half.CMPA = gSysInfo.duty;
 }
 
 inline void BPositiveToANegtive(void) {
 
 	DisablePwm3();
 
-	EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
-    EPwm2Regs.AQCSFRC.bit.CSFA = 3;
+	// EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+	// EPwm2Regs.AQCSFRC.bit.CSFB = 2;
+    // EPwm2Regs.AQCSFRC.bit.CSFA = 3;
 
-	EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
-	EPwm1Regs.AQCSFRC.bit.CSFB = 3;
+	// EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+	// EPwm1Regs.AQCSFRC.bit.CSFA = 1;
+	// EPwm1Regs.AQCSFRC.bit.CSFB = 3;
+
+	EPwm2Regs.AQCSFRC.all = 0x000B;
+	EPwm1Regs.AQCSFRC.all = 0x000D;
+
+	EPwm2Regs.CMPA.half.CMPA = gSysInfo.duty;
+	EPwm1Regs.CMPA.half.CMPA = gSysInfo.duty;
 }
 
 inline void BPositiveToCNegtive(void) {
 
 	DisablePwm1();
 
-	EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
-    EPwm2Regs.AQCSFRC.bit.CSFA = 3;
+	// EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+	// EPwm2Regs.AQCSFRC.bit.CSFB = 2;
+    // EPwm2Regs.AQCSFRC.bit.CSFA = 3;
 
-	EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
-	EPwm3Regs.AQCSFRC.bit.CSFB = 3;
+	// EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+	// EPwm3Regs.AQCSFRC.bit.CSFA = 1;
+	// EPwm3Regs.AQCSFRC.bit.CSFB = 3;
+	EPwm2Regs.AQCSFRC.all = 0x000B;
+	EPwm3Regs.AQCSFRC.all = 0x000D;
+
+	EPwm2Regs.CMPA.half.CMPA = gSysInfo.duty;
+	EPwm3Regs.CMPA.half.CMPA = gSysInfo.duty;
 }
 inline void APositiveToCNegtive(void) {
 
 	DisablePwm2();
 
-	EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
-    EPwm1Regs.AQCSFRC.bit.CSFA = 3;
+	// EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+	// EPwm1Regs.AQCSFRC.bit.CSFB = 2;
+    // EPwm1Regs.AQCSFRC.bit.CSFA = 3;
 
-	EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
-	EPwm3Regs.AQCSFRC.bit.CSFB = 3;
+	// EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+	// EPwm3Regs.AQCSFRC.bit.CSFA = 1;
+	// EPwm3Regs.AQCSFRC.bit.CSFB = 3;
+
+	EPwm1Regs.AQCSFRC.all = 0x000B;
+	EPwm3Regs.AQCSFRC.all = 0x000D;
+
+	EPwm1Regs.CMPA.half.CMPA = gSysInfo.duty;
+	EPwm3Regs.CMPA.half.CMPA = gSysInfo.duty;
 }
 inline void APositiveToBNegtive(void) {
 
 	DisablePwm3();
 
-	EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
-    EPwm1Regs.AQCSFRC.bit.CSFA = 3;
+	// EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+	// EPwm1Regs.AQCSFRC.bit.CSFB = 2;
+    // EPwm1Regs.AQCSFRC.bit.CSFA = 3;
 
-	EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
-	EPwm2Regs.AQCSFRC.bit.CSFB = 3;
+	// EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+	// EPwm2Regs.AQCSFRC.bit.CSFA = 1;
+	// EPwm2Regs.AQCSFRC.bit.CSFB = 3;
+
+	EPwm1Regs.AQCSFRC.all = 0x000B;
+	EPwm2Regs.AQCSFRC.all = 0x000D;
+
+	EPwm1Regs.CMPA.half.CMPA = gSysInfo.duty;
+	EPwm2Regs.CMPA.half.CMPA = gSysInfo.duty;
 }
 
 Uint16 GetCurrentHallValue(void){
