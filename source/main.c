@@ -76,6 +76,7 @@ void StateMachine(void){
 			DisablePwmOutput();
 			if(gSysAlarm.all == 0){
 				gSysState.currentstate = STOP;
+				clearHardwareErro();
 			}
 			break;
 		default:
