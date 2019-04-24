@@ -94,7 +94,8 @@ void MainLoop(){
 	UnpackSciPackage(&gRS422RxQue);
 
 	clearScibOverflow();
-	
+
+	readTZGpioState();
 }
 
 void main(void) {

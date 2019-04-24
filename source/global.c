@@ -80,3 +80,19 @@ void clearScibOverflow(void){
 		gSysAlarm.bit.InitFault = 1;
 	}
 }
+
+void readTZGpioState(void){
+	//this function will remove when TZ is configured
+	int gpio14state = -1;
+	int gpio15state = -1;
+
+	gpio14state = GpioDataRegs.GPADAT.bit.GPIO14;
+	gpio15state = GpioDataRegs.GPADAT.bit.GPIO15;
+
+	if(gpio14state == 0){
+		gSysAlarm.bit.f = 1;
+	}
+	if(gpio15state == 0){
+		gSysAlarm.bit.j = 1;
+	}
+}

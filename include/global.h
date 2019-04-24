@@ -88,4 +88,5 @@ void enablePwmOutput(void);
 void enableEcapInterrupt(void);
 void disableEcapInterrupt(void);
 void clearScibOverflow(void);
+void readTZGpioState(void);
 #endif
