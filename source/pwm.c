@@ -5,7 +5,66 @@
 #include "adc.h"
 #include "pid.h"
 #include "ecap.h"
+/******************************************/
+inline void openAH(void){
+	EPwm1Regs.AQCSFRC.bit.CSFA = 3;
+}
 
+inline void closeAH(void){
+	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
+}
+
+inline void openAL(void){
+	EPwm1Regs.AQCSFRC.bit.CSFB = 3;
+}
+
+inline void closeAL(void){
+	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
+}
+
+inline void closeAHandAL(void){
+	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
+	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
+}
+/******************************************/
+inline void openBH(void){
+	EPwm2Regs.AQCSFRC.bit.CSFA = 3;
+}
+
+inline void closeBH(void){
+	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
+}
+inline void openBL(void){
+	EPwm2Regs.AQCSFRC.bit.CSFB = 3;
+}
+
+inline void closeBL(void){
+	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
+}
+inline void closeBHandAL(void){
+	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
+	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
+}
+/******************************************/
+inline void openCH(void){
+	EPwm3Regs.AQCSFRC.bit.CSFA = 3;
+}
+
+inline void closeCH(void){
+	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
+}
+inline void openCL(void){
+	EPwm3Regs.AQCSFRC.bit.CSFB = 3;
+}
+
+inline void closeCL(void){
+	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
+}
+inline void closeCHandAL(void){
+	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
+	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
+}
+/******************************************/
 inline void DisablePwm1(void){
 
 	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
@@ -27,7 +86,7 @@ void DisablePwmOutput(void){
 	DisablePwm2();
 	DisablePwm3();
 }
-
+/******************************************/
 inline void CPositiveToBNegtive(void) {
 
 	DisablePwm1();
@@ -128,52 +187,110 @@ Uint16 GetCurrentHallValue(void){
 void SwitchDirection(void){
 	gSysInfo.lastTimeHalllPosition = gSysInfo.currentHallPosition;
 	gSysInfo.currentHallPosition = GetCurrentHallValue();
-	//3:A 2:B 1:C
+	//1:A 2:B 3:C
 	switch (gSysInfo.currentHallPosition) {
-		case 3://C+ ---------------> B-
-			
-			if((3 == gSysInfo.lastTimeHalllPosition )
-				|| (2 == gSysInfo.lastTimeHalllPosition)
+		case 3://B+ --------------->C-
+			if((2 == gSysInfo.lastTimeHalllPosition)
 				|| (1 == gSysInfo.lastTimeHalllPosition)){
+				//open bh cl al
+				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeAH();
+				closeBL();
+				closeCH();
+				openBH();
+				openCL();
+				openAL();
+				
+			}
+			else if(3 == gSysInfo.lastTimeHalllPosition){
 				BPositiveToCNegtive();
-
 			}
 			break;
-		case 1://C+ ---------------> A-
-			if((1 == gSysInfo.lastTimeHalllPosition )
-				|| (3 == gSysInfo.lastTimeHalllPosition)
+		case 1://A+ --------------->C-
+			if((3 == gSysInfo.lastTimeHalllPosition)
 				|| (5 == gSysInfo.lastTimeHalllPosition)){
+				//open ah cl bh
+				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeBL();
+				closeCH();
+				closeAL();
+				openAH();
+				openCL();
+				openBH();
+			}
+			else if(1 == gSysInfo.lastTimeHalllPosition){
 				APositiveToCNegtive();
-
 			}
 			break;
-		case 5://B+ ---------------> A-
-			if((5 == gSysInfo.lastTimeHalllPosition )
-				|| (1 == gSysInfo.lastTimeHalllPosition)
+		case 5://A+ --------------->B-
+			if((1 == gSysInfo.lastTimeHalllPosition)
 				|| (4 == gSysInfo.lastTimeHalllPosition)){
+				//open ah bl cl
+				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeCH();
+				closeBH();
+				closeAL();
+				openAH();
+				openBL();
+				openCL();
+			}
+			else if(5 == gSysInfo.lastTimeHalllPosition){
 				APositiveToBNegtive();
-			
 			}
 			break;
-		case 4://B+ ---------------> C-
-			if((4 == gSysInfo.lastTimeHalllPosition )
-				|| (5 == gSysInfo.lastTimeHalllPosition)
+		case 4://C+ --------------->B-
+			if((5 == gSysInfo.lastTimeHalllPosition)
 				|| (6 == gSysInfo.lastTimeHalllPosition)){
+				//open ch bl ah
+				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeAL();
+				closeBH();
+				closeCL();
+				openCH();
+				openBL();
+				openAH();
+			}
+			else if(4 == gSysInfo.lastTimeHalllPosition){
 				CPositiveToBNegtive();
+			}
+			break;
+		case 6://C+ --------------->A-
+			if((4 == gSysInfo.lastTimeHalllPosition)
+				|| (2 == gSysInfo.lastTimeHalllPosition)){
+				//open ch al bl
+				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeBH();
+				closeAH();
+				closeCL();
+				openCH();
+				openAL();
+				openBL();
 
 			}
-			break;
-		case 6://A+ ---------------> C-
-			if((6 == gSysInfo.lastTimeHalllPosition )
-				|| (4 == gSysInfo.lastTimeHalllPosition)
-				|| (2 == gSysInfo.lastTimeHalllPosition)){
+			else if(6 == gSysInfo.lastTimeHalllPosition){
 				CPositiveToANegtive();
 			}
 			break;
 		case 2://A+ ---------------> B-
-			if((2 == gSysInfo.lastTimeHalllPosition )
-				|| (3 == gSysInfo.lastTimeHalllPosition)
+			if((3 == gSysInfo.lastTimeHalllPosition)
 				|| (6 == gSysInfo.lastTimeHalllPosition)){
+				//open bh al ch
+				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeCL();
+				closeAH();
+				closeBL();
+				openBH();
+				openAL();
+				openCH();
+				
+			}
+			else if(2 == gSysInfo.lastTimeHalllPosition){
 				BPositiveToANegtive();
 			}
 			break;
