@@ -92,7 +92,7 @@ void readTZGpioState(void){
 	if(gpio14state == 0){
 		gSysAlarm.bit.f = 1;
 	}
-	if(gpio15state == 0){
-		gSysAlarm.bit.j = 1;
-	}
+	// if(gpio15state == 0){
+	// 	gSysAlarm.bit.j = 1;
+	// }
 }

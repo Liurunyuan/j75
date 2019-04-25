@@ -75,8 +75,15 @@ void StateMachine(void){
 		case ALARM:
 			DisablePwmOutput();
 			if(gSysAlarm.all == 0){
-				gSysState.currentstate = STOP;
-				clearHardwareErro();
+				enablePwmOutput();
+				if(GpioDataRegs.GPADAT.bit.GPIO15 == 1){
+					gSysState.currentstate = STOP;
+					gSysState.targetState == STOP;
+					clearHardwareErro();
+				}
+				else{
+					gSysAlarm.bit.j = 1;
+				}
 			}
 			break;
 		default:
