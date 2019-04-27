@@ -1,7 +1,7 @@
 /*
  * adc.c
  *
- *  Created on: 2019Äê2ÔÂ14ÈÕ
+ *  Created on: 2019ï¿½ï¿½2ï¿½ï¿½14ï¿½ï¿½
  *      Author: Administrator
  */
 #include "DSP280x_Device.h"     // DSP280x Headerfile Include File
@@ -34,20 +34,20 @@ Uint16 updateAGND_B7(void){return GET_AGND_B7;}
 const UV funcptr[] = {
 
 	updateU_AN_3V3_A0,
-	updateAGND_A1,
-	updateI_AN_3V3_A2,
-	updateAGND_A3,
-	updateNO_USE_A4,
-	updateNO_USE_A5,
-	updateNO_USE_A6,
-	updateAGND_A7,
 	updateT_AN_3V3_B0,
+	updateAGND_A1,
 	updateNO_USE_B1,
+	updateI_AN_3V3_A2,
 	updateNO_USE_B2,
+	updateAGND_A3,
 	updateNO_USE_B3,
+	updateNO_USE_A4,
 	updateHP_I_AN_3V3_B4,
+	updateNO_USE_A5,
 	updateAGND_B5,
+	updateNO_USE_A6,
 	updateHPT_AN_3V3_B6,
+	updateAGND_A7,
 	updateAGND_B7
 };
 const int anologMaxMinInit[][2] = {

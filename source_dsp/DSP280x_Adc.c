@@ -48,17 +48,17 @@ void ConfigAdc(void){
 	//ADC_cal();
 	EDIS;
 
-	AdcRegs.ADCTRL3.bit.ADCBGRFDN = 3;//  模数转换内部参考电压源电路上电
+	AdcRegs.ADCTRL3.bit.ADCBGRFDN = 3;
 	DELAY_US(ADC_usDELAY);
-  	AdcRegs.ADCTRL3.bit.ADCPWDN = 1;//  模数转换核模拟电路加电
+  	AdcRegs.ADCTRL3.bit.ADCPWDN = 1;
 
 
-	AdcRegs.ADCTRL3.bit.ADCCLKPS = 0x5;//时钟预分频
-	AdcRegs.ADCTRL3.bit.SMODE_SEL = 1;//同步采样
+	AdcRegs.ADCTRL3.bit.ADCCLKPS = 0x5;
+	AdcRegs.ADCTRL3.bit.SMODE_SEL = 1;
     AdcRegs.ADCTRL1.bit.ACQ_PS = 0x0;
-    AdcRegs.ADCTRL1.bit.SEQ_CASC = 1;//级联排序器模式
-    AdcRegs.ADCTRL1.bit.CONT_RUN = 0;//mode: start/stop
-    AdcRegs.ADCTRL1.bit.SEQ_OVRD = 0;//装换完max通道后，排序器指针复位到初始状态
+    AdcRegs.ADCTRL1.bit.SEQ_CASC = 1;
+    AdcRegs.ADCTRL1.bit.CONT_RUN = 0;
+    AdcRegs.ADCTRL1.bit.SEQ_OVRD = 0;
     AdcRegs.ADCTRL1.bit.SUSMOD = 2;
     AdcRegs.ADCTRL2.bit.SOC_SEQ1 	= 1;
     AdcRegs.ADCTRL2.bit.EPWM_SOCB_SEQ = 0;
@@ -69,7 +69,7 @@ void ConfigAdc(void){
     AdcRegs.ADCTRL2.bit.INT_ENA_SEQ2 = 0;
     AdcRegs.ADCTRL2.bit.INT_MOD_SEQ2 = 0;
     AdcRegs.ADCTRL2.bit.EPWM_SOCB_SEQ2 = 0;
-    AdcRegs.ADCMAXCONV.bit.MAX_CONV1 =0xF;   // max conversion channel
+    AdcRegs.ADCMAXCONV.bit.MAX_CONV1 =0x0007;
     //AdcRegs.ADCMAXCONV.bit.MAX_CONV1= 0x5;
     AdcRegs.ADCST.bit.INT_SEQ1_CLR = 1;
     AdcRegs.ADCST.bit.INT_SEQ2_CLR = 1;
@@ -84,14 +84,14 @@ void ConfigAdc(void){
     AdcRegs.ADCCHSELSEQ2.bit.CONV05 = 0x5;
     AdcRegs.ADCCHSELSEQ2.bit.CONV06 = 0x6;
     AdcRegs.ADCCHSELSEQ2.bit.CONV07 = 0x7;
-    AdcRegs.ADCCHSELSEQ3.bit.CONV08 = 0x8;
-    AdcRegs.ADCCHSELSEQ3.bit.CONV09 = 0x9;
-    AdcRegs.ADCCHSELSEQ3.bit.CONV10 = 0xA;
-    AdcRegs.ADCCHSELSEQ3.bit.CONV11 = 0xB;
-    AdcRegs.ADCCHSELSEQ4.bit.CONV12 = 0xC;
-    AdcRegs.ADCCHSELSEQ4.bit.CONV13 = 0xD;
-    AdcRegs.ADCCHSELSEQ4.bit.CONV14 = 0xE;
-    AdcRegs.ADCCHSELSEQ4.bit.CONV15 = 0xF;
+    // AdcRegs.ADCCHSELSEQ3.bit.CONV08 = 0x8;
+    // AdcRegs.ADCCHSELSEQ3.bit.CONV09 = 0x9;
+    // AdcRegs.ADCCHSELSEQ3.bit.CONV10 = 0xA;
+    // AdcRegs.ADCCHSELSEQ3.bit.CONV11 = 0xB;
+    // AdcRegs.ADCCHSELSEQ4.bit.CONV12 = 0xC;
+    // AdcRegs.ADCCHSELSEQ4.bit.CONV13 = 0xD;
+    // AdcRegs.ADCCHSELSEQ4.bit.CONV14 = 0xE;
+    // AdcRegs.ADCCHSELSEQ4.bit.CONV15 = 0xF;
 
     AdcRegs.ADCTRL2.bit.EPWM_SOCA_SEQ1 = 1;
     AdcRegs.ADCTRL2.bit.RST_SEQ1 = 1;
