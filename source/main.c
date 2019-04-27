@@ -82,6 +82,7 @@ void StateMachine(void){
 					clearHardwareErro();
 				}
 				else{
+					disablePwmOutput();
 					gSysAlarm.bit.j = 1;
 				}
 			}

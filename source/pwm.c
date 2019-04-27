@@ -276,7 +276,7 @@ void SwitchDirection(void){
 				CPositiveToANegtive();
 			}
 			break;
-		case 2://A+ ---------------> B-
+		case 2://B+ --------------->A-
 			if((3 == gSysInfo.lastTimeHalllPosition)
 				|| (6 == gSysInfo.lastTimeHalllPosition)){
 				//open bh al ch

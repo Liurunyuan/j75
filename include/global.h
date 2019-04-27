@@ -85,6 +85,7 @@ void Delay(int time);
 void InitGlobalVar(void);
 void clearHardwareErro(void);
 void enablePwmOutput(void);
+void disablePwmOutput(void);
 void enableEcapInterrupt(void);
 void disableEcapInterrupt(void);
 void clearScibOverflow(void);

@@ -43,11 +43,25 @@ void clearHardwareErro(void){
 	asm(" NOP");
 	asm(" NOP");
 	GpioDataRegs.GPADAT.bit.GPIO29 = 1;
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
 }
 
 
 void enablePwmOutput(void){
 	GpioDataRegs.GPADAT.bit.GPIO31 = 0;
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+}
+
+void disablePwmOutput(void){
+	GpioDataRegs.GPADAT.bit.GPIO31 = 1;
 	asm(" NOP");
 	asm(" NOP");
 	asm(" NOP");
@@ -84,15 +98,10 @@ void clearScibOverflow(void){
 void readTZGpioState(void){
 	//this function will remove when TZ is configured
 	int gpio14state = -1;
-	int gpio15state = -1;
 
 	gpio14state = GpioDataRegs.GPADAT.bit.GPIO14;
-	gpio15state = GpioDataRegs.GPADAT.bit.GPIO15;
 
 	if(gpio14state == 0){
 		gSysAlarm.bit.f = 1;
 	}
-	// if(gpio15state == 0){
-	// 	gSysAlarm.bit.j = 1;
-	// }
 }
