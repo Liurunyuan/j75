@@ -4,6 +4,7 @@
 #include "global.h"
 #include "scitx.h"
 #include "ecap.h"
+#include "adc.h"
 
 #define S (0)
 
@@ -30,7 +31,7 @@ void GetDynamoCurrentCurve(int a, int b, int c){
 	gRx422TxVar[4].value = 1;
 }
 void GetTemperatureCurve(int a, int b, int c){
-	gRx422TxVar[5].value = 3000;
+	gRx422TxVar[5].value = gSysAnalogVar.single.var[T_AN_3V3_B0].value;
 }
 void GetMotorAccelCurve(int a, int b, int c){
 	gRx422TxVar[6].value = 3;

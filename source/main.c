@@ -55,6 +55,7 @@ void StateMachine(void){
 			break;
 		case START:
 			/* code */
+			readTZGpioState();
 			if(gSysAlarm.all != 0){
 				gSysState.currentstate = ALARM;
 			}
@@ -64,6 +65,7 @@ void StateMachine(void){
 			}
 			break;
 		case STOP:
+			readTZGpioState();
 			if(gSysState.targetState == START){
 				gSysState.currentstate = START;
 			}
@@ -78,7 +80,7 @@ void StateMachine(void){
 				enablePwmOutput();
 				if(GpioDataRegs.GPADAT.bit.GPIO15 == 1){
 					gSysState.currentstate = STOP;
-					gSysState.targetState == STOP;
+					gSysState.targetState = STOP;
 					clearHardwareErro();
 				}
 				else{
@@ -103,8 +105,6 @@ void MainLoop(){
 	UnpackSciPackage(&gRS422RxQue);
 
 	clearScibOverflow();
-
-	readTZGpioState();
 }
 
 void main(void) {

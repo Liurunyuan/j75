@@ -72,4 +72,7 @@ void InitAdcVar(void);
 int IsAnalogValueAbnormal(void);
 void ReadAnalogValue(void);
 
+
+extern SysAnalogVar gSysAnalogVar;
+
 #endif /* ADC_H_ */
