@@ -102,6 +102,8 @@ void MainLoop(){
 
 	readTZGpioState();
 
+	updateAndCheckTemperature();
+
 	UnpackSciPackage(&gRS422RxQue);
 
 	clearScibOverflow();

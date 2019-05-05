@@ -15,21 +15,21 @@ typedef Uint16 (*UV)(void);
 enum ADC_INDEX
 {
 	U_AN_3V3_A0 = 0,		//0
-	AGND_A1,		//1
+	AGND_A1,				//1
 	I_AN_3V3_A2,			//2
-	AGND_A3,		//3
-	NO_USE_A4,		//4
-	NO_USE_A5,			//5
-	NO_USE_A6,		//6
-	AGND_A7,		//7
-	T_AN_3V3_B0,	//8
-	NO_USE_B1,		//9
-	NO_USE_B2,		//10
-	NO_USE_B3,		//11
-	HP_I_AN_3V3_B4,
-	AGND_B5,
-	HPT_AN_3V3_B6,
-	AGND_B7,
+	AGND_A3,				//3
+	NO_USE_A4,				//4
+	NO_USE_A5,				//5
+	NO_USE_A6,				//6
+	AGND_A7,				//7
+	T_AN_3V3_B0,			//8
+	NO_USE_B1,				//9
+	NO_USE_B2,				//10
+	NO_USE_B3,				//11
+	HP_I_AN_3V3_B4,			//12
+	AGND_B5,				//13
+	HPT_AN_3V3_B6,			//14
+	AGND_B7,				//15
 	AnalogTotalChannel
 };
 
@@ -71,6 +71,7 @@ typedef struct _SysAnalogVar{
 void InitAdcVar(void);
 int IsAnalogValueAbnormal(void);
 void ReadAnalogValue(void);
+void updateAndCheckTemperature(void);
 
 
 extern SysAnalogVar gSysAnalogVar;

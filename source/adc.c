@@ -34,20 +34,20 @@ Uint16 updateAGND_B7(void){return GET_AGND_B7;}
 const UV funcptr[] = {
 
 	updateU_AN_3V3_A0,
-	updateT_AN_3V3_B0,
 	updateAGND_A1,
-	updateNO_USE_B1,
 	updateI_AN_3V3_A2,
-	updateNO_USE_B2,
 	updateAGND_A3,
-	updateNO_USE_B3,
 	updateNO_USE_A4,
-	updateHP_I_AN_3V3_B4,
 	updateNO_USE_A5,
-	updateAGND_B5,
 	updateNO_USE_A6,
-	updateHPT_AN_3V3_B6,
 	updateAGND_A7,
+	updateT_AN_3V3_B0,
+	updateNO_USE_B1,
+	updateNO_USE_B2,
+	updateNO_USE_B3,
+	updateHP_I_AN_3V3_B4,
+	updateAGND_B5,
+	updateHPT_AN_3V3_B6,
 	updateAGND_B7
 };
 const int anologMaxMinInit[][2] = {
@@ -59,9 +59,14 @@ const int anologMaxMinInit[][2] = {
 	{5,0},
 	{6,0},
 	{7,0},
-	{8,0},
+	{4096,691},		//temperature max and min
 	{9,0},
-	{10,0}
+	{10,0},
+	{11,0},
+	{12,0},
+	{13,0},
+	{14,0},
+	{15,0},
 };
 void InitAdcVar(void){
 	int index;
@@ -105,4 +110,20 @@ int IsAnalogValueAbnormal(void){
 		}
 	}
 	return ret;
+}
+
+void updateAndCheckTemperature(void){
+	static count = 0;
+	gSysAnalogVar.single.var[T_AN_3V3_B0].value = gSysAnalogVar.single.var[T_AN_3V3_B0].updateValue();
+	if((gSysAnalogVar.single.var[T_AN_3V3_B0].value > gSysAnalogVar.single.var[T_AN_3V3_B0].max) ||
+				(gSysAnalogVar.single.var[T_AN_3V3_B0].value < gSysAnalogVar.single.var[T_AN_3V3_B0].min)) {
+		++count;
+		if(count > 5){
+			count = 0;
+			gSysAlarm.bit.overTemperature = 1;
+		}
+	}
+	else{
+		count = 0;
+	}
 }
