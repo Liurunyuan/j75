@@ -55,7 +55,6 @@ void StateMachine(void){
 			break;
 		case START:
 			/* code */
-			readTZGpioState();
 			if(gSysAlarm.all != 0){
 				gSysState.currentstate = ALARM;
 			}
@@ -65,7 +64,6 @@ void StateMachine(void){
 			}
 			break;
 		case STOP:
-			readTZGpioState();
 			if(gSysState.targetState == START){
 				gSysState.currentstate = START;
 			}
@@ -101,6 +99,8 @@ void MainLoop(){
 	FEED_WATCH_DOG = 1;
 
 	StateMachine();
+
+	readTZGpioState();
 
 	UnpackSciPackage(&gRS422RxQue);
 
