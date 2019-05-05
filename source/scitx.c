@@ -28,13 +28,13 @@ void GetDynamoVoltageCurve(int a, int b, int c){
 	gRx422TxVar[4].value = 1;
 }
 void GetDynamoCurrentCurve(int a, int b, int c){
-	gRx422TxVar[4].value = 1;
+	gRx422TxVar[5].value = 1;
 }
 void GetTemperatureCurve(int a, int b, int c){
-	gRx422TxVar[5].value = gSysAnalogVar.single.var[T_AN_3V3_B0].value;
+	gRx422TxVar[6].value = gSysAnalogVar.single.var[T_AN_3V3_B0].value;
 }
 void GetMotorAccelCurve(int a, int b, int c){
-	gRx422TxVar[6].value = 3;
+	gRx422TxVar[7].value = 3;
 }
 void InitgRx422TxEnableFlag(void){
 	int index;
