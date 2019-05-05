@@ -113,7 +113,7 @@ int IsAnalogValueAbnormal(void){
 }
 
 void updateAndCheckTemperature(void){
-	static count = 0;
+	static int count = 0;
 	gSysAnalogVar.single.var[T_AN_3V3_B0].value = gSysAnalogVar.single.var[T_AN_3V3_B0].updateValue();
 	if((gSysAnalogVar.single.var[T_AN_3V3_B0].value > gSysAnalogVar.single.var[T_AN_3V3_B0].max) ||
 				(gSysAnalogVar.single.var[T_AN_3V3_B0].value < gSysAnalogVar.single.var[T_AN_3V3_B0].min)) {
