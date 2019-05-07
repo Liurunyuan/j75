@@ -1,6 +1,11 @@
 #ifndef _GLOBAL_H
 #define _GLOBAL_H
 
+#define OPENLOOPDONE 0
+#define CLOSELOOPDONE 0 
+
+
+
 
 #define FEED_WATCH_DOG  GpioDataRegs.GPATOGGLE.bit.GPIO23
 
@@ -60,6 +65,8 @@ typedef struct{
 	int16 isEcapRefresh;
 	int16 targetDuty;
 	int16 currentDuty;
+	int16 openLoopTargetDuty;
+	int16 ddtmax;
 }SYSINFO;
 
 typedef struct _DATA{

@@ -56,3 +56,15 @@ int16 PidOutput(double currentSpeed){
 
 	return pidOutput;
 }
+
+int16 openLoopControl(int16 busVol, int16 targetSpeed){
+	//find the target duty by bus voltage and motor speed
+	int16 ret = 0;
+
+
+#if OPENLOOPDONE
+	return ret;
+#else
+	return ret * 0.7;
+#endif
+}

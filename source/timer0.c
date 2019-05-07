@@ -11,18 +11,14 @@
 
 #define CALSPEED (4)
 
-
-
-void ThresholdProtectForDuty(void) {
-	if (gSysInfo.currentDuty < gSysInfo.targetDuty) {
-		gSysInfo.currentDuty++;
-	} 
-	else if (gSysInfo.currentDuty > gSysInfo.targetDuty) {
-		gSysInfo.currentDuty--;
-	} 
-	else {
+void TargetDutyGradualChange(int targetduty){
+	if(gSysInfo.currentDuty < targetduty){
+		gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
 	}
-
+	if(gSysInfo.currentDuty > targetduty){
+		gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
+	}
+	//need to change the threshold value of the next line
 	if (gSysInfo.currentDuty > 400) {
 		gSysInfo.currentDuty = 400;
 	} 
@@ -77,8 +73,14 @@ void Timer1_ISR_Thread(void){
 
 	MotorSpeed();
 	if(gSysState.currentstate == START){
+
+		gSysInfo.openLoopTargetDuty = openLoopControl(100, gTargetSpeed);
+	#if CLOSELOOPDONE
 		gSysInfo.targetDuty =  PidOutput(gMotorSpeedEcap);
-		ThresholdProtectForDuty(); 
+	#else
+		gSysInfo.targetDuty = 0;
+	#endif
+		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.targetDuty);
 	}
 
 	++count;
@@ -90,3 +92,24 @@ void Timer1_ISR_Thread(void){
 		}
 	}
 }
+
+
+//disable this function
+// void ThresholdProtectForDuty(void) {
+// 	if (gSysInfo.currentDuty < gSysInfo.targetDuty) {
+// 		gSysInfo.currentDuty++;
+// 	} 
+// 	else if (gSysInfo.currentDuty > gSysInfo.targetDuty) {
+// 		gSysInfo.currentDuty--;
+// 	} 
+// 	else {
+// 	}
+
+// 	if (gSysInfo.currentDuty > 400) {
+// 		gSysInfo.currentDuty = 400;
+// 	} 
+// 	else if (gSysInfo.currentDuty <= 0) {
+// 		gSysInfo.currentDuty = 0;
+// 	}
+// 	// gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
+// }

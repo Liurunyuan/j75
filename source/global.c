@@ -18,6 +18,8 @@ void InitGlobalVar(void){
 	gSysInfo.isEcapRefresh = 0;
 	gSysInfo.targetDuty = 0;
 	gSysInfo.currentDuty = 0;
+	gSysInfo.openLoopTargetDuty = 0;
+	gSysInfo.ddtmax = 1;
 
 	gSysAlarm.all = 0;
 }
