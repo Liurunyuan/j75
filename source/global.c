@@ -16,7 +16,7 @@ void InitGlobalVar(void){
 	gSysInfo.currentHallPosition = 0;
 	gSysInfo.lastTimeHalllPosition = 0;
 	gSysInfo.isEcapRefresh = 0;
-	gSysInfo.targetDuty = 0;
+	gSysInfo.closeLooptargetDuty = 0;
 	gSysInfo.currentDuty = 0;
 	gSysInfo.openLoopTargetDuty = 0;
 	gSysInfo.ddtmax = 1;

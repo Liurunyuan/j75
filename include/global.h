@@ -63,7 +63,7 @@ typedef struct{
 	int16 dutyUp;
 	int16 dutyDown;
 	int16 isEcapRefresh;
-	int16 targetDuty;
+	int16 closeLooptargetDuty;
 	int16 currentDuty;
 	int16 openLoopTargetDuty;
 	int16 ddtmax;

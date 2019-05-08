@@ -22,7 +22,7 @@ void GetDisplacementCurve(int a, int b, int c){
 	gRx422TxVar[2].value = 1;
 }
 void GetMotorCurrentCurve(int a, int b, int c){
-	gRx422TxVar[3].value = gSysInfo.targetDuty;
+	gRx422TxVar[3].value = gSysInfo.closeLooptargetDuty;
 }
 void GetDynamoVoltageCurve(int a, int b, int c){
 	gRx422TxVar[4].value = 1;
