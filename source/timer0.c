@@ -77,11 +77,11 @@ void Timer1_ISR_Thread(void){
 
 		gSysInfo.openLoopTargetDuty = openLoopControl(busVol, gTargetSpeed);
 	#if CLOSELOOPDONE
-		gSysInfo.targetDuty =  PidOutput(gMotorSpeedEcap);
+		gSysInfo.closeLooptargetDuty =  PidOutput(gMotorSpeedEcap);
 	#else
-		gSysInfo.targetDuty = 0;
+		gSysInfo.closeLooptargetDuty = 0;
 	#endif
-		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.targetDuty);
+		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.closeLooptargetDuty);
 	}
 
 	++count;
@@ -97,10 +97,10 @@ void Timer1_ISR_Thread(void){
 
 //disable this function
 // void ThresholdProtectForDuty(void) {
-// 	if (gSysInfo.currentDuty < gSysInfo.targetDuty) {
+// 	if (gSysInfo.currentDuty < gSysInfo.closeLooptargetDuty) {
 // 		gSysInfo.currentDuty++;
 // 	} 
-// 	else if (gSysInfo.currentDuty > gSysInfo.targetDuty) {
+// 	else if (gSysInfo.currentDuty > gSysInfo.closeLooptargetDuty) {
 // 		gSysInfo.currentDuty--;
 // 	} 
 // 	else {
