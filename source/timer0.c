@@ -7,6 +7,7 @@
 #include "ecap.h"
 #include "kalman.h"
 #include "pid.h"
+#include "adc.h"
 #define N (0)
 
 #define CALSPEED (4)
@@ -70,11 +71,11 @@ void Timer0_ISR_Thread(void){
 
 void Timer1_ISR_Thread(void){
 	static unsigned char count = 0;
-
+	int busVol = gSysAnalogVar.single.var[U_AN_3V3_A0].value;
 	MotorSpeed();
 	if(gSysState.currentstate == START){
 
-		gSysInfo.openLoopTargetDuty = openLoopControl(100, gTargetSpeed);
+		gSysInfo.openLoopTargetDuty = openLoopControl(busVol, gTargetSpeed);
 	#if CLOSELOOPDONE
 		gSysInfo.targetDuty =  PidOutput(gMotorSpeedEcap);
 	#else
