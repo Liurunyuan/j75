@@ -205,6 +205,7 @@ void SwitchDirection(void){
 			}
 			else{
 				DisablePwmOutput();
+				gSysInfo.hallErrorCount++;
 			}
 			break;
 		case 1://A+ --------------->C-
@@ -223,6 +224,7 @@ void SwitchDirection(void){
 			}
 			else{
 				DisablePwmOutput();
+				gSysInfo.hallErrorCount++;
 			}
 			break;
 		case 5://A+ --------------->B-
@@ -241,6 +243,7 @@ void SwitchDirection(void){
 			}
 			else{
 				DisablePwmOutput();
+				gSysInfo.hallErrorCount++;
 			}
 			break;
 		case 4://C+ --------------->B-
@@ -259,6 +262,7 @@ void SwitchDirection(void){
 			}
 			else{
 				DisablePwmOutput();
+				gSysInfo.hallErrorCount++;
 			}
 			break;
 		case 6://C+ --------------->A-
@@ -277,7 +281,8 @@ void SwitchDirection(void){
 				APositiveToBNegtive();
 			}
 			else{
-				DisablePwmOutput();		
+				DisablePwmOutput();
+				gSysInfo.hallErrorCount++;		
 			}
 			break;
 		case 2://B+ --------------->A-
@@ -296,6 +301,7 @@ void SwitchDirection(void){
 			}
 			else{
 				DisablePwmOutput();
+				gSysInfo.hallErrorCount++;
 			}
 			break;
 		default:

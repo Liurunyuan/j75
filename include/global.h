@@ -67,6 +67,7 @@ typedef struct{
 	int16 currentDuty;
 	int16 openLoopTargetDuty;
 	int16 ddtmax;
+	int16 hallErrorCount;
 }SYSINFO;
 
 typedef struct _DATA{

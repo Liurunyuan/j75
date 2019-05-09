@@ -20,6 +20,7 @@ void InitGlobalVar(void){
 	gSysInfo.currentDuty = 0;
 	gSysInfo.openLoopTargetDuty = 0;
 	gSysInfo.ddtmax = 1;
+	gSysInfo.hallErrorCount = 0;
 
 	gSysAlarm.all = 0;
 }
