@@ -16,8 +16,10 @@ void InitGlobalVar(void){
 	gSysInfo.currentHallPosition = 0;
 	gSysInfo.lastTimeHalllPosition = 0;
 	gSysInfo.isEcapRefresh = 0;
-	gSysInfo.targetDuty = 0;
+	gSysInfo.closeLooptargetDuty = 0;
 	gSysInfo.currentDuty = 0;
+	gSysInfo.openLoopTargetDuty = 0;
+	gSysInfo.ddtmax = 1;
 
 	gSysAlarm.all = 0;
 }
@@ -43,11 +45,25 @@ void clearHardwareErro(void){
 	asm(" NOP");
 	asm(" NOP");
 	GpioDataRegs.GPADAT.bit.GPIO29 = 1;
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
 }
 
 
 void enablePwmOutput(void){
 	GpioDataRegs.GPADAT.bit.GPIO31 = 0;
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+	asm(" NOP");
+}
+
+void disablePwmOutput(void){
+	GpioDataRegs.GPADAT.bit.GPIO31 = 1;
 	asm(" NOP");
 	asm(" NOP");
 	asm(" NOP");
@@ -78,5 +94,16 @@ void clearScibOverflow(void){
 		ScibRegs.SCIFFRX.bit.RXFFOVRCLR = 1;
 		ScibRegs.SCIFFRX.bit.RXFFOVF = 1;
 		gSysAlarm.bit.InitFault = 1;
+	}
+}
+
+void readTZGpioState(void){
+	//this function will remove when TZ is configured
+	int gpio14state = -1;
+
+	gpio14state = GpioDataRegs.GPADAT.bit.GPIO14;
+
+	if(gpio14state == 0){
+		gSysAlarm.bit.f = 1;
 	}
 }

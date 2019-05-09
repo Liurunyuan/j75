@@ -1,7 +1,7 @@
 /*
  * adc.c
  *
- *  Created on: 2019Äê2ÔÂ14ÈÕ
+ *  Created on: 2019ï¿½ï¿½2ï¿½ï¿½14ï¿½ï¿½
  *      Author: Administrator
  */
 #include "DSP280x_Device.h"     // DSP280x Headerfile Include File
@@ -59,9 +59,14 @@ const int anologMaxMinInit[][2] = {
 	{5,0},
 	{6,0},
 	{7,0},
-	{8,0},
+	{4096,691},		//temperature max and min
 	{9,0},
-	{10,0}
+	{10,0},
+	{11,0},
+	{12,0},
+	{13,0},
+	{14,0},
+	{15,0},
 };
 void InitAdcVar(void){
 	int index;
@@ -105,4 +110,20 @@ int IsAnalogValueAbnormal(void){
 		}
 	}
 	return ret;
+}
+
+void updateAndCheckTemperature(void){
+	static int count = 0;
+	gSysAnalogVar.single.var[T_AN_3V3_B0].value = gSysAnalogVar.single.var[T_AN_3V3_B0].updateValue();
+	if((gSysAnalogVar.single.var[T_AN_3V3_B0].value > gSysAnalogVar.single.var[T_AN_3V3_B0].max) ||
+				(gSysAnalogVar.single.var[T_AN_3V3_B0].value < gSysAnalogVar.single.var[T_AN_3V3_B0].min)) {
+		++count;
+		if(count > 5){
+			count = 0;
+			gSysAlarm.bit.overTemperature = 1;
+		}
+	}
+	else{
+		count = 0;
+	}
 }

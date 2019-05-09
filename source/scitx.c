@@ -4,6 +4,7 @@
 #include "global.h"
 #include "scitx.h"
 #include "ecap.h"
+#include "adc.h"
 
 #define S (0)
 
@@ -21,19 +22,19 @@ void GetDisplacementCurve(int a, int b, int c){
 	gRx422TxVar[2].value = 1;
 }
 void GetMotorCurrentCurve(int a, int b, int c){
-	gRx422TxVar[3].value = gSysInfo.targetDuty;
+	gRx422TxVar[3].value = gSysInfo.closeLooptargetDuty;
 }
 void GetDynamoVoltageCurve(int a, int b, int c){
 	gRx422TxVar[4].value = 1;
 }
 void GetDynamoCurrentCurve(int a, int b, int c){
-	gRx422TxVar[4].value = 1;
+	gRx422TxVar[5].value = 1;
 }
 void GetTemperatureCurve(int a, int b, int c){
-	gRx422TxVar[5].value = 3000;
+	gRx422TxVar[6].value = gSysAnalogVar.single.var[T_AN_3V3_B0].value;
 }
 void GetMotorAccelCurve(int a, int b, int c){
-	gRx422TxVar[6].value = 3;
+	gRx422TxVar[7].value = 3;
 }
 void InitgRx422TxEnableFlag(void){
 	int index;

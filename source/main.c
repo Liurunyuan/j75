@@ -75,7 +75,16 @@ void StateMachine(void){
 		case ALARM:
 			DisablePwmOutput();
 			if(gSysAlarm.all == 0){
-				gSysState.currentstate = STOP;
+				enablePwmOutput();
+				if(GpioDataRegs.GPADAT.bit.GPIO15 == 1){
+					gSysState.currentstate = STOP;
+					gSysState.targetState = STOP;
+					clearHardwareErro();
+				}
+				else{
+					disablePwmOutput();
+					gSysAlarm.bit.j = 1;
+				}
 			}
 			break;
 		default:
@@ -91,10 +100,13 @@ void MainLoop(){
 
 	StateMachine();
 
+	readTZGpioState();
+
+	updateAndCheckTemperature();
+
 	UnpackSciPackage(&gRS422RxQue);
 
 	clearScibOverflow();
-	
 }
 
 void main(void) {

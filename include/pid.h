@@ -23,5 +23,6 @@ extern volatile PIDPARA gPidPara;
 
 void InitPidVar(void);
 int16 PidOutput(double currentSpeed);
+int16 openLoopControl(int16 busVol, int16 targetSpeed);
 
 #endif /* PID_H_ */
