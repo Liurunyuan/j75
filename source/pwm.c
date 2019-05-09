@@ -203,6 +203,9 @@ void SwitchDirection(void){
 			else if(3 == gSysInfo.lastTimeHalllPosition){
 				CPositiveToANegtive();
 			}
+			else{
+				DisablePwmOutput();
+			}
 			break;
 		case 1://A+ --------------->C-
 			if(3 == gSysInfo.lastTimeHalllPosition){
@@ -217,6 +220,9 @@ void SwitchDirection(void){
 			}
 			else if(1 == gSysInfo.lastTimeHalllPosition){
 				BPositiveToANegtive();
+			}
+			else{
+				DisablePwmOutput();
 			}
 			break;
 		case 5://A+ --------------->B-
@@ -233,6 +239,9 @@ void SwitchDirection(void){
 			else if(5 == gSysInfo.lastTimeHalllPosition){
 				BPositiveToCNegtive();
 			}
+			else{
+				DisablePwmOutput();
+			}
 			break;
 		case 4://C+ --------------->B-
 			if(5 == gSysInfo.lastTimeHalllPosition){
@@ -247,6 +256,9 @@ void SwitchDirection(void){
 			}
 			else if(4 == gSysInfo.lastTimeHalllPosition){
 				APositiveToCNegtive();
+			}
+			else{
+				DisablePwmOutput();
 			}
 			break;
 		case 6://C+ --------------->A-
@@ -264,6 +276,9 @@ void SwitchDirection(void){
 			else if(6 == gSysInfo.lastTimeHalllPosition){
 				APositiveToBNegtive();
 			}
+			else{
+				DisablePwmOutput();		
+			}
 			break;
 		case 2://B+ --------------->A-
 			if(6 == gSysInfo.lastTimeHalllPosition){
@@ -275,10 +290,12 @@ void SwitchDirection(void){
 				openCH();
 				openBL();
 				openAH();
-				
 			}
 			else if(2 == gSysInfo.lastTimeHalllPosition){
 				CPositiveToBNegtive();
+			}
+			else{
+				DisablePwmOutput();
 			}
 			break;
 		default:
