@@ -6,7 +6,7 @@
 #include "pid.h"
 #include "ecap.h"
 
-#define DUTYCHANGEINTERVAL (100)
+#define DUTYCHANGEINTERVAL (30)
 /******************************************/
 inline void openAH(void){
 	EPwm1Regs.AQCSFRC.bit.CSFA = 3;
@@ -337,7 +337,7 @@ void TargetDutyGradualChange(int targetduty){
 	else if (gSysInfo.currentDuty <= 0) {
 		gSysInfo.currentDuty = 0;
 	}
-	// gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
+	gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
 }
 /**************************************************************
  *Name:						PwmIsrThread
@@ -358,5 +358,5 @@ void PwmIsrThread(void)
 	}
 	ReadAnalogValue();
 
-	IsAnalogValueAbnormal();
+	updateAndCheckCurrent();
 }

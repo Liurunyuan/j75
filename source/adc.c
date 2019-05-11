@@ -96,8 +96,6 @@ void ReadAnalogValue(void){
     	//TODO generate an alarm
     	return;
     }
-
-	UpdateSingleAnalogInput();
 }
 
 int IsAnalogValueAbnormal(void){
@@ -125,5 +123,25 @@ void updateAndCheckTemperature(void){
 	}
 	else{
 		count = 0;
+	}
+}
+
+void updateAndCheckCurrent(void){
+	static int count = 0;
+	gSysAnalogVar.single.var[I_AN_3V3_A2].value = gSysAnalogVar.single.var[I_AN_3V3_A2].updateValue();
+	if((gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max) ||
+				(gSysAnalogVar.single.var[I_AN_3V3_A2].value < gSysAnalogVar.single.var[I_AN_3V3_A2].min)) {
+		++count;
+		if(count > 5){
+			count = 0;
+			// gSysAlarm.bit.overCurrent = 1;
+		}
+	}
+	else{
+		count = 0;
+	}
+
+	if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysInfo.maxCurrent){
+		gSysInfo.maxCurrent = gSysAnalogVar.single.var[I_AN_3V3_A2].value;
 	}
 }

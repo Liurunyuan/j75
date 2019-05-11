@@ -12,14 +12,14 @@ RS422TXQUE gRS422TxQue = {0};
 GRX422TX gRx422TxVar[TOTAL_TX_VAR] = {0};
 Uint16 gRx422TxEnableFlag[TOTAL_TX_VAR] = {0};
 
-void GetTorqueCurve(int a, int b, int c){
-	gRx422TxVar[0].value = 500;
+void GetMaxCurrent(int a, int b, int c){
+	gRx422TxVar[0].value = gSysInfo.maxCurrent;
 }
 void GetMotorSpeedCurve(int a, int b, int c){
 	gRx422TxVar[1].value = gMotorSpeedEcap;
 }
-void GetDisplacementCurve(int a, int b, int c){
-	gRx422TxVar[2].value = 1;
+void GetMax(int a, int b, int c){
+	gRx422TxVar[2].value = gSysInfo.maxCurrent;
 }
 void GetMotorCurrentCurve(int a, int b, int c){
 	gRx422TxVar[3].value = gSysInfo.hallErrorCount;
@@ -60,9 +60,9 @@ void InitgRx422TxVar(void) {
 		gRx422TxVar[index].isTx = 0;
 		gRx422TxVar[index].index = index;
 	}
-	gRx422TxVar[0].updateValue = GetTorqueCurve;
+	gRx422TxVar[0].updateValue = GetMaxCurrent;
 	gRx422TxVar[1].updateValue = GetMotorSpeedCurve;
-	gRx422TxVar[2].updateValue = GetDisplacementCurve;
+	gRx422TxVar[2].updateValue = GetMax;
 	gRx422TxVar[3].updateValue = GetMotorCurrentCurve;
 	gRx422TxVar[4].updateValue = GetDynamoVoltageCurve;
 	gRx422TxVar[5].updateValue = GetDynamoCurrentCurve;
