@@ -5,6 +5,8 @@
 #include "adc.h"
 #include "pid.h"
 #include "ecap.h"
+
+#define DUTYCHANGEINTERVAL (100)
 /******************************************/
 inline void openAH(void){
 	EPwm1Regs.AQCSFRC.bit.CSFA = 3;
@@ -311,6 +313,32 @@ void SwitchDirection(void){
 			break;
 	}
 }
+
+void TargetDutyGradualChange(int targetduty){
+	static int count = 0;
+	++count;
+	if(count < DUTYCHANGEINTERVAL){
+		return;
+	}
+	count = 0;
+	if(gSysInfo.currentDuty < targetduty){
+		gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
+	}
+	else if(gSysInfo.currentDuty > targetduty){
+		gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
+	}
+	else{
+		//nothing need change
+	}
+	//need to change the threshold value of the next line
+	if (gSysInfo.currentDuty > 400) {
+		gSysInfo.currentDuty = 400;
+	} 
+	else if (gSysInfo.currentDuty <= 0) {
+		gSysInfo.currentDuty = 0;
+	}
+	// gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
+}
 /**************************************************************
  *Name:						PwmIsrThread
  *Function:					PWM interrupt function
@@ -322,6 +350,7 @@ void SwitchDirection(void){
 void PwmIsrThread(void)
 {
 	if(gSysState.currentstate == START){
+		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.closeLooptargetDuty);
 		SwitchDirection();
 	}
 	else{

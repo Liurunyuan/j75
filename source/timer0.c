@@ -12,23 +12,6 @@
 
 #define CALSPEED (4)
 
-void TargetDutyGradualChange(int targetduty){
-	if(gSysInfo.currentDuty < targetduty){
-		gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
-	}
-	if(gSysInfo.currentDuty > targetduty){
-		gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
-	}
-	//need to change the threshold value of the next line
-	if (gSysInfo.currentDuty > 400) {
-		gSysInfo.currentDuty = 400;
-	} 
-	else if (gSysInfo.currentDuty <= 0) {
-		gSysInfo.currentDuty = 0;
-	}
-	// gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
-}
-
 void MotorSpeed(){
 	static int count = 0;
 	int calSpeed = 0;
@@ -81,7 +64,6 @@ void Timer1_ISR_Thread(void){
 	#else
 		gSysInfo.closeLooptargetDuty = 0;
 	#endif
-		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.closeLooptargetDuty);
 	}
 
 	++count;
@@ -94,23 +76,3 @@ void Timer1_ISR_Thread(void){
 	}
 }
 
-
-//disable this function
-// void ThresholdProtectForDuty(void) {
-// 	if (gSysInfo.currentDuty < gSysInfo.closeLooptargetDuty) {
-// 		gSysInfo.currentDuty++;
-// 	} 
-// 	else if (gSysInfo.currentDuty > gSysInfo.closeLooptargetDuty) {
-// 		gSysInfo.currentDuty--;
-// 	} 
-// 	else {
-// 	}
-
-// 	if (gSysInfo.currentDuty > 400) {
-// 		gSysInfo.currentDuty = 400;
-// 	} 
-// 	else if (gSysInfo.currentDuty <= 0) {
-// 		gSysInfo.currentDuty = 0;
-// 	}
-// 	// gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
-// }
