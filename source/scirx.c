@@ -60,7 +60,7 @@ static void SetDutyForTest(VAR16 a, int b, int c){
 	int duty =  0;
 	duty = (int16)a.value;
 	if(duty >= 0){
-		gSysInfo.duty = a.value;
+		// gSysInfo.duty = a.value; // do not need to change the duty, only change the target speed
 	}
 }
 

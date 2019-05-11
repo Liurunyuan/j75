@@ -87,6 +87,8 @@ void DisablePwmOutput(void){
 	DisablePwm1();
 	DisablePwm2();
 	DisablePwm3();
+	gSysInfo.duty = 0;
+	gSysInfo.currentDuty = 0;
 }
 /******************************************/
 inline void CPositiveToBNegtive(void) {
@@ -307,9 +309,7 @@ void SwitchDirection(void){
 			}
 			break;
 		default:
-			DisablePwm1();
-			DisablePwm2();
-			DisablePwm3();
+			DisablePwmOutput();
 			break;
 	}
 }
@@ -331,8 +331,8 @@ void TargetDutyGradualChange(int targetduty){
 		//nothing need change
 	}
 	//need to change the threshold value of the next line
-	if (gSysInfo.currentDuty > 400) {
-		gSysInfo.currentDuty = 400;
+	if (gSysInfo.currentDuty > 1500) {
+		gSysInfo.currentDuty = 1500;
 	} 
 	else if (gSysInfo.currentDuty <= 0) {
 		gSysInfo.currentDuty = 0;
