@@ -6,7 +6,7 @@
 #include "pid.h"
 #include "ecap.h"
 
-#define DUTYCHANGEINTERVAL (30)
+#define DUTYCHANGEINTERVAL (20)
 /******************************************/
 inline void openAH(void){
 	EPwm1Regs.AQCSFRC.bit.CSFA = 3;
