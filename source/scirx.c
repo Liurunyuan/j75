@@ -63,7 +63,8 @@ static void SetDutyForTest(VAR16 a, int b, int c){
 	if(duty >= 0){
 		// gSysInfo.duty = a.value; // do not need to change the duty, only change the target speed
 		// gSysInfo.repeatPeriod = duty;
-		gPidPara.kp = duty;
+		// gPidPara.kp = duty;
+		gPidPara.ki = duty;
 	}
 }
 

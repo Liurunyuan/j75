@@ -15,7 +15,7 @@ volatile double gTargetSpeed = 0;
 
 void InitPidVar(void){
 	gPidPara.kp = 450;
-	gPidPara.ki = 100;
+	gPidPara.ki = 500;
 	gPidPara.kd = 0;
 	gPidPara.targetPid = 0;
 
@@ -28,9 +28,11 @@ int32 sektest = 0;
 int16 PidOutput(double currentSpeed){
 	int16 pidOutput = 0;
 	int32 ek1;
+	int32 thresholdKi;
 
 	ek1 = (int32)(gTargetSpeed - currentSpeed);
-	if(ek1 > -2000 && ek1 < 2000)
+	thresholdKi = gTargetSpeed * 0.2;
+	if((ek1 > -thresholdKi) && (ek1 < thresholdKi))
 	{
 		if(((ek1 > 0) && (sek < 585535)) || ((ek1 < 0) && (sek > -585535)))
 		{
@@ -42,10 +44,7 @@ int16 PidOutput(double currentSpeed){
 		sek = 0;
 	}
 	sektest = sek;
-	// pidOutput = (int16)((ek1 * gPidPara.kp) >> 14) + (int16)(((sek >> 8) * gPidPara.ki) >> 11);
-	pidOutput = (int16)((ek1 * gPidPara.kp) >> 14);
-	//pidout = (int16)((ek1 * kp) >> 14);
-	//pidout = (int16)((sek * ki) >> 16);
+	pidOutput = (int16)((ek1 * gPidPara.kp) >> 14) + (int16)(((sek >> 8) * gPidPara.ki) >> 11);
 
 	if(pidOutput > 800){
 		pidOutput = 800;

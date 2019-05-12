@@ -87,6 +87,7 @@ void DisablePwmOutput(void){
 	DisablePwm1();
 	DisablePwm2();
 	DisablePwm3();
+	sek = 0;
 	gSysInfo.duty = 0;
 	gSysInfo.currentDuty = 50;
 }

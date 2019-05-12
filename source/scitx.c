@@ -5,6 +5,7 @@
 #include "scitx.h"
 #include "ecap.h"
 #include "adc.h"
+#include "pid.h"
 
 #define S (0)
 
@@ -14,7 +15,8 @@ Uint16 gRx422TxEnableFlag[TOTAL_TX_VAR] = {0};
 
 void GetMaxCurrent(int a, int b, int c){
 	// gRx422TxVar[0].value = gSysInfo.maxCurrent;
-	gRx422TxVar[0].value = gSysInfo.openLoopTargetDuty;
+	// gRx422TxVar[0].value = gSysInfo.openLoopTargetDuty;
+	gRx422TxVar[0].value = gTargetSpeed;
 }
 void GetMotorSpeedCurve(int a, int b, int c){
 	gRx422TxVar[1].value = gMotorSpeedEcap;
