@@ -8,7 +8,7 @@
 #include "kalman.h"
 #include "pid.h"
 #include "adc.h"
-#define N (0)
+#define N (1)
 
 #define CALSPEED (4)
 
