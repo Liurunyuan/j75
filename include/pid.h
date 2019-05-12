@@ -18,10 +18,12 @@ typedef struct _PIDPARA{
 
 extern volatile double gTargetSpeed;
 extern volatile PIDPARA gPidPara;
+extern int32 sek;
 
 
 
 void InitPidVar(void);
 int16 PidOutput(double currentSpeed);
+int16 openLoopControl(int16 busVol, int16 targetSpeed);
 
 #endif /* PID_H_ */

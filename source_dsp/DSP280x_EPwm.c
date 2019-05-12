@@ -312,10 +312,10 @@ void InitTzGpio(void)
 }
 void InitEPwm1()
 {
-	EALLOW;
-	EPwm1Regs.TZCTL.bit.TZA = 1;
-	EPwm1Regs.TZCTL.bit.TZB = 1;
-	EDIS;
+	// EALLOW;
+	// EPwm1Regs.TZCTL.bit.TZA = 1;
+	// EPwm1Regs.TZCTL.bit.TZB = 1;
+	// EDIS;
 
 	EPwm1Regs.TBPRD = EPWM1_TIMER_TBPRD;
 	EPwm1Regs.TBPHS.all = 0x0000;
@@ -361,8 +361,8 @@ void InitEPwm2()
 	EALLOW;
 	//	EPwm2Regs.TZSEL.bit.OSHT2=1;
 	//	EPwm2Regs.TZSEL.bit.OSHT3=1;
-	EPwm2Regs.TZCTL.bit.TZA = 1;
-	EPwm2Regs.TZCTL.bit.TZB = 1;
+	// EPwm2Regs.TZCTL.bit.TZA = 1;
+	// EPwm2Regs.TZCTL.bit.TZB = 1;
 	//	EPwm2Regs.TZEINT.bit.OST=1;
 	EDIS;
 
@@ -406,11 +406,11 @@ void InitEPwm2()
 void InitEPwm3()
 {
 	//	EALLOW;
-	////	EPwm3Regs.TZSEL.bit.OSHT2=1;
-	////	EPwm3Regs.TZSEL.bit.OSHT3=1;
+	//	EPwm3Regs.TZSEL.bit.OSHT2=1;
+	//	EPwm3Regs.TZSEL.bit.OSHT3=1;
 	//	EPwm3Regs.TZCTL.bit.TZA=1;
 	//	EPwm3Regs.TZCTL.bit.TZB=1;
-	////	EPwm3Regs.TZEINT.bit.OST=1;
+	//	EPwm3Regs.TZEINT.bit.OST=1;
 	//	EDIS;
 	EPwm3Regs.TBPRD = EPWM1_TIMER_TBPRD;
 	EPwm3Regs.TBPHS.all = 0x0000;

@@ -59,8 +59,12 @@ static void SetPidKd(VAR16 a, int b, int c) {
 static void SetDutyForTest(VAR16 a, int b, int c){
 	int duty =  0;
 	duty = (int16)a.value;
+
 	if(duty >= 0){
-		gSysInfo.duty = a.value;
+		// gSysInfo.duty = a.value; // do not need to change the duty, only change the target speed
+		// gSysInfo.repeatPeriod = duty;
+		// gPidPara.kp = duty;
+		gPidPara.ki = duty;
 	}
 }
 
@@ -69,6 +73,8 @@ static void ClearAlarmInfo(VAR16 a, int b, int c){
 	clearAlarm = a.value;
 	if(clearAlarm == 1){
 		gSysAlarm.all = 0;
+		gSysInfo.hallErrorCount = 0;
+		gSysInfo.maxCurrent = 0;
 	}
 }
 

@@ -14,18 +14,20 @@ void InitEcapVar(void){
 
 int GetECap1Count(void){
 
-	gSysInfo.isEcapRefresh = 1;
-
 	if(ECap1Regs.ECFLG.bit.CEVT1){
+		gSysInfo.isEcapRefresh = 1;
 		gECapCount = ECap1Regs.CAP1;
 	}
 	else if(ECap1Regs.ECFLG.bit.CEVT2){
+		gSysInfo.isEcapRefresh = 1;
 		gECapCount = ECap1Regs.CAP2 - ECap1Regs.CAP1;
 	}
 	else if(ECap1Regs.ECFLG.bit.CEVT3){
+		gSysInfo.isEcapRefresh = 1;
 		gECapCount = ECap1Regs.CAP3 - ECap1Regs.CAP2;
 	}
 	else if(ECap1Regs.ECFLG.bit.CEVT4){
+		gSysInfo.isEcapRefresh = 1;
 		gECapCount = ECap1Regs.CAP4 - ECap1Regs.CAP3;
 	}
 	else if(ECap1Regs.ECFLG.bit.CTROVF){
@@ -39,18 +41,20 @@ int GetECap1Count(void){
 }
 int GetECap2Count(void){
 
-	gSysInfo.isEcapRefresh = 1;
-
 	if(ECap2Regs.ECFLG.bit.CEVT1){
+		gSysInfo.isEcapRefresh = 1;
 		gECapCount = ECap2Regs.CAP1;
 	}
 	else if(ECap2Regs.ECFLG.bit.CEVT2){
+		gSysInfo.isEcapRefresh = 1;
 		gECapCount = ECap2Regs.CAP2 - ECap2Regs.CAP1;
 	}
 	else if(ECap2Regs.ECFLG.bit.CEVT3){
+		gSysInfo.isEcapRefresh = 1;
 		gECapCount = ECap2Regs.CAP3 - ECap2Regs.CAP2;
 	}
 	else if(ECap2Regs.ECFLG.bit.CEVT4){
+		gSysInfo.isEcapRefresh = 1;
 		gECapCount = ECap2Regs.CAP4 - ECap2Regs.CAP3;
 	}
 	else if(ECap2Regs.ECFLG.bit.CTROVF){
@@ -65,18 +69,20 @@ int GetECap2Count(void){
 
 int GetECap3Count(void){
 
-	gSysInfo.isEcapRefresh = 1;
-
 	if(ECap3Regs.ECFLG.bit.CEVT1){
+		gSysInfo.isEcapRefresh = 1;
 		gECapCount = ECap3Regs.CAP1;
 	}
 	else if(ECap3Regs.ECFLG.bit.CEVT2){
+		gSysInfo.isEcapRefresh = 1;
 		gECapCount = ECap3Regs.CAP2 - ECap3Regs.CAP1;
 	}
 	else if(ECap3Regs.ECFLG.bit.CEVT3){
+		gSysInfo.isEcapRefresh = 1;
 		gECapCount = ECap3Regs.CAP3 - ECap3Regs.CAP2;
 	}
 	else if(ECap3Regs.ECFLG.bit.CEVT4){
+		gSysInfo.isEcapRefresh = 1;
 		gECapCount = ECap3Regs.CAP4 - ECap3Regs.CAP3;
 	}
 	else if(ECap3Regs.ECFLG.bit.CTROVF){

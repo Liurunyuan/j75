@@ -1,6 +1,11 @@
 #ifndef _GLOBAL_H
 #define _GLOBAL_H
 
+#define OPENLOOPDONE 1
+#define CLOSELOOPDONE 1 
+
+
+
 
 #define FEED_WATCH_DOG  GpioDataRegs.GPATOGGLE.bit.GPIO23
 
@@ -58,8 +63,13 @@ typedef struct{
 	int16 dutyUp;
 	int16 dutyDown;
 	int16 isEcapRefresh;
-	int16 targetDuty;
+	int16 closeLooptargetDuty;
 	int16 currentDuty;
+	int16 openLoopTargetDuty;
+	int16 ddtmax;
+	int16 hallErrorCount;
+	int16 maxCurrent;
+	int16 repeatPeriod;
 }SYSINFO;
 
 typedef struct _DATA{
@@ -85,7 +95,10 @@ void Delay(int time);
 void InitGlobalVar(void);
 void clearHardwareErro(void);
 void enablePwmOutput(void);
+void disablePwmOutput(void);
 void enableEcapInterrupt(void);
 void disableEcapInterrupt(void);
 void clearScibOverflow(void);
+void readTZGpioState(void);
+int findOpenLoopDuty(int busvol, int tarSpeed);
 #endif

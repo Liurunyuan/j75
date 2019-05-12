@@ -6,6 +6,67 @@
 #include "pid.h"
 #include "ecap.h"
 
+#define DUTYCHANGEINTERVAL (2)
+/******************************************/
+inline void openAH(void){
+	EPwm1Regs.AQCSFRC.bit.CSFA = 3;
+}
+
+inline void closeAH(void){
+	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
+}
+
+inline void openAL(void){
+	EPwm1Regs.AQCSFRC.bit.CSFB = 3;
+}
+
+inline void closeAL(void){
+	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
+}
+
+inline void closeAHandAL(void){
+	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
+	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
+}
+/******************************************/
+inline void openBH(void){
+	EPwm2Regs.AQCSFRC.bit.CSFA = 3;
+}
+
+inline void closeBH(void){
+	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
+}
+inline void openBL(void){
+	EPwm2Regs.AQCSFRC.bit.CSFB = 3;
+}
+
+inline void closeBL(void){
+	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
+}
+inline void closeBHandAL(void){
+	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
+	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
+}
+/******************************************/
+inline void openCH(void){
+	EPwm3Regs.AQCSFRC.bit.CSFA = 3;
+}
+
+inline void closeCH(void){
+	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
+}
+inline void openCL(void){
+	EPwm3Regs.AQCSFRC.bit.CSFB = 3;
+}
+
+inline void closeCL(void){
+	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
+}
+inline void closeCHandAL(void){
+	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
+	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
+}
+/******************************************/
 inline void DisablePwm1(void){
 
 	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
@@ -26,8 +87,11 @@ void DisablePwmOutput(void){
 	DisablePwm1();
 	DisablePwm2();
 	DisablePwm3();
+	sek = 0;
+	gSysInfo.duty = 0;
+	gSysInfo.currentDuty = 50;
 }
-
+/******************************************/
 inline void CPositiveToBNegtive(void) {
 
 	DisablePwm1();
@@ -128,61 +192,153 @@ Uint16 GetCurrentHallValue(void){
 void SwitchDirection(void){
 	gSysInfo.lastTimeHalllPosition = gSysInfo.currentHallPosition;
 	gSysInfo.currentHallPosition = GetCurrentHallValue();
-	//3:A 2:B 1:C
+	//1:A 2:B 3:C
 	switch (gSysInfo.currentHallPosition) {
-		case 3://C+ ---------------> B-
-			
-			if((3 == gSysInfo.lastTimeHalllPosition )
-				|| (2 == gSysInfo.lastTimeHalllPosition)
-				|| (1 == gSysInfo.lastTimeHalllPosition)){
-				BPositiveToCNegtive();
-
+		case 3://B+ --------------->C-
+			if(2 == gSysInfo.lastTimeHalllPosition){
+				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeBH();
+				closeAH();
+				closeCL();
+				openCH();
+				openAL();
+				openBL();	
 			}
-			break;
-		case 1://C+ ---------------> A-
-			if((1 == gSysInfo.lastTimeHalllPosition )
-				|| (3 == gSysInfo.lastTimeHalllPosition)
-				|| (5 == gSysInfo.lastTimeHalllPosition)){
-				APositiveToCNegtive();
-
-			}
-			break;
-		case 5://B+ ---------------> A-
-			if((5 == gSysInfo.lastTimeHalllPosition )
-				|| (1 == gSysInfo.lastTimeHalllPosition)
-				|| (4 == gSysInfo.lastTimeHalllPosition)){
-				APositiveToBNegtive();
-			
-			}
-			break;
-		case 4://B+ ---------------> C-
-			if((4 == gSysInfo.lastTimeHalllPosition )
-				|| (5 == gSysInfo.lastTimeHalllPosition)
-				|| (6 == gSysInfo.lastTimeHalllPosition)){
-				CPositiveToBNegtive();
-
-			}
-			break;
-		case 6://A+ ---------------> C-
-			if((6 == gSysInfo.lastTimeHalllPosition )
-				|| (4 == gSysInfo.lastTimeHalllPosition)
-				|| (2 == gSysInfo.lastTimeHalllPosition)){
+			else if(3 == gSysInfo.lastTimeHalllPosition){
 				CPositiveToANegtive();
 			}
+			else{
+				DisablePwmOutput();
+				gSysInfo.hallErrorCount++;
+			}
 			break;
-		case 2://A+ ---------------> B-
-			if((2 == gSysInfo.lastTimeHalllPosition )
-				|| (3 == gSysInfo.lastTimeHalllPosition)
-				|| (6 == gSysInfo.lastTimeHalllPosition)){
+		case 1://A+ --------------->C-
+			if(3 == gSysInfo.lastTimeHalllPosition){
+				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeCL();
+				closeAH();
+				closeBL();
+				openBH();
+				openAL();
+				openCH();
+			}
+			else if(1 == gSysInfo.lastTimeHalllPosition){
 				BPositiveToANegtive();
+			}
+			else{
+				DisablePwmOutput();
+				gSysInfo.hallErrorCount++;
+			}
+			break;
+		case 5://A+ --------------->B-
+			if(1 == gSysInfo.lastTimeHalllPosition){
+				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeAH();
+				closeBL();
+				closeCH();
+				openBH();
+				openCL();
+				openAL();
+			}
+			else if(5 == gSysInfo.lastTimeHalllPosition){
+				BPositiveToCNegtive();
+			}
+			else{
+				DisablePwmOutput();
+				gSysInfo.hallErrorCount++;
+			}
+			break;
+		case 4://C+ --------------->B-
+			if(5 == gSysInfo.lastTimeHalllPosition){
+				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeBL();
+				closeCH();
+				closeAL();
+				openAH();
+				openCL();
+				openBH();
+			}
+			else if(4 == gSysInfo.lastTimeHalllPosition){
+				APositiveToCNegtive();
+			}
+			else{
+				DisablePwmOutput();
+				gSysInfo.hallErrorCount++;
+			}
+			break;
+		case 6://C+ --------------->A-
+			if(4 == gSysInfo.lastTimeHalllPosition){
+				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeCH();
+				closeBH();
+				closeAL();
+				openAH();
+				openBL();
+				openCL();
+
+			}
+			else if(6 == gSysInfo.lastTimeHalllPosition){
+				APositiveToBNegtive();
+			}
+			else{
+				DisablePwmOutput();
+				gSysInfo.hallErrorCount++;		
+			}
+			break;
+		case 2://B+ --------------->A-
+			if(6 == gSysInfo.lastTimeHalllPosition){
+				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeAL();
+				closeBH();
+				closeCL();
+				openCH();
+				openBL();
+				openAH();
+			}
+			else if(2 == gSysInfo.lastTimeHalllPosition){
+				CPositiveToBNegtive();
+			}
+			else{
+				DisablePwmOutput();
+				gSysInfo.hallErrorCount++;
 			}
 			break;
 		default:
-			DisablePwm1();
-			DisablePwm2();
-			DisablePwm3();
+			DisablePwmOutput();
 			break;
 	}
+}
+
+void TargetDutyGradualChange(int targetduty){
+	static int count = 0;
+	++count;
+	if(count < DUTYCHANGEINTERVAL){
+		return;
+	}
+	count = 0;
+	if(gSysInfo.currentDuty < targetduty){
+		gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
+	}
+	else if(gSysInfo.currentDuty > targetduty){
+		gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
+	}
+	else{
+		//nothing need change
+	}
+	//need to change the threshold value of the next line
+	if (gSysInfo.currentDuty > 1500) {
+		gSysInfo.currentDuty = 1500;
+	} 
+	else if (gSysInfo.currentDuty <= 0) {
+		gSysInfo.currentDuty = 0;
+	}
+	gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
 }
 /**************************************************************
  *Name:						PwmIsrThread
@@ -195,6 +351,7 @@ void SwitchDirection(void){
 void PwmIsrThread(void)
 {
 	if(gSysState.currentstate == START){
+		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.closeLooptargetDuty);
 		SwitchDirection();
 	}
 	else{
@@ -202,6 +359,5 @@ void PwmIsrThread(void)
 	}
 	ReadAnalogValue();
 
-	IsAnalogValueAbnormal();
+	updateAndCheckCurrent();
 }
-
