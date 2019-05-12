@@ -18,6 +18,7 @@ typedef struct _PIDPARA{
 
 extern volatile double gTargetSpeed;
 extern volatile PIDPARA gPidPara;
+extern int32 sek;
 
 
 

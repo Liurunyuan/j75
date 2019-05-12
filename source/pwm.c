@@ -5,6 +5,8 @@
 #include "adc.h"
 #include "pid.h"
 #include "ecap.h"
+
+#define DUTYCHANGEINTERVAL (2)
 /******************************************/
 inline void openAH(void){
 	EPwm1Regs.AQCSFRC.bit.CSFA = 3;
@@ -85,6 +87,9 @@ void DisablePwmOutput(void){
 	DisablePwm1();
 	DisablePwm2();
 	DisablePwm3();
+	sek = 0;
+	gSysInfo.duty = 0;
+	gSysInfo.currentDuty = 50;
 }
 /******************************************/
 inline void CPositiveToBNegtive(void) {
@@ -305,11 +310,35 @@ void SwitchDirection(void){
 			}
 			break;
 		default:
-			DisablePwm1();
-			DisablePwm2();
-			DisablePwm3();
+			DisablePwmOutput();
 			break;
 	}
+}
+
+void TargetDutyGradualChange(int targetduty){
+	static int count = 0;
+	++count;
+	if(count < DUTYCHANGEINTERVAL){
+		return;
+	}
+	count = 0;
+	if(gSysInfo.currentDuty < targetduty){
+		gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
+	}
+	else if(gSysInfo.currentDuty > targetduty){
+		gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
+	}
+	else{
+		//nothing need change
+	}
+	//need to change the threshold value of the next line
+	if (gSysInfo.currentDuty > 1500) {
+		gSysInfo.currentDuty = 1500;
+	} 
+	else if (gSysInfo.currentDuty <= 0) {
+		gSysInfo.currentDuty = 0;
+	}
+	gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
 }
 /**************************************************************
  *Name:						PwmIsrThread
@@ -322,6 +351,7 @@ void SwitchDirection(void){
 void PwmIsrThread(void)
 {
 	if(gSysState.currentstate == START){
+		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.closeLooptargetDuty);
 		SwitchDirection();
 	}
 	else{
@@ -329,5 +359,5 @@ void PwmIsrThread(void)
 	}
 	ReadAnalogValue();
 
-	IsAnalogValueAbnormal();
+	updateAndCheckCurrent();
 }

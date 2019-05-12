@@ -8,26 +8,9 @@
 #include "kalman.h"
 #include "pid.h"
 #include "adc.h"
-#define N (0)
+#define N (1)
 
 #define CALSPEED (4)
-
-void TargetDutyGradualChange(int targetduty){
-	if(gSysInfo.currentDuty < targetduty){
-		gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
-	}
-	if(gSysInfo.currentDuty > targetduty){
-		gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
-	}
-	//need to change the threshold value of the next line
-	if (gSysInfo.currentDuty > 400) {
-		gSysInfo.currentDuty = 400;
-	} 
-	else if (gSysInfo.currentDuty <= 0) {
-		gSysInfo.currentDuty = 0;
-	}
-	// gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
-}
 
 void MotorSpeed(){
 	static int count = 0;
@@ -71,6 +54,7 @@ void Timer0_ISR_Thread(void){
 
 void Timer1_ISR_Thread(void){
 	static unsigned char count = 0;
+	gSysAnalogVar.single.var[U_AN_3V3_A0].value = gSysAnalogVar.single.var[U_AN_3V3_A0].updateValue();
 	int busVol = gSysAnalogVar.single.var[U_AN_3V3_A0].value;
 	MotorSpeed();
 	if(gSysState.currentstate == START){
@@ -81,7 +65,6 @@ void Timer1_ISR_Thread(void){
 	#else
 		gSysInfo.closeLooptargetDuty = 0;
 	#endif
-		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.closeLooptargetDuty);
 	}
 
 	++count;
@@ -94,23 +77,3 @@ void Timer1_ISR_Thread(void){
 	}
 }
 
-
-//disable this function
-// void ThresholdProtectForDuty(void) {
-// 	if (gSysInfo.currentDuty < gSysInfo.closeLooptargetDuty) {
-// 		gSysInfo.currentDuty++;
-// 	} 
-// 	else if (gSysInfo.currentDuty > gSysInfo.closeLooptargetDuty) {
-// 		gSysInfo.currentDuty--;
-// 	} 
-// 	else {
-// 	}
-
-// 	if (gSysInfo.currentDuty > 400) {
-// 		gSysInfo.currentDuty = 400;
-// 	} 
-// 	else if (gSysInfo.currentDuty <= 0) {
-// 		gSysInfo.currentDuty = 0;
-// 	}
-// 	// gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
-// }

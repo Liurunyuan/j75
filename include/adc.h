@@ -72,6 +72,7 @@ void InitAdcVar(void);
 int IsAnalogValueAbnormal(void);
 void ReadAnalogValue(void);
 void updateAndCheckTemperature(void);
+void updateAndCheckCurrent(void);
 
 
 extern SysAnalogVar gSysAnalogVar;

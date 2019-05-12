@@ -14,8 +14,8 @@ volatile PIDPARA gPidPara = {0};
 volatile double gTargetSpeed = 0;
 
 void InitPidVar(void){
-	gPidPara.kp = 2000;
-	gPidPara.ki = 100;
+	gPidPara.kp = 450;
+	gPidPara.ki = 500;
 	gPidPara.kd = 0;
 	gPidPara.targetPid = 0;
 
@@ -28,9 +28,11 @@ int32 sektest = 0;
 int16 PidOutput(double currentSpeed){
 	int16 pidOutput = 0;
 	int32 ek1;
+	int32 thresholdKi;
 
 	ek1 = (int32)(gTargetSpeed - currentSpeed);
-	if(ek1 > -2000 && ek1 < 2000)
+	thresholdKi = gTargetSpeed * 0.2;
+	if((ek1 > -thresholdKi) && (ek1 < thresholdKi))
 	{
 		if(((ek1 > 0) && (sek < 585535)) || ((ek1 < 0) && (sek > -585535)))
 		{
@@ -43,14 +45,12 @@ int16 PidOutput(double currentSpeed){
 	}
 	sektest = sek;
 	pidOutput = (int16)((ek1 * gPidPara.kp) >> 14) + (int16)(((sek >> 8) * gPidPara.ki) >> 11);
-	//pidout = (int16)((ek1 * kp) >> 14);
-	//pidout = (int16)((sek * ki) >> 16);
 
-	if(pidOutput > 500){
-		pidOutput = 500;
+	if(pidOutput > 800){
+		pidOutput = 800;
 	}
-	else if(pidOutput < -500){
-		pidOutput = -500;
+	else if(pidOutput < -800){
+		pidOutput = -800;
 	}
 	gPidPara.targetPid = pidOutput;
 
@@ -61,6 +61,7 @@ int16 openLoopControl(int16 busVol, int16 targetSpeed){
 	//find the target duty by bus voltage and motor speed
 	int16 ret = 0;
 
+	ret = findOpenLoopDuty(busVol, targetSpeed);
 
 #if OPENLOOPDONE
 	return ret;
