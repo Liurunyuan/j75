@@ -54,6 +54,7 @@ void Timer0_ISR_Thread(void){
 
 void Timer1_ISR_Thread(void){
 	static unsigned char count = 0;
+	gSysAnalogVar.single.var[U_AN_3V3_A0].value = gSysAnalogVar.single.var[U_AN_3V3_A0].updateValue();
 	int busVol = gSysAnalogVar.single.var[U_AN_3V3_A0].value;
 	MotorSpeed();
 	if(gSysState.currentstate == START){
