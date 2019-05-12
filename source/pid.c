@@ -14,7 +14,7 @@ volatile PIDPARA gPidPara = {0};
 volatile double gTargetSpeed = 0;
 
 void InitPidVar(void){
-	gPidPara.kp = 2000;
+	gPidPara.kp = 450;
 	gPidPara.ki = 100;
 	gPidPara.kd = 0;
 	gPidPara.targetPid = 0;
@@ -42,15 +42,16 @@ int16 PidOutput(double currentSpeed){
 		sek = 0;
 	}
 	sektest = sek;
-	pidOutput = (int16)((ek1 * gPidPara.kp) >> 14) + (int16)(((sek >> 8) * gPidPara.ki) >> 11);
+	// pidOutput = (int16)((ek1 * gPidPara.kp) >> 14) + (int16)(((sek >> 8) * gPidPara.ki) >> 11);
+	pidOutput = (int16)((ek1 * gPidPara.kp) >> 14);
 	//pidout = (int16)((ek1 * kp) >> 14);
 	//pidout = (int16)((sek * ki) >> 16);
 
-	if(pidOutput > 500){
-		pidOutput = 500;
+	if(pidOutput > 800){
+		pidOutput = 800;
 	}
-	else if(pidOutput < -500){
-		pidOutput = -500;
+	else if(pidOutput < -800){
+		pidOutput = -800;
 	}
 	gPidPara.targetPid = pidOutput;
 
@@ -64,8 +65,8 @@ int16 openLoopControl(int16 busVol, int16 targetSpeed){
 	ret = findOpenLoopDuty(busVol, targetSpeed);
 
 #if OPENLOOPDONE
-	return ret * 0.7;
-#else
 	return ret;
+#else
+	return ret * 0.7;
 #endif
 }

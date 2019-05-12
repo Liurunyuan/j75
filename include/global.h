@@ -1,8 +1,8 @@
 #ifndef _GLOBAL_H
 #define _GLOBAL_H
 
-#define OPENLOOPDONE 0
-#define CLOSELOOPDONE 0 
+#define OPENLOOPDONE 1
+#define CLOSELOOPDONE 1 
 
 
 
@@ -69,6 +69,7 @@ typedef struct{
 	int16 ddtmax;
 	int16 hallErrorCount;
 	int16 maxCurrent;
+	int16 repeatPeriod;
 }SYSINFO;
 
 typedef struct _DATA{

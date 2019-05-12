@@ -13,7 +13,8 @@ GRX422TX gRx422TxVar[TOTAL_TX_VAR] = {0};
 Uint16 gRx422TxEnableFlag[TOTAL_TX_VAR] = {0};
 
 void GetMaxCurrent(int a, int b, int c){
-	gRx422TxVar[0].value = gSysInfo.maxCurrent;
+	// gRx422TxVar[0].value = gSysInfo.maxCurrent;
+	gRx422TxVar[0].value = gSysInfo.openLoopTargetDuty;
 }
 void GetMotorSpeedCurve(int a, int b, int c){
 	gRx422TxVar[1].value = gMotorSpeedEcap;
@@ -31,7 +32,8 @@ void GetDynamoCurrentCurve(int a, int b, int c){
 	gRx422TxVar[5].value = 1;
 }
 void GetTemperatureCurve(int a, int b, int c){
-	gRx422TxVar[6].value = gSysAnalogVar.single.var[T_AN_3V3_B0].value;
+	// gRx422TxVar[6].value = gSysAnalogVar.single.var[T_AN_3V3_B0].value;
+	gRx422TxVar[6].value = gSysInfo.closeLooptargetDuty;
 }
 void GetMotorAccelCurve(int a, int b, int c){
 	gRx422TxVar[7].value = 3;
