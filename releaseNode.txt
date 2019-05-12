@@ -1,3 +1,18 @@
+/***************************0.0.5*******************************/
+Version Number: 0.0.5
+Date: 2019/5/12
+Author:Simon
+
+What new: 
+	1. Close loop control
+	2. Read bus voltage
+	3. Send temperature to UI
+	4. Clear hardware error
+	5. Read TZ status
+	6. Pack data every 40 times
+Bug Fix:
+	1. Clear hardware error
+	2. ECap overflow fix
 /***************************0.0.4*******************************/
 Version Number: 0.0.4
 Date: 2019/4/20
