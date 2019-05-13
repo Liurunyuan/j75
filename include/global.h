@@ -70,6 +70,9 @@ typedef struct{
 	int16 hallErrorCount;
 	int16 maxCurrent;
 	int16 repeatPeriod;
+	int16 thresholdKiError;
+	int16 enableFindTable;
+	int16 uiSetOpenLoopDuty;
 }SYSINFO;
 
 typedef struct _DATA{

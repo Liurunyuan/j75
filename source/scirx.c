@@ -56,6 +56,18 @@ static void SetPidKd(VAR16 a, int b, int c) {
 	gPidPara.kd = a.value;
 }
 
+static void SetThresholdKiError(VAR16 a, int b, int c) {
+	gSysInfo.thresholdKiError = a.value;
+}
+
+static void SetUIOpenLoopDuty(VAR16 a, int b, int c) {
+	gSysInfo.uiSetOpenLoopDuty = a.value;
+}
+
+static void SetEnableFindTable(VAR16 a, int b, int c){
+	gSysInfo.enableFindTable = a.value;
+}
+
 static void SetDutyForTest(VAR16 a, int b, int c){
 	int duty =  0;
 	duty = (int16)a.value;
@@ -151,9 +163,9 @@ const functionMsgCodeUnpack msgInterface[] = {
 			0,						//69
 			0,						//70
 			0,						//71
-			0,						//72
-			0,						//73
-			0,						//74
+			SetEnableFindTable,		//72
+			SetUIOpenLoopDuty,		//73
+			SetThresholdKiError,	//74
 			SetPidKp,				//75
 			SetPidKi,				//76
 			SetPidKd,				//77
