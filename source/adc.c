@@ -141,7 +141,8 @@ void updateAndCheckCurrent(void){
 		count = 0;
 	}
 
-	if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysInfo.maxCurrent){
-		gSysInfo.maxCurrent = gSysAnalogVar.single.var[I_AN_3V3_A2].value;
-	}
+	// if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysInfo.maxCurrent){
+	// 	gSysInfo.maxCurrent = gSysAnalogVar.single.var[I_AN_3V3_A2].value;
+	// }
+	gSysInfo.maxCurrent = gSysAnalogVar.single.var[I_AN_3V3_A2].value;
 }
