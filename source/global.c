@@ -26,6 +26,7 @@ void InitGlobalVar(void){
 	gSysInfo.thresholdKiError = 1000;
 	gSysInfo.enableFindTable = 0;
 	gSysInfo.uiSetOpenLoopDuty = 50;
+	gSysInfo.dtDuty = 0;
 
 
 	gSysAlarm.all = 0;

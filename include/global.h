@@ -2,7 +2,7 @@
 #define _GLOBAL_H
 
 #define OPENLOOPDONE 1
-#define CLOSELOOPDONE 1 
+#define CLOSELOOPDONE 0 
 
 
 
@@ -73,6 +73,7 @@ typedef struct{
 	int16 thresholdKiError;
 	int16 enableFindTable;
 	int16 uiSetOpenLoopDuty;
+	int16 dtDuty;
 }SYSINFO;
 
 typedef struct _DATA{

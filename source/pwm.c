@@ -351,7 +351,7 @@ void TargetDutyGradualChange(int targetduty){
 void PwmIsrThread(void)
 {
 	if(gSysState.currentstate == START){
-		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.closeLooptargetDuty);
+		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.closeLooptargetDuty + gSysInfo.dtDuty);
 		SwitchDirection();
 	}
 	else{

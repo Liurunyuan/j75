@@ -67,6 +67,9 @@ static void SetUIOpenLoopDuty(VAR16 a, int b, int c) {
 static void SetEnableFindTable(VAR16 a, int b, int c){
 	gSysInfo.enableFindTable = a.value;
 }
+static void SetDtDuty(VAR16 a, int b, int c){
+	gSysInfo.dtDuty = a.value;
+}
 
 static void SetDutyForTest(VAR16 a, int b, int c){
 	int duty =  0;
@@ -162,7 +165,7 @@ const functionMsgCodeUnpack msgInterface[] = {
 			0,						//68
 			0,						//69
 			0,						//70
-			0,						//71
+			SetDtDuty,				//71
 			SetEnableFindTable,		//72
 			SetUIOpenLoopDuty,		//73
 			SetThresholdKiError,	//74
