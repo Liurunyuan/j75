@@ -326,7 +326,8 @@ void TargetDutyGradualChange(int targetduty){
 		gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
 	}
 	else if(gSysInfo.currentDuty > targetduty){
-		gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
+		// gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
+		gSysInfo.currentDuty =  targetduty;
 	}
 	else{
 		//nothing need change
