@@ -196,17 +196,17 @@ void SwitchDirection(void){
 	switch (gSysInfo.currentHallPosition) {
 		case 3://B+ --------------->C-
 			if(2 == gSysInfo.lastTimeHalllPosition){
-				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeBH();
 				closeAH();
-				closeBL();
-				closeCH();
-				openBH();
-				openCL();
+				closeCL();
+				openCH();
 				openAL();
+				openBL();
 			}
 			else if(3 == gSysInfo.lastTimeHalllPosition){
-				BPositiveToCNegtive();
+				CPositiveToANegtive();
 			}
 			else{
 				DisablePwmOutput();
@@ -215,17 +215,17 @@ void SwitchDirection(void){
 			break;
 		case 1://A+ --------------->C-
 			if(3 == gSysInfo.lastTimeHalllPosition){
-				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-				closeBL();
-				closeCH();
+				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
 				closeAL();
+				closeBH();
+				closeCL();
+				openCH();
+				openBL();
 				openAH();
-				openCL();
-				openBH();
 			}
 			else if(1 == gSysInfo.lastTimeHalllPosition){
-				APositiveToCNegtive();
+				CPositiveToBNegtive();
 			}
 			else{
 				DisablePwmOutput();
@@ -253,17 +253,17 @@ void SwitchDirection(void){
 			break;
 		case 4://C+ --------------->B-
 			if(5 == gSysInfo.lastTimeHalllPosition){
-				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeBL();
+				closeCH();
 				closeAL();
-				closeBH();
-				closeCL();
-				openCH();
-				openBL();
 				openAH();
+				openCL();
+				openBH();
 			}
 			else if(4 == gSysInfo.lastTimeHalllPosition){
-				CPositiveToBNegtive();
+				APositiveToCNegtive();
 			}
 			else{
 				DisablePwmOutput();
@@ -272,18 +272,18 @@ void SwitchDirection(void){
 			break;
 		case 6://C+ --------------->A-
 			if(4 == gSysInfo.lastTimeHalllPosition){
-				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-				closeBH();
+				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
 				closeAH();
-				closeCL();
-				openCH();
-				openAL();
-				openBL();	
+				closeBL();
+				closeCH();
+				openBH();
+				openCL();
+				openAL();	
 
 			}
 			else if(6 == gSysInfo.lastTimeHalllPosition){
-				CPositiveToANegtive();
+				BPositiveToCNegtive();
 			}
 			else{
 				DisablePwmOutput();
