@@ -391,7 +391,7 @@ double formulaKandBMap[3][2] = {
 };
 
 int findOpenLoopDutyByFormula(int busvol, int tarSpeed, int current){
-	int ret;
+	long long ret;
 	int i = 0;
 	double k, b;
 
@@ -428,6 +428,9 @@ int findOpenLoopDutyByFormula(int busvol, int tarSpeed, int current){
 
 	ret = ((tarSpeed * KE) + ((current * gSysInfo.formularRa) >> 12)) * (k * busvol + b);
 	ret = ret >> 15;
+	if(ret < 50){
+		ret = 50;
+	}
 
 	return ret;
 }
