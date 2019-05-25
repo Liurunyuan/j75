@@ -414,13 +414,18 @@ int findOpenLoopDutyByFormula(int busvol, int tarSpeed, int current){
 	}
 	else if(busvol < 822){
 		i = 0;
-		busvol = 822;
 	}
 	else if(busvol >= 1305){
 		i = 2;
-		busvol = 1305;
 	}
 	else{
+	}
+
+	if(busvol < 661){
+	    busvol = 661;
+	}
+	else if(busvol > 1466){
+	    busvol = 1466;
 	}
 
 	k = formulaKandBMap[i][0];
@@ -461,11 +466,13 @@ y1|------*-----------*-----------*--------
 		tarSpeed = 10000;
 	}
 	/*
+	16V------------->661
 	20V------------->822
 	24V------------->983
 	28V------------->1144
 	32V------------->1305
-	y = 40.25k + b
+	36V------------->1466
+	y = 40.25k + 17
 	*/
 	if(busvol >= 822 & busvol < 983){
 		i = 0;

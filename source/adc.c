@@ -8,6 +8,7 @@
 #include "DSP280x_Examples.h"   // DSP280x Examples Include File
 #include "global.h"
 #include "adc.h"
+#include "kalman.h"
 
 
 
@@ -144,5 +145,6 @@ void updateAndCheckCurrent(void){
 	// if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysInfo.maxCurrent){
 	// 	gSysInfo.maxCurrent = gSysAnalogVar.single.var[I_AN_3V3_A2].value;
 	// }
-	gSysInfo.maxCurrent = gSysAnalogVar.single.var[I_AN_3V3_A2].value;
+	//	gSysInfo.maxCurrent = gSysAnalogVar.single.var[I_AN_3V3_A2].value;
+	gSysInfo.maxCurrent = (KalmanFilterCurrent(gSysAnalogVar.single.var[I_AN_3V3_A2].value,1.1,157));
 }

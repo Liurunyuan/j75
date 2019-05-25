@@ -5,8 +5,9 @@
 #include "adc.h"
 #include "pid.h"
 #include "ecap.h"
+#include "kalman.h"
 
-#define DUTYCHANGEINTERVAL (2)
+#define DUTYCHANGEINTERVAL (3)
 /******************************************/
 inline void openAH(void){
 	EPwm1Regs.AQCSFRC.bit.CSFA = 3;
