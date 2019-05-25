@@ -70,6 +70,9 @@ static void SetEnableFindTable(VAR16 a, int b, int c){
 static void SetDtDuty(VAR16 a, int b, int c){
 	gSysInfo.dtDuty = a.value;
 }
+static void SetFormulaRa(VAR16 a, int b, int c){
+	gSysInfo.formularRa = a.value;
+}
 
 static void SetDutyForTest(VAR16 a, int b, int c){
 	int duty =  0;
@@ -164,7 +167,7 @@ const functionMsgCodeUnpack msgInterface[] = {
 			0,						//67
 			0,						//68
 			0,						//69
-			0,						//70
+			SetFormulaRa,			//70
 			SetDtDuty,				//71
 			SetEnableFindTable,		//72
 			SetUIOpenLoopDuty,		//73

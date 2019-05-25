@@ -74,6 +74,7 @@ typedef struct{
 	int16 enableFindTable;
 	int16 uiSetOpenLoopDuty;
 	int16 dtDuty;
+	int16 formularRa;
 }SYSINFO;
 
 typedef struct _DATA{
