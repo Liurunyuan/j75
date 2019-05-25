@@ -61,7 +61,8 @@ int16 openLoopControl(int16 busVol, int16 targetSpeed){
 	//find the target duty by bus voltage and motor speed
 	int16 ret = 0;
 
-	ret = findOpenLoopDuty(busVol, targetSpeed);
+	// ret = findOpenLoopDuty(busVol, targetSpeed);
+	ret = findOpenLoopDutyByFormula(busVol, targetSpeed, gSysInfo.maxCurrent);
 
 #if OPENLOOPDONE
 	return ret;

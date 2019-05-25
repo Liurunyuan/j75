@@ -2,7 +2,7 @@
 #define _GLOBAL_H
 
 #define OPENLOOPDONE 1
-#define CLOSELOOPDONE 0 
+#define CLOSELOOPDONE 0
 
 
 
@@ -105,4 +105,5 @@ void disableEcapInterrupt(void);
 void clearScibOverflow(void);
 void readTZGpioState(void);
 int findOpenLoopDuty(int busvol, int tarSpeed);
+int findOpenLoopDutyByFormula(int busvol, int tarSpeed, int current);
 #endif

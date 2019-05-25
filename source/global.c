@@ -2,6 +2,9 @@
 #include "DSP280x_Examples.h"   // DSP280x Examples Include File
 #include "global.h"
 
+#define KE (1)
+#define RA (0)
+
 
 volatile SYSINFO gSysInfo = {0};
 volatile SYSSTATE gSysState = {0};
@@ -373,6 +376,52 @@ int mapBusVolandSpeed[4][50] = {
 		569
 	}
 };
+
+double formulaKandBMap[3][2] = {
+	{
+		-5.91, 8498
+	},
+	{
+		-3.29,5923
+	},
+	{
+		-2.3, 4788
+	}
+};
+
+int findOpenLoopDutyByFormula(int busvol, int tarSpeed, int current){
+	int ret;
+	int i = 0;
+	double k, b;
+
+	if(busvol >= 822 & busvol < 983){
+		i = 0;
+	}
+	else if(busvol >= 983 & busvol < 1144){
+		i = 1;
+	}
+	else if(busvol >= 1144 & busvol < 1305){
+		i = 2;
+	}
+	else if(busvol < 822){
+		i = 0;
+		busvol = 822;
+	}
+	else if(busvol >= 1305){
+		i = 2;
+		busvol = 1305;
+	}
+	else{
+	}
+
+	k = formulaKandBMap[i][0];
+	b = formulaKandBMap[i][1];
+
+	ret = ((tarSpeed * KE) + (current * RA)) * (k * busvol + b);
+	ret = ret >> 15;
+
+	return ret;
+}
 
 /*----->20----->24----->28----->32---->*/
 int findOpenLoopDuty(int busvol, int tarSpeed){
