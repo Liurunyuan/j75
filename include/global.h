@@ -2,7 +2,7 @@
 #define _GLOBAL_H
 
 #define OPENLOOPDONE 1
-#define CLOSELOOPDONE 0
+#define CLOSELOOPDONE 1
 
 
 

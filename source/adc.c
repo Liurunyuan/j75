@@ -11,7 +11,7 @@
 #include "kalman.h"
 
 
-
+int64 tmp[64] = {0};
 SysAnalogVar gSysAnalogVar = {0};
 /********update anolog variable value******************************/
 Uint16 updateU_AN_3V3_A0(void){return GET_U_AN_3V3_A0;}
@@ -129,6 +129,10 @@ void updateAndCheckTemperature(void){
 
 void updateAndCheckCurrent(void){
 	static int count = 0;
+	static int i = 0;
+
+	int j;
+	int64 ret;
 	gSysAnalogVar.single.var[I_AN_3V3_A2].value = gSysAnalogVar.single.var[I_AN_3V3_A2].updateValue();
 	if((gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max) ||
 				(gSysAnalogVar.single.var[I_AN_3V3_A2].value < gSysAnalogVar.single.var[I_AN_3V3_A2].min)) {
@@ -146,5 +150,16 @@ void updateAndCheckCurrent(void){
 	// 	gSysInfo.maxCurrent = gSysAnalogVar.single.var[I_AN_3V3_A2].value;
 	// }
 	//	gSysInfo.maxCurrent = gSysAnalogVar.single.var[I_AN_3V3_A2].value;
-	gSysInfo.maxCurrent = (KalmanFilterCurrent(gSysAnalogVar.single.var[I_AN_3V3_A2].value,1.1,157));
+	//	gSysInfo.maxCurrent = (KalmanFilterCurrent(gSysAnalogVar.single.var[I_AN_3V3_A2].value,300,50));
+	tmp[i] = (int64)gSysAnalogVar.single.var[I_AN_3V3_A2].value;
+	++i;
+	if(i >= 64){
+	    i = 0;
+	    for(j = 0; j < 64; ++j){
+	        ret += tmp[j];
+	    }
+	    ret = ret >> 6;
+	    gSysInfo.maxCurrent  = ret;
+	}
+//	gSysInfo.maxCurrent = (int16)(KalmanFilterCurrent(ret,300,50));
 }
