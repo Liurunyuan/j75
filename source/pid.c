@@ -16,8 +16,8 @@ volatile double gTargetSpeed = 0;
 void InitPidVar(void){
 //	gPidPara.kp = 450;
 //	gPidPara.ki = 500;
-    gPidPara.kp = 250;
-    gPidPara.ki = 300;
+    gPidPara.kp = 300;
+    gPidPara.ki = 400;
 	gPidPara.kd = 0;
 	gPidPara.targetPid = 0;
 
