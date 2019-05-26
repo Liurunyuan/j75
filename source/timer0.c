@@ -20,7 +20,7 @@ void MotorSpeed(){
 
 		calSpeed = CalculateSpeed(gECapCount);
 		if(calSpeed != -1){
-			gMotorSpeedEcap = (KalmanFilter(CalculateSpeed(gECapCount),KALMAN_Q,KALMAN_R));
+			gMotorSpeedEcap = (KalmanFilter(calSpeed, KALMAN_Q, KALMAN_R));
 		}
 		gSysInfo.isEcapRefresh = 0;
 		count = 0;
