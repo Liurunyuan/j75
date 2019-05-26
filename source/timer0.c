@@ -14,7 +14,7 @@
 
 void MotorSpeed(){
 	static int count = 0;
-	int calSpeed = 0;
+	int calSpeed = -1;
 
   	if (gSysInfo.isEcapRefresh == 1){
 
