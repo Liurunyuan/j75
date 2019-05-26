@@ -31,6 +31,7 @@ void InitGlobalVar(void){
 	gSysInfo.uiSetOpenLoopDuty = 50;
 	gSysInfo.dtDuty = 0;
 	gSysInfo.formularRa = 270;
+	gSysInfo.curp = 0;
 
 
 	gSysAlarm.all = 0;
@@ -394,7 +395,6 @@ int findOpenLoopDutyByFormula(int busvol, int tarSpeed, int current){
 	int64 ret = 0;
 	int i = 0;
 	double k, b;
-	static int64 curp = 0;
 	int64 y;
 	int64 ts;
 	int64 cur;
@@ -404,14 +404,6 @@ int findOpenLoopDutyByFormula(int busvol, int tarSpeed, int current){
 	para = gSysInfo.formularRa;
 
 	cur = current;
-
-//	if(current < 59){
-//		current = 0;
-//	}
-//	else
-//	{
-//		current = current - 59;
-//	}
 
 	if(busvol >= 822 & busvol < 983){
 		i = 0;
@@ -442,17 +434,17 @@ int findOpenLoopDutyByFormula(int busvol, int tarSpeed, int current){
 	b = formulaKandBMap[i][1];
 
 	tarret = (cur * para) >> 4;
-	if(curp < tarret){
-		curp = curp + 1;
+	if(gSysInfo.curp < tarret){
+		gSysInfo.curp = gSysInfo.curp + 1;
 	}
-	else if(curp > tarret)
+	else if(gSysInfo.curp > tarret)
 	{
-		curp = curp - 1;
+		gSysInfo.curp = gSysInfo.curp - 1;
 	}
 	
 	y = k * busvol + b;
 	ts = tarSpeed;
-	ret = (ts + curp) * y;
+	ret = (ts + gSysInfo.curp) * y;
 	ret = ret >> 15;
 
 	if(ret < 50){

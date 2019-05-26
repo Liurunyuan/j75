@@ -91,6 +91,7 @@ void DisablePwmOutput(void){
 	sek = 0;
 	gSysInfo.duty = 0;
 	gSysInfo.currentDuty = 50;
+	gSysInfo.curp = 0;
 }
 /******************************************/
 inline void CPositiveToBNegtive(void) {

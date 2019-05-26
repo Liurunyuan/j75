@@ -75,6 +75,7 @@ typedef struct{
 	int16 uiSetOpenLoopDuty;
 	int16 dtDuty;
 	int16 formularRa;
+	int32 curp;
 }SYSINFO;
 
 typedef struct _DATA{
