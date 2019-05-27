@@ -76,6 +76,7 @@ typedef struct{
 	int16 dtDuty;
 	int16 formularRa;
 	int32 curp;
+	int16 dutyAddInterval;
 }SYSINFO;
 
 typedef struct _DATA{

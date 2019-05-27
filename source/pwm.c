@@ -320,7 +320,7 @@ void SwitchDirection(void){
 void TargetDutyGradualChange(int targetduty){
 	static int count = 0;
 	++count;
-	if(count < DUTYCHANGEINTERVAL){
+	if(count < gSysInfo.dutyAddInterval){
 		return;
 	}
 	count = 0;

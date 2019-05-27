@@ -21,7 +21,7 @@ void InitPidVar(void){
 	gPidPara.kd = 0;
 	gPidPara.targetPid = 0;
 
-	gTargetSpeed = 0;
+	gTargetSpeed = 500;
 }
 
 int32 sek = 0;

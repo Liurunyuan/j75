@@ -52,11 +52,24 @@ void Timer0_ISR_Thread(void){
 	}
 }
 
+inline void ChangeDutyAddInterval(void){
+    if((gMotorSpeedEcap >= 0) && (gMotorSpeedEcap <= 3000)){
+        gSysInfo.dutyAddInterval = 3;
+    }
+    else if((gMotorSpeedEcap > 3000) && (gMotorSpeedEcap < 6000)){
+        gSysInfo.dutyAddInterval = 2;
+    }
+    else if(gMotorSpeedEcap >=6000){
+        gSysInfo.dutyAddInterval = 1;
+    }
+}
+
 void Timer1_ISR_Thread(void){
 	static unsigned char count = 0;
 	gSysAnalogVar.single.var[U_AN_3V3_A0].value = gSysAnalogVar.single.var[U_AN_3V3_A0].updateValue();
 	int busVol = gSysAnalogVar.single.var[U_AN_3V3_A0].value;
 	MotorSpeed();
+	ChangeDutyAddInterval();
 	if(gSysState.currentstate == START){
 
 		if(gSysInfo.enableFindTable){

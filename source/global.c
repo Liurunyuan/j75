@@ -32,7 +32,7 @@ void InitGlobalVar(void){
 	gSysInfo.dtDuty = 0;
 	gSysInfo.formularRa = 270;
 	gSysInfo.curp = 0;
-
+	gSysInfo.dutyAddInterval = 3;
 
 	gSysAlarm.all = 0;
 }
