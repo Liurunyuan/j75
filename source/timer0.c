@@ -14,13 +14,13 @@
 
 void MotorSpeed(){
 	static int count = 0;
-	int calSpeed = 0;
+	int calSpeed = -1;
 
   	if (gSysInfo.isEcapRefresh == 1){
 
 		calSpeed = CalculateSpeed(gECapCount);
 		if(calSpeed != -1){
-			gMotorSpeedEcap = (KalmanFilter(CalculateSpeed(gECapCount),KALMAN_Q,KALMAN_R));
+			gMotorSpeedEcap = (KalmanFilter(calSpeed, KALMAN_Q, KALMAN_R));
 		}
 		gSysInfo.isEcapRefresh = 0;
 		count = 0;
@@ -52,14 +52,33 @@ void Timer0_ISR_Thread(void){
 	}
 }
 
+inline void ChangeDutyAddInterval(void){
+    if((gMotorSpeedEcap >= 0) && (gMotorSpeedEcap <= 3000)){
+        gSysInfo.dutyAddInterval = 3;
+    }
+    else if((gMotorSpeedEcap > 3000) && (gMotorSpeedEcap < 6000)){
+        gSysInfo.dutyAddInterval = 2;
+    }
+    else if(gMotorSpeedEcap >=6000){
+        gSysInfo.dutyAddInterval = 1;
+    }
+}
+
 void Timer1_ISR_Thread(void){
 	static unsigned char count = 0;
 	gSysAnalogVar.single.var[U_AN_3V3_A0].value = gSysAnalogVar.single.var[U_AN_3V3_A0].updateValue();
 	int busVol = gSysAnalogVar.single.var[U_AN_3V3_A0].value;
 	MotorSpeed();
+	ChangeDutyAddInterval();
 	if(gSysState.currentstate == START){
 
-		gSysInfo.openLoopTargetDuty = openLoopControl(busVol, gTargetSpeed);
+		if(gSysInfo.enableFindTable){
+			gSysInfo.openLoopTargetDuty = openLoopControl(busVol, gTargetSpeed);
+		}
+		else{
+			gSysInfo.openLoopTargetDuty = gSysInfo.uiSetOpenLoopDuty;
+		}
+		
 	#if CLOSELOOPDONE
 		gSysInfo.closeLooptargetDuty =  PidOutput(gMotorSpeedEcap);
 	#else

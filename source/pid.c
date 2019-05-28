@@ -11,15 +11,17 @@
 #include "pid.h"
 
 volatile PIDPARA gPidPara = {0};
-volatile double gTargetSpeed = 0;
+volatile double gTargetSpeed = 500;
 
 void InitPidVar(void){
-	gPidPara.kp = 450;
-	gPidPara.ki = 500;
+//	gPidPara.kp = 450;
+//	gPidPara.ki = 500;
+    gPidPara.kp = 300;
+    gPidPara.ki = 400;
 	gPidPara.kd = 0;
 	gPidPara.targetPid = 0;
 
-	gTargetSpeed = 0;
+	gTargetSpeed = 500;
 }
 
 int32 sek = 0;
@@ -32,7 +34,7 @@ int16 PidOutput(double currentSpeed){
 
 	ek1 = (int32)(gTargetSpeed - currentSpeed);
 	thresholdKi = gTargetSpeed * 0.2;
-	if((ek1 > -thresholdKi) && (ek1 < thresholdKi))
+	if((ek1 > -gSysInfo.thresholdKiError) && (ek1 < gSysInfo.thresholdKiError))
 	{
 		if(((ek1 > 0) && (sek < 585535)) || ((ek1 < 0) && (sek > -585535)))
 		{
@@ -61,7 +63,8 @@ int16 openLoopControl(int16 busVol, int16 targetSpeed){
 	//find the target duty by bus voltage and motor speed
 	int16 ret = 0;
 
-	ret = findOpenLoopDuty(busVol, targetSpeed);
+	// ret = findOpenLoopDuty(busVol, targetSpeed);
+	ret = findOpenLoopDutyByFormula(busVol, targetSpeed, gSysInfo.maxCurrent);
 
 #if OPENLOOPDONE
 	return ret;

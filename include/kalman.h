@@ -12,6 +12,7 @@
 #define KALMAN_R  (157.2)
 
 double KalmanFilter(const double ResrcData, double ProcessNiose_Q, double MeasureNoise_R);
+double KalmanFilterCurrent(const double ResrcData, double ProcessNiose_Q, double MeasureNoise_R);
 
 
 #endif /* KALMAN_H_ */

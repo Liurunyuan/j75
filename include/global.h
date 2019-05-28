@@ -2,7 +2,7 @@
 #define _GLOBAL_H
 
 #define OPENLOOPDONE 1
-#define CLOSELOOPDONE 1 
+#define CLOSELOOPDONE 1
 
 
 
@@ -70,6 +70,13 @@ typedef struct{
 	int16 hallErrorCount;
 	int16 maxCurrent;
 	int16 repeatPeriod;
+	int16 thresholdKiError;
+	int16 enableFindTable;
+	int16 uiSetOpenLoopDuty;
+	int16 dtDuty;
+	int16 formularRa;
+	int32 curp;
+	int16 dutyAddInterval;
 }SYSINFO;
 
 typedef struct _DATA{
@@ -101,4 +108,5 @@ void disableEcapInterrupt(void);
 void clearScibOverflow(void);
 void readTZGpioState(void);
 int findOpenLoopDuty(int busvol, int tarSpeed);
+int findOpenLoopDutyByFormula(int busvol, int tarSpeed, int current);
 #endif
