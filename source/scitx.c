@@ -35,7 +35,8 @@ void GetDynamoCurrentCurve(int a, int b, int c){
 }
 void GetTemperatureCurve(int a, int b, int c){
 	// gRx422TxVar[6].value = gSysAnalogVar.single.var[T_AN_3V3_B0].value;
-	gRx422TxVar[6].value = gSysInfo.closeLooptargetDuty;
+	// gRx422TxVar[6].value = gSysInfo.closeLooptargetDuty;
+	gRx422TxVar[6].value = gSysInfo.duty;
 }
 void GetMotorAccelCurve(int a, int b, int c){
 	gRx422TxVar[7].value = 3;
