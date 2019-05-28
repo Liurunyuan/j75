@@ -1,3 +1,17 @@
+/***************************0.0.6*******************************/
+Version Number: 0.0.6
+Date: 2019/5/28
+Author:Simon
+
+What new: 
+	1. Realeased to customer
+	2. Dynamic change the duty plus interval
+	3. Send current duty to UI
+	4. Close loop control with load
+	5. New switch direction for the final motor provided by customer
+Bug Fix:
+	1. ignore the speed when it's result less than 0
+	2. init target speed to 0
 /***************************0.0.5*******************************/
 Version Number: 0.0.5
 Date: 2019/5/12
