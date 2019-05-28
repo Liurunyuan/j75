@@ -5,8 +5,9 @@
 #include "adc.h"
 #include "pid.h"
 #include "ecap.h"
+#include "kalman.h"
 
-#define DUTYCHANGEINTERVAL (2)
+#define DUTYCHANGEINTERVAL (3)
 /******************************************/
 inline void openAH(void){
 	EPwm1Regs.AQCSFRC.bit.CSFA = 3;
@@ -90,6 +91,7 @@ void DisablePwmOutput(void){
 	sek = 0;
 	gSysInfo.duty = 0;
 	gSysInfo.currentDuty = 50;
+	gSysInfo.curp = 0;
 }
 /******************************************/
 inline void CPositiveToBNegtive(void) {
@@ -203,7 +205,7 @@ void SwitchDirection(void){
 				closeCL();
 				openCH();
 				openAL();
-				openBL();	
+				openBL();
 			}
 			else if(3 == gSysInfo.lastTimeHalllPosition){
 				CPositiveToANegtive();
@@ -215,17 +217,17 @@ void SwitchDirection(void){
 			break;
 		case 1://A+ --------------->C-
 			if(3 == gSysInfo.lastTimeHalllPosition){
-				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeAL();
+				closeBH();
 				closeCL();
-				closeAH();
-				closeBL();
-				openBH();
-				openAL();
 				openCH();
+				openBL();
+				openAH();
 			}
 			else if(1 == gSysInfo.lastTimeHalllPosition){
-				BPositiveToANegtive();
+				CPositiveToBNegtive();
 			}
 			else{
 				DisablePwmOutput();
@@ -234,17 +236,17 @@ void SwitchDirection(void){
 			break;
 		case 5://A+ --------------->B-
 			if(1 == gSysInfo.lastTimeHalllPosition){
-				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-				closeAH();
-				closeBL();
+				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
 				closeCH();
-				openBH();
+				closeBH();
+				closeAL();
+				openAH();
+				openBL();
 				openCL();
-				openAL();
 			}
 			else if(5 == gSysInfo.lastTimeHalllPosition){
-				BPositiveToCNegtive();
+				APositiveToBNegtive();
 			}
 			else{
 				DisablePwmOutput();
@@ -272,18 +274,18 @@ void SwitchDirection(void){
 			break;
 		case 6://C+ --------------->A-
 			if(4 == gSysInfo.lastTimeHalllPosition){
-				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+				closeAH();
+				closeBL();
 				closeCH();
-				closeBH();
-				closeAL();
-				openAH();
-				openBL();
+				openBH();
 				openCL();
+				openAL();	
 
 			}
 			else if(6 == gSysInfo.lastTimeHalllPosition){
-				APositiveToBNegtive();
+				BPositiveToCNegtive();
 			}
 			else{
 				DisablePwmOutput();
@@ -292,17 +294,17 @@ void SwitchDirection(void){
 			break;
 		case 2://B+ --------------->A-
 			if(6 == gSysInfo.lastTimeHalllPosition){
-				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-				closeAL();
-				closeBH();
+				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
 				closeCL();
+				closeAH();
+				closeBL();
+				openBH();
+				openAL();
 				openCH();
-				openBL();
-				openAH();
 			}
 			else if(2 == gSysInfo.lastTimeHalllPosition){
-				CPositiveToBNegtive();
+				BPositiveToANegtive();
 			}
 			else{
 				DisablePwmOutput();
@@ -318,7 +320,7 @@ void SwitchDirection(void){
 void TargetDutyGradualChange(int targetduty){
 	static int count = 0;
 	++count;
-	if(count < DUTYCHANGEINTERVAL){
+	if(count < gSysInfo.dutyAddInterval){
 		return;
 	}
 	count = 0;
@@ -326,7 +328,8 @@ void TargetDutyGradualChange(int targetduty){
 		gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
 	}
 	else if(gSysInfo.currentDuty > targetduty){
-		gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
+		// gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
+		gSysInfo.currentDuty =  targetduty;
 	}
 	else{
 		//nothing need change
@@ -351,7 +354,7 @@ void TargetDutyGradualChange(int targetduty){
 void PwmIsrThread(void)
 {
 	if(gSysState.currentstate == START){
-		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.closeLooptargetDuty);
+		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.closeLooptargetDuty + gSysInfo.dtDuty);
 		SwitchDirection();
 	}
 	else{

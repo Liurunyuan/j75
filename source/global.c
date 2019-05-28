@@ -2,6 +2,9 @@
 #include "DSP280x_Examples.h"   // DSP280x Examples Include File
 #include "global.h"
 
+#define KE (1)
+#define RA (0)
+
 
 volatile SYSINFO gSysInfo = {0};
 volatile SYSSTATE gSysState = {0};
@@ -23,7 +26,13 @@ void InitGlobalVar(void){
 	gSysInfo.hallErrorCount = 0;
 	gSysInfo.maxCurrent = 0;
 	gSysInfo.repeatPeriod = 50;
-
+	gSysInfo.thresholdKiError = 4500;
+	gSysInfo.enableFindTable = 1;
+	gSysInfo.uiSetOpenLoopDuty = 50;
+	gSysInfo.dtDuty = 0;
+	gSysInfo.formularRa = 270;
+	gSysInfo.curp = 0;
+	gSysInfo.dutyAddInterval = 3;
 
 	gSysAlarm.all = 0;
 }
@@ -370,6 +379,81 @@ int mapBusVolandSpeed[4][50] = {
 	}
 };
 
+double formulaKandBMap[3][2] = {
+	{
+		-5.91, 8498
+	},
+	{
+		-3.29,5923
+	},
+	{
+		-2.3, 4788
+	}
+};
+
+int findOpenLoopDutyByFormula(int busvol, int tarSpeed, int current){
+	int64 ret = 0;
+	int i = 0;
+	double k, b;
+	int64 y;
+	int64 ts;
+	int64 cur;
+	int64 para;
+	int64 tarret;
+
+	para = gSysInfo.formularRa;
+
+	cur = current;
+
+	if(busvol >= 822 & busvol < 983){
+		i = 0;
+	}
+	else if(busvol >= 983 & busvol < 1144){
+		i = 1;
+	}
+	else if(busvol >= 1144 & busvol < 1305){
+		i = 2;
+	}
+	else if(busvol < 822){
+		i = 0;
+	}
+	else if(busvol >= 1305){
+		i = 2;
+	}
+	else{
+	}
+
+	if(busvol < 661){
+	    busvol = 661;
+	}
+	else if(busvol > 1466){
+	    busvol = 1466;
+	}
+
+	k = formulaKandBMap[i][0];
+	b = formulaKandBMap[i][1];
+
+	tarret = (cur * para) >> 4;
+	if(gSysInfo.curp < tarret){
+		gSysInfo.curp = gSysInfo.curp + 1;
+	}
+	else if(gSysInfo.curp > tarret)
+	{
+		gSysInfo.curp = gSysInfo.curp - 1;
+	}
+	
+	y = k * busvol + b;
+	ts = tarSpeed;
+	ret = (ts + gSysInfo.curp) * y;
+	ret = ret >> 15;
+
+	if(ret < 50){
+		ret = 50;
+	}
+
+	return ret;
+}
+
 /*----->20----->24----->28----->32---->*/
 int findOpenLoopDuty(int busvol, int tarSpeed){
 /*
@@ -396,11 +480,13 @@ y1|------*-----------*-----------*--------
 		tarSpeed = 10000;
 	}
 	/*
+	16V------------->661
 	20V------------->822
 	24V------------->983
 	28V------------->1144
 	32V------------->1305
-	y = 40.25k + b
+	36V------------->1466
+	y = 40.25k + 17
 	*/
 	if(busvol >= 822 & busvol < 983){
 		i = 0;
