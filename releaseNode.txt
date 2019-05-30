@@ -1,3 +1,11 @@
+/***************************0.0.7*******************************/
+Version Number: 0.0.7
+Date: 2019/5/30
+Author:Simon
+
+What new: 
+Bug Fix:
+	1. Motor speed is more than 30000rmp, fixed by initing x_last var in KalmanFilter to 0
 /***************************0.0.6*******************************/
 Version Number: 0.0.6
 Date: 2019/5/28
