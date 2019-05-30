@@ -7,13 +7,13 @@
 
 
 
-double KalmanFilter(const double ResrcData, double ProcessNiose_Q, double MeasureNoise_R)
+double KalmanFilter(const double ResrcData, int ProcessNiose_Q, int MeasureNoise_R)
 {
 
-	double R = MeasureNoise_R;
-	double Q = ProcessNiose_Q;
+    double R = MeasureNoise_R;
+    double Q = ProcessNiose_Q;
 
-	static double x_last;
+	static double x_last = 0;
 	double x_mid = x_last;
 	double x_now;
 
