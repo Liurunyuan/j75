@@ -1,3 +1,11 @@
+/***************************0.0.8*******************************/
+Version Number: 0.0.8
+Date: 2019/6/01
+Author:John
+
+What new: 
+	1. Add protection limit for Voltage, Current and Temperature
+Bug Fix:
 /***************************0.0.7*******************************/
 Version Number: 0.0.7
 Date: 2019/5/30
