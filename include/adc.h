@@ -55,7 +55,9 @@ enum ADC_INDEX
 typedef struct _AnalogVar{
 	int value;
 	int max;
+	int max2nd;
 	int min;
+	int min2nd;
 	UV updateValue;
 }AnalogVar;
 
@@ -73,6 +75,7 @@ int IsAnalogValueAbnormal(void);
 void ReadAnalogValue(void);
 void updateAndCheckTemperature(void);
 void updateAndCheckCurrent(void);
+void updateAndCheckVoltage(void);
 
 
 extern SysAnalogVar gSysAnalogVar;
