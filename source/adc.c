@@ -177,6 +177,7 @@ void updateAndCheckCurrent(void){
 	}
 	else{
 		count = 0;
+		gSysInfo.restrictduty = 0;
 	}
 
 	// if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysInfo.maxCurrent){
