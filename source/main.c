@@ -102,6 +102,8 @@ void MainLoop(){
 
 	readTZGpioState();
 
+	updateAndCheckVoltage();
+
 	updateAndCheckTemperature();
 
 	UnpackSciPackage(&gRS422RxQue);

@@ -51,30 +51,32 @@ const UV funcptr[] = {
 	updateHPT_AN_3V3_B6,
 	updateAGND_B7
 };
-const int anologMaxMinInit[][2] = {
-	{0,0},
-	{1,0},
-	{2,0},
-	{3,0},
-	{4,0},
-	{5,0},
-	{6,0},
-	{7,0},
-	{4096,691},		//temperature max and min
-	{9,0},
-	{10,0},
-	{11,0},
-	{12,0},
-	{13,0},
-	{14,0},
-	{15,0},
+const int anologMaxMinInit[][4] = {
+	{1463,1426,603,640},       //voltage max and min
+	{1,0,0,0},
+	{933,820,0,0},        //current max, 2nd max and min
+	{3,0,0,0},
+	{4,0,0,0},
+	{5,0,0,0},
+	{6,0,0,0},
+	{7,0,0,0},
+	{4050,0,631,0},		//temperature max and min
+	{9,0,0,0},
+	{10,0,0,0},
+	{11,0,0,0},
+	{12,0,0,0},
+	{13,0,0,0},
+	{14,0,0,0},
+	{15,0,0,0},
 };
 void InitAdcVar(void){
 	int index;
 	for (index = 0; index < AnalogTotalChannel; ++index) {
 		gSysAnalogVar.single.var[index].updateValue = funcptr[index];
 		gSysAnalogVar.single.var[index].max = anologMaxMinInit[index][0];
-		gSysAnalogVar.single.var[index].min = anologMaxMinInit[index][1];
+		gSysAnalogVar.single.var[index].max2nd = anologMaxMinInit[index][1];
+		gSysAnalogVar.single.var[index].min = anologMaxMinInit[index][2];
+		gSysAnalogVar.single.var[index].min2nd = anologMaxMinInit[index][3];
 	}
 }
 
@@ -117,7 +119,7 @@ void updateAndCheckTemperature(void){
 	if((gSysAnalogVar.single.var[T_AN_3V3_B0].value > gSysAnalogVar.single.var[T_AN_3V3_B0].max) ||
 				(gSysAnalogVar.single.var[T_AN_3V3_B0].value < gSysAnalogVar.single.var[T_AN_3V3_B0].min)) {
 		++count;
-		if(count > 5){
+		if(count > 10){
 			count = 0;
 			gSysAlarm.bit.overTemperature = 1;
 		}
@@ -127,23 +129,55 @@ void updateAndCheckTemperature(void){
 	}
 }
 
+void updateAndCheckVoltage(void){
+    static int count = 0;
+    static int past_flag = 0;
+
+    gSysAnalogVar.single.var[U_AN_3V3_A0].value = gSysAnalogVar.single.var[U_AN_3V3_A0].updateValue();
+
+    if(past_flag == 1){
+        if((gSysAnalogVar.single.var[U_AN_3V3_A0].value < gSysAnalogVar.single.var[U_AN_3V3_A0].max2nd) &&
+                    (gSysAnalogVar.single.var[U_AN_3V3_A0].value > gSysAnalogVar.single.var[U_AN_3V3_A0].min2nd)){
+            gSysAlarm.bit.overBusVoltage = 0;
+            past_flag = 0;
+        }
+        else{
+            gSysAlarm.bit.overBusVoltage = 1;
+            past_flag = 1;
+        }
+    }
+    else if (past_flag == 0){
+        if((gSysAnalogVar.single.var[U_AN_3V3_A0].value > gSysAnalogVar.single.var[U_AN_3V3_A0].max) ||
+                    (gSysAnalogVar.single.var[U_AN_3V3_A0].value < gSysAnalogVar.single.var[U_AN_3V3_A0].min)) {
+            ++count;
+            if(count > 10){
+                count = 0;
+                gSysAlarm.bit.overBusVoltage = 1;
+                past_flag = 1;
+            }
+        }
+    }
+}
+
 void updateAndCheckCurrent(void){
 	static int count = 0;
 	static int i = 0;
-
 	int j;
 	int64 ret;
 	gSysAnalogVar.single.var[I_AN_3V3_A2].value = gSysAnalogVar.single.var[I_AN_3V3_A2].updateValue();
-	if((gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max) ||
-				(gSysAnalogVar.single.var[I_AN_3V3_A2].value < gSysAnalogVar.single.var[I_AN_3V3_A2].min)) {
-		++count;
-		if(count > 5){
-			count = 0;
-			// gSysAlarm.bit.overCurrent = 1;
-		}
+	if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max2nd) {
+	    gSysInfo.restrictduty = 1;
+	    if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max) {
+	        ++count;
+	        if(count > 10){
+	            count = 0;
+	            gSysAlarm.bit.overCurrent = 1;
+	        }
+	    }
 	}
 	else{
 		count = 0;
+		gSysInfo.restrictduty = 0;
 	}
 
 	// if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysInfo.maxCurrent){

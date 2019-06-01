@@ -341,7 +341,7 @@ void TargetDutyGradualChange(int targetduty){
 	else if (gSysInfo.currentDuty <= 0) {
 		gSysInfo.currentDuty = 0;
 	}
-	gSysInfo.duty = gSysInfo.currentDuty;//uncomment when pass test
+	gSysInfo.duty = gSysInfo.restrictduty ? (gSysInfo.currentDuty)*0.8 : gSysInfo.currentDuty;//uncomment when pass test
 }
 /**************************************************************
  *Name:						PwmIsrThread
