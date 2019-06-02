@@ -1,3 +1,12 @@
+/***************************0.0.9*******************************/
+Version Number: 0.0.9
+Date: 2019/6/02
+Author:John
+
+What new: 
+	1. Improve temperature proection, discard lowest limit
+	2. Add Schmidt hysteresis for temperature
+Bug Fix:
 /***************************0.0.8*******************************/
 Version Number: 0.0.8
 Date: 2019/6/01
