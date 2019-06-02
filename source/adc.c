@@ -52,6 +52,7 @@ const UV funcptr[] = {
 	updateAGND_B7
 };
 const int anologMaxMinInit[][4] = {
+    //max,max2nd,min,min2nd
 	{1463,1426,603,640},       //voltage max and min
 	{1,0,0,0},
 	{933,820,0,0},        //current max, 2nd max and min
@@ -60,7 +61,7 @@ const int anologMaxMinInit[][4] = {
 	{5,0,0,0},
 	{6,0,0,0},
 	{7,0,0,0},
-	{4050,0,631,0},		//temperature max and min
+	{4050,0,631,793},		//temperature max and min
 	{9,0,0,0},
 	{10,0,0,0},
 	{11,0,0,0},
@@ -114,47 +115,63 @@ int IsAnalogValueAbnormal(void){
 }
 
 void updateAndCheckTemperature(void){
-	static int count = 0;
-	gSysAnalogVar.single.var[T_AN_3V3_B0].value = gSysAnalogVar.single.var[T_AN_3V3_B0].updateValue();
-	if((gSysAnalogVar.single.var[T_AN_3V3_B0].value > gSysAnalogVar.single.var[T_AN_3V3_B0].max) ||
-				(gSysAnalogVar.single.var[T_AN_3V3_B0].value < gSysAnalogVar.single.var[T_AN_3V3_B0].min)) {
-		++count;
-		if(count > 10){
-			count = 0;
-			gSysAlarm.bit.overTemperature = 1;
-		}
-	}
-	else{
-		count = 0;
-	}
+    static int count = 0;
+    static int over_limit_lasttime = 0;
+    gSysAnalogVar.single.var[T_AN_3V3_B0].value = gSysAnalogVar.single.var[T_AN_3V3_B0].updateValue();
+
+    if(over_limit_lasttime == 1){
+        if(gSysAnalogVar.single.var[T_AN_3V3_B0].value > gSysAnalogVar.single.var[T_AN_3V3_B0].min2nd){
+            gSysAlarm.bit.overTemperature = 0;
+            over_limit_lasttime = 0;
+        }
+        else{
+            gSysAlarm.bit.overTemperature = 1;
+            over_limit_lasttime = 1;
+        }
+    }
+    else if (over_limit_lasttime == 0){
+        if(gSysAnalogVar.single.var[T_AN_3V3_B0].value < gSysAnalogVar.single.var[T_AN_3V3_B0].min) {
+            ++count;
+            if(count > 10){
+                count = 0;
+                gSysAlarm.bit.overTemperature = 1;
+            }
+        }
+    }
+    else{
+        count = 0;
+    }
 }
 
 void updateAndCheckVoltage(void){
     static int count = 0;
-    static int past_flag = 0;
+    static int over_limit_lasttime = 0;
 
     gSysAnalogVar.single.var[U_AN_3V3_A0].value = gSysAnalogVar.single.var[U_AN_3V3_A0].updateValue();
 
-    if(past_flag == 1){
+    if(over_limit_lasttime == 1){
         if((gSysAnalogVar.single.var[U_AN_3V3_A0].value < gSysAnalogVar.single.var[U_AN_3V3_A0].max2nd) &&
                     (gSysAnalogVar.single.var[U_AN_3V3_A0].value > gSysAnalogVar.single.var[U_AN_3V3_A0].min2nd)){
             gSysAlarm.bit.overBusVoltage = 0;
-            past_flag = 0;
+            over_limit_lasttime = 0;
         }
         else{
             gSysAlarm.bit.overBusVoltage = 1;
-            past_flag = 1;
+            over_limit_lasttime = 1;
         }
     }
-    else if (past_flag == 0){
+    else if (over_limit_lasttime == 0){
         if((gSysAnalogVar.single.var[U_AN_3V3_A0].value > gSysAnalogVar.single.var[U_AN_3V3_A0].max) ||
                     (gSysAnalogVar.single.var[U_AN_3V3_A0].value < gSysAnalogVar.single.var[U_AN_3V3_A0].min)) {
             ++count;
             if(count > 10){
                 count = 0;
                 gSysAlarm.bit.overBusVoltage = 1;
-                past_flag = 1;
+                over_limit_lasttime = 1;
             }
+        }
+        else{
+            count = 0;
         }
     }
 }
