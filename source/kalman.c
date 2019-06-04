@@ -42,7 +42,7 @@ double KalmanFilterCurrent(const double ResrcData, double ProcessNiose_Q, double
     double R = MeasureNoise_R;
     double Q = ProcessNiose_Q;
 
-    static double x_last;
+    static double x_last = 0;
     double x_mid = x_last;
     double x_now;
 
