@@ -1,3 +1,60 @@
+/***************************0.1.1*******************************/
+Version Number: 0.1.1
+Date: 2019/6/05
+Author:John
+
+What new: 
+Bug Fix:
+	1. Current Protection target duty bug
+	2. Kalman filter parameters reverse back
+	3. Change SW current limit
+/***************************0.1.0*******************************/
+Version Number: 0.1.0
+Date: 2019/6/04
+Author:Simon
+
+What new: 
+Bug Fix:
+	1. Kalman filter bug
+/***************************0.0.9*******************************/
+Version Number: 0.0.9
+Date: 2019/6/02
+Author:John
+
+What new: 
+	1. Improve temperature proection, discard lowest limit
+	2. Add Schmidt hysteresis for temperature
+Bug Fix:
+/***************************0.0.8*******************************/
+Version Number: 0.0.8
+Date: 2019/6/01
+Author:John
+
+What new: 
+	1. Add protection limit for Voltage, Current and Temperature
+Bug Fix:
+/***************************0.0.7*******************************/
+Version Number: 0.0.7
+Date: 2019/5/30
+Author:Simon
+
+What new: 
+Bug Fix:
+	1. Motor speed is more than 30000rmp, fixed by initing x_last var in KalmanFilter to 0
+/***************************0.0.6*******************************/
+Version Number: 0.0.6
+Date: 2019/5/28
+Author:Simon
+
+What new: 
+	1. Realeased to customer
+	2. Dynamic change the duty plus interval
+	3. Send current duty to UI
+	4. Close loop control with load
+	5. New switch direction for the final motor provided by customer
+Bug Fix:
+	1. ignore the speed when it's result less than 0
+	2. init target speed to 0
 /***************************0.0.5*******************************/
 Version Number: 0.0.5
 Date: 2019/5/12
