@@ -1,3 +1,21 @@
+/***************************0.1.1*******************************/
+Version Number: 0.1.1
+Date: 2019/6/05
+Author:John
+
+What new: 
+Bug Fix:
+	1. Current Protection target duty bug
+	2. Kalman filter parameters reverse back
+	3. Change SW current limit
+/***************************0.1.0*******************************/
+Version Number: 0.1.0
+Date: 2019/6/04
+Author:Simon
+
+What new: 
+Bug Fix:
+	1. Kalman filter bug
 /***************************0.0.9*******************************/
 Version Number: 0.0.9
 Date: 2019/6/02

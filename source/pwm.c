@@ -324,6 +324,7 @@ void TargetDutyGradualChange(int targetduty){
 		return;
 	}
 	count = 0;
+	targetduty = gSysInfo.restrictduty ? targetduty*0.8 : targetduty;//uncomment when pass test
 	if(gSysInfo.currentDuty < targetduty){
 		gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
 	}
@@ -341,7 +342,7 @@ void TargetDutyGradualChange(int targetduty){
 	else if (gSysInfo.currentDuty <= 0) {
 		gSysInfo.currentDuty = 0;
 	}
-	gSysInfo.duty = gSysInfo.restrictduty ? (gSysInfo.currentDuty)*0.8 : gSysInfo.currentDuty;//uncomment when pass test
+	gSysInfo.duty = gSysInfo.currentDuty;
 }
 /**************************************************************
  *Name:						PwmIsrThread
