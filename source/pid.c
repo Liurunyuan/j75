@@ -38,7 +38,12 @@ int16 PidOutput(double currentSpeed){
 	{
 		if(((ek1 > 0) && (sek < 585535)) || ((ek1 < 0) && (sek > -585535)))
 		{
-			sek = sek + ek1;
+		    if(gSysInfo.enableFindTable){
+		        sek = gSysInfo.restrictduty ? 0 : (sek + ek1);//uncomment when pass test
+		    }
+		    else{
+		        sek = sek + ek1;
+		    }
 		}
 	}
 	else

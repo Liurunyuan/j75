@@ -324,7 +324,6 @@ void TargetDutyGradualChange(int targetduty){
 		return;
 	}
 	count = 0;
-	targetduty = gSysInfo.restrictduty ? targetduty*0.8 : targetduty;//uncomment when pass test
 	if(gSysInfo.currentDuty < targetduty){
 		gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
 	}

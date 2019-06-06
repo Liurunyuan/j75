@@ -115,14 +115,19 @@ int IsAnalogValueAbnormal(void){
 }
 
 void updateAndCheckTemperature(void){
-    static int count = 0;
+    static int min_count = 0;
+    static int min2nd_count = 0;
     static int over_limit_lasttime = 0;
     gSysAnalogVar.single.var[T_AN_3V3_B0].value = gSysAnalogVar.single.var[T_AN_3V3_B0].updateValue();
 
     if(over_limit_lasttime == 1){
         if(gSysAnalogVar.single.var[T_AN_3V3_B0].value > gSysAnalogVar.single.var[T_AN_3V3_B0].min2nd){
-            gSysAlarm.bit.overTemperature = 0;
-            over_limit_lasttime = 0;
+            ++min2nd_count;
+            if(min2nd_count >10){
+                min2nd_count = 0;
+                gSysAlarm.bit.overTemperature = 0;
+                over_limit_lasttime = 0;
+            }
         }
         else{
             gSysAlarm.bit.overTemperature = 1;
@@ -131,15 +136,16 @@ void updateAndCheckTemperature(void){
     }
     else if (over_limit_lasttime == 0){
         if(gSysAnalogVar.single.var[T_AN_3V3_B0].value < gSysAnalogVar.single.var[T_AN_3V3_B0].min) {
-            ++count;
-            if(count > 10){
-                count = 0;
+            ++min_count;
+            if(min_count > 10){
+                min_count = 0;
                 gSysAlarm.bit.overTemperature = 1;
+                over_limit_lasttime = 1;
             }
         }
     }
     else{
-        count = 0;
+        min_count = 0;
     }
 }
 
@@ -177,23 +183,29 @@ void updateAndCheckVoltage(void){
 }
 
 void updateAndCheckCurrent(void){
-	static int count = 0;
+	static int max_count = 0;
+	static int max2nd_count = 0;
 	static int i = 0;
 	int j;
 	int64 ret;
 	gSysAnalogVar.single.var[I_AN_3V3_A2].value = gSysAnalogVar.single.var[I_AN_3V3_A2].updateValue();
 	if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max2nd) {
-	    gSysInfo.restrictduty = 1;
+	    ++max2nd_count;
+	    if(max2nd_count > 10){
+	        max2nd_count = 0;
+	        gSysInfo.restrictduty = 1;
+	    }
 	    if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max) {
-	        ++count;
-	        if(count > 10){
-	            count = 0;
+	        ++max_count;
+	        if(max_count > 10){
+	            max_count = 0;
 	            gSysAlarm.bit.overCurrent = 1;
 	        }
 	    }
 	}
 	else{
-		count = 0;
+	    max_count = 0;
+	    max2nd_count = 0;
 		gSysInfo.restrictduty = 0;
 	}
 

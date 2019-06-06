@@ -71,14 +71,15 @@ void Timer1_ISR_Thread(void){
 	MotorSpeed();
 	ChangeDutyAddInterval();
 	if(gSysState.currentstate == START){
-
+	    gSysInfo.openLoopTargetDuty = openLoopControl(busVol, gTargetSpeed);
+/*
 		if(gSysInfo.enableFindTable){
 			gSysInfo.openLoopTargetDuty = openLoopControl(busVol, gTargetSpeed);
 		}
 		else{
 			gSysInfo.openLoopTargetDuty = gSysInfo.uiSetOpenLoopDuty;
 		}
-		
+*/
 	#if CLOSELOOPDONE
 		gSysInfo.closeLooptargetDuty =  PidOutput(gMotorSpeedEcap);
 	#else
