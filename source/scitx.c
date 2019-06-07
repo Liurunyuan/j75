@@ -13,7 +13,7 @@ RS422TXQUE gRS422TxQue = {0};
 GRX422TX gRx422TxVar[TOTAL_TX_VAR] = {0};
 Uint16 gRx422TxEnableFlag[TOTAL_TX_VAR] = {0};
 
-void GetMaxCurrent(int a, int b, int c){
+void GetCurrent(int a, int b, int c){
 	gRx422TxVar[0].value = gSysInfo.maxCurrent;
 	// gRx422TxVar[0].value = gSysInfo.openLoopTargetDuty;
 	// gRx422TxVar[0].value = gTargetSpeed;
@@ -21,11 +21,11 @@ void GetMaxCurrent(int a, int b, int c){
 void GetMotorSpeedCurve(int a, int b, int c){
 	gRx422TxVar[1].value = gMotorSpeedEcap;
 }
-void GetMax(int a, int b, int c){
-	gRx422TxVar[2].value = gSysInfo.maxCurrent;
+void GetTargetSpeed(int a, int b, int c){
+	gRx422TxVar[2].value = gTargetSpeed;
 }
-void GetMotorCurrentCurve(int a, int b, int c){
-	gRx422TxVar[3].value = gSysInfo.hallErrorCount;
+void GetCurrentDuty(int a, int b, int c){
+	gRx422TxVar[3].value = gSysInfo.duty;
 }
 void GetDynamoVoltageCurve(int a, int b, int c){
 	gRx422TxVar[4].value = 1;
@@ -49,6 +49,12 @@ void InitgRx422TxEnableFlag(void){
 
 		gRx422TxEnableFlag[index] = 0;
 	}
+	//enable 4 curves to send to UI as default
+	gRx422TxEnableFlag[0] = 1;
+	gRx422TxEnableFlag[1] = 1;
+	gRx422TxEnableFlag[2] = 1;
+	gRx422TxEnableFlag[3] = 1;
+
 }
 void Init_gRS422TxQue(void) {
 	gRS422TxQue.front = 0;
@@ -65,10 +71,10 @@ void InitgRx422TxVar(void) {
 		gRx422TxVar[index].isTx = 0;
 		gRx422TxVar[index].index = index;
 	}
-	gRx422TxVar[0].updateValue = GetMaxCurrent;
+	gRx422TxVar[0].updateValue = GetCurrent;
 	gRx422TxVar[1].updateValue = GetMotorSpeedCurve;
-	gRx422TxVar[2].updateValue = GetMax;
-	gRx422TxVar[3].updateValue = GetMotorCurrentCurve;
+	gRx422TxVar[2].updateValue = GetTargetSpeed;
+	gRx422TxVar[3].updateValue = GetCurrentDuty;
 	gRx422TxVar[4].updateValue = GetDynamoVoltageCurve;
 	gRx422TxVar[5].updateValue = GetDynamoCurrentCurve;
 	gRx422TxVar[6].updateValue = GetTemperatureCurve;
