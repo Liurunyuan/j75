@@ -123,7 +123,7 @@ void updateAndCheckTemperature(void){
     if(over_limit_lasttime == 1){
         if(gSysAnalogVar.single.var[T_AN_3V3_B0].value > gSysAnalogVar.single.var[T_AN_3V3_B0].min2nd){
             ++min2nd_count;
-            if(min2nd_count >10){
+            if(min2nd_count >150){
                 min2nd_count = 0;
                 gSysAlarm.bit.overTemperature = 0;
                 over_limit_lasttime = 0;
@@ -137,7 +137,7 @@ void updateAndCheckTemperature(void){
     else if (over_limit_lasttime == 0){
         if(gSysAnalogVar.single.var[T_AN_3V3_B0].value < gSysAnalogVar.single.var[T_AN_3V3_B0].min) {
             ++min_count;
-            if(min_count > 10){
+            if(min_count > 150){
                 min_count = 0;
                 gSysAlarm.bit.overTemperature = 1;
                 over_limit_lasttime = 1;
@@ -191,13 +191,13 @@ void updateAndCheckCurrent(void){
 	gSysAnalogVar.single.var[I_AN_3V3_A2].value = gSysAnalogVar.single.var[I_AN_3V3_A2].updateValue();
 	if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max2nd) {
 	    ++max2nd_count;
-	    if(max2nd_count > 10){
+	    if(max2nd_count > 150){
 	        max2nd_count = 0;
 	        gSysInfo.restrictduty = 1;
 	    }
 	    if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max) {
 	        ++max_count;
-	        if(max_count > 10){
+	        if(max_count > 150){
 	            max_count = 0;
 	            gSysAlarm.bit.overCurrent = 1;
 	        }

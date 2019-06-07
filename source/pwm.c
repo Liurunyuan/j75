@@ -319,19 +319,35 @@ void SwitchDirection(void){
 
 void TargetDutyGradualChange(int targetduty){
 	static int count = 0;
-	++count;
-	if(count < gSysInfo.dutyAddInterval){
-		return;
-	}
-	count = 0;
-	if(gSysInfo.currentDuty < targetduty){
-		gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
+	if(gSysInfo.currentDuty < targetduty){/*need increase duty*/
+	    if(gSysInfo.restrictduty){/*need for soft protection*/
+	        //gSysInfo.currentDuty_32bit = gSysInfo.currentDuty;
+	        //gSysInfo.currentDuty = (int16)((gSysInfo.currentDuty_32bit * 922) >> 10);
+	        gSysInfo.currentDuty = gSysInfo.currentDuty -5;
+	        count = 0;
+	    }
+	    else{/*no need for soft protection*/
+	        if(count < gSysInfo.dutyAddInterval){
+	            ++count;
+	            /*no use*/
+	        }
+	        else{
+	            count = 0;
+	            if((gSysInfo.currentDuty + gSysInfo.ddtmax) >= targetduty){
+	                gSysInfo.currentDuty = targetduty;
+	            }
+	            else{
+	                gSysInfo.currentDuty = gSysInfo.currentDuty + gSysInfo.ddtmax;
+	            }
+	        }
+	    }
 	}
 	else if(gSysInfo.currentDuty > targetduty){
-		// gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
 		gSysInfo.currentDuty =  targetduty;
+		count = 0;
 	}
 	else{
+	    count = 0;
 		//nothing need change
 	}
 	//need to change the threshold value of the next line
