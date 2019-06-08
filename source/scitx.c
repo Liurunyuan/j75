@@ -135,7 +135,7 @@ void PackRS422TxData(void){
 	static int crc = 0;
 	char tmp[3] = {0};
 	int lenPosition = 0;
-	Uint16 total = 1;
+	Uint16 total = 2;
 
 	if(count == 0){
 		if(RX422TXEnQueue(0x5a) == 0){
@@ -170,6 +170,22 @@ void PackRS422TxData(void){
 			return;
 		}
 		crc = calCrc(crc, tmp, 3);
+
+
+        tmp[0] = 0x11;
+        tmp[1] = gSysState.currentstate >> 8;
+        tmp[2] = gSysState.currentstate;
+
+        if(RX422TXEnQueue(tmp[0]) == 0){
+            return;
+        }
+        if(RX422TXEnQueue(tmp[1]) == 0){
+            return;
+        }
+        if(RX422TXEnQueue(tmp[2]) == 0){
+            return;
+        }
+        crc = calCrc(crc, tmp, 3);
 
 		updateTxEnableFlag();
 	}
