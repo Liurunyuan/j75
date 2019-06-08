@@ -323,7 +323,7 @@ void TargetDutyGradualChange(int targetduty){
 	    if(gSysInfo.restrictduty){/*need for soft protection*/
 	        //gSysInfo.currentDuty_32bit = gSysInfo.currentDuty;
 	        //gSysInfo.currentDuty = (int16)((gSysInfo.currentDuty_32bit * 922) >> 10);
-	        gSysInfo.currentDuty = gSysInfo.currentDuty -5;
+	        gSysInfo.currentDuty = gSysInfo.currentDuty -7;
 	        count = 0;
 	    }
 	    else{/*no need for soft protection*/

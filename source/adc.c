@@ -53,7 +53,7 @@ const UV funcptr[] = {
 };
 const int anologMaxMinInit[][4] = {
     //max,max2nd,min,min2nd
-	{1463,1426,603,640},       //voltage max and min
+	{1636,1596,684,725},       //voltage max and min
 	{1,0,0,0},
 	{1338,1070,0,0},        //current max, 2nd max and min
 	{3,0,0,0},
@@ -61,7 +61,7 @@ const int anologMaxMinInit[][4] = {
 	{5,0,0,0},
 	{6,0,0,0},
 	{7,0,0,0},
-	{4050,0,631,793},		//temperature max and min
+	{0,0,440,550},		//temperature max and min
 	{9,0,0,0},
 	{10,0,0,0},
 	{11,0,0,0},
@@ -123,7 +123,7 @@ void updateAndCheckTemperature(void){
     if(over_limit_lasttime == 1){
         if(gSysAnalogVar.single.var[T_AN_3V3_B0].value > gSysAnalogVar.single.var[T_AN_3V3_B0].min2nd){
             ++min2nd_count;
-            if(min2nd_count >150){
+            if(min2nd_count >5000){
                 min2nd_count = 0;
                 gSysAlarm.bit.overTemperature = 0;
                 over_limit_lasttime = 0;
@@ -137,7 +137,7 @@ void updateAndCheckTemperature(void){
     else if (over_limit_lasttime == 0){
         if(gSysAnalogVar.single.var[T_AN_3V3_B0].value < gSysAnalogVar.single.var[T_AN_3V3_B0].min) {
             ++min_count;
-            if(min_count > 150){
+            if(min_count > 5000){
                 min_count = 0;
                 gSysAlarm.bit.overTemperature = 1;
                 over_limit_lasttime = 1;
