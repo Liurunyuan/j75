@@ -25,6 +25,7 @@ void InitGlobalVar(void){
 	gSysInfo.ddtmax = 1;
 	gSysInfo.hallErrorCount = 0;
 	gSysInfo.maxCurrent = 0;
+	gSysInfo.aveCurrent = 0;
 	gSysInfo.repeatPeriod = 50;
 	gSysInfo.thresholdKiError = 6000;
 	gSysInfo.enableFindTable = 1;

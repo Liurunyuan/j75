@@ -71,6 +71,7 @@ typedef struct{
 	int16 ddtmax;
 	int16 hallErrorCount;
 	int16 maxCurrent;
+	int16 aveCurrent;
 	int16 repeatPeriod;
 	int16 thresholdKiError;
 	int16 enableFindTable;

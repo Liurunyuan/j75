@@ -62,7 +62,7 @@ int16 openLoopControl(int16 busVol, int16 targetSpeed){
 	int16 ret = 0;
 
 	// ret = findOpenLoopDuty(busVol, targetSpeed);
-	ret = findOpenLoopDutyByFormula(busVol, targetSpeed, gSysInfo.maxCurrent);
+	ret = findOpenLoopDutyByFormula(busVol, targetSpeed, gSysInfo.aveCurrent);
 
 #if OPENLOOPDONE
 	return ret;
