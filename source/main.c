@@ -98,6 +98,8 @@ void MainLoop(){
 
 	FEED_WATCH_DOG = 1;
 
+	ServiceDog();
+
 	StateMachine();
 
 	readTZGpioState();
@@ -126,6 +128,8 @@ void main(void) {
 	enablePwmOutput();
 
 	clearHardwareErro();
+
+	enableSoftwareDog();
 
 	while(1){
 		MainLoop();

@@ -110,6 +110,7 @@ void enableEcapInterrupt(void);
 void disableEcapInterrupt(void);
 void clearScibOverflow(void);
 void readTZGpioState(void);
+void enableSoftwareDog(void);
 int findOpenLoopDuty(int busvol, int tarSpeed);
 int findOpenLoopDutyByFormula(int busvol, int tarSpeed, int current);
 #endif
