@@ -55,14 +55,13 @@ const int anologMaxMinInit[][4] = {
     //max,max2nd,min,min2nd
 	{1636,1596,684,725},       //voltage max and min
 	{1,0,0,0},
-	{1338,1070,0,0},        //current max, 2nd max and min
-	//{600,316,0,0},
+	{1338,1140,0,0},        //current max, 2nd max and min
 	{3,0,0,0},
 	{4,0,0,0},
 	{5,0,0,0},
 	{6,0,0,0},
 	{7,0,0,0},
-	{0,0,440,550},		//temperature max and min
+	{0,0,500,610},		//temperature max and min
 	{9,0,0,0},
 	{10,0,0,0},
 	{11,0,0,0},
@@ -194,7 +193,7 @@ void updateAndCheckCurrent(void){
 	int64 ret;
 	gSysAnalogVar.single.var[I_AN_3V3_A2].value = gSysAnalogVar.single.var[I_AN_3V3_A2].updateValue();
 	if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max2nd) {
-	    gSysInfo.restrictduty = 1;
+	   gSysInfo.restrictduty = 1;
 	    if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max) {
 	        max_count = (gSysAnalogVar.single.var[I_AN_3V3_A2].value - gSysAnalogVar.single.var[I_AN_3V3_A2].max) + max_count;
 	        if(max_count > 150){
