@@ -103,6 +103,7 @@ void InitOutputPin(void){
 	 */
 	GpioCtrlRegs.GPAMUX2.bit.GPIO23 = GPIO;
 	GpioCtrlRegs.GPADIR.bit.GPIO23 = OUTPUT;
+	GpioDataRegs.GPASET.bit.GPIO23 = 1;
 
 	EDIS;
 }

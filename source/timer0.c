@@ -47,6 +47,7 @@ void Timer0_ISR_Thread(void){
 	++count;
 
 	if(count > N){
+		FEED_WATCH_DOG = 1;
 		PackRS422TxData();
 		count = 0;
 	}

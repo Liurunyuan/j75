@@ -539,9 +539,10 @@ y1|------*-----------*-----------*--------
 void enableSoftwareDog(void){
 
 	EALLOW;
-    SysCtrlRegs.WDCR= 0x0028;
+    SysCtrlRegs.WDCR= 0x002f;
 	SysCtrlRegs.SCSR= 0;
     EDIS;
 
 }
+
 

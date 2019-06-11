@@ -96,7 +96,7 @@ void StateMachine(void){
 
 void MainLoop(){
 
-	FEED_WATCH_DOG = 1;
+	// FEED_WATCH_DOG = 1;
 
 	ServiceDog();
 
