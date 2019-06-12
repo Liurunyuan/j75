@@ -1,3 +1,16 @@
+/***************************0.1.2*******************************/
+Version Number: 0.1.2
+Date: 2019/6/12
+Author:Simon
+
+What new: 
+	1. Send sci data every 20ms
+	2. Feed internal and external watch dog
+	3. Confirm current protection limit
+	4. Send 4 curves to UI as default after power up
+	5. This version is the first release to cumstomer
+Bug Fix:
+	1. RunTian fixed a bug of current limit protection
 /***************************0.1.1*******************************/
 Version Number: 0.1.1
 Date: 2019/6/05
