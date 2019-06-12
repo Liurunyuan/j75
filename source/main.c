@@ -96,7 +96,9 @@ void StateMachine(void){
 
 void MainLoop(){
 
-	FEED_WATCH_DOG = 1;
+	// FEED_WATCH_DOG = 1;
+
+	ServiceDog();
 
 	StateMachine();
 
@@ -126,6 +128,8 @@ void main(void) {
 	enablePwmOutput();
 
 	clearHardwareErro();
+
+	enableSoftwareDog();
 
 	while(1){
 		MainLoop();

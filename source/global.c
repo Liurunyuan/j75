@@ -25,8 +25,9 @@ void InitGlobalVar(void){
 	gSysInfo.ddtmax = 1;
 	gSysInfo.hallErrorCount = 0;
 	gSysInfo.maxCurrent = 0;
+	gSysInfo.aveCurrent = 0;
 	gSysInfo.repeatPeriod = 50;
-	gSysInfo.thresholdKiError = 4500;
+	gSysInfo.thresholdKiError = 6000;
 	gSysInfo.enableFindTable = 1;
 	gSysInfo.uiSetOpenLoopDuty = 50;
 	gSysInfo.dtDuty = 0;
@@ -534,4 +535,14 @@ y1|------*-----------*-----------*--------
 
 	return ret;
 }
+
+void enableSoftwareDog(void){
+
+	EALLOW;
+    SysCtrlRegs.WDCR= 0x002f;
+	SysCtrlRegs.SCSR= 0;
+    EDIS;
+
+}
+
 

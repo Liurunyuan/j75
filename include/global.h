@@ -66,10 +66,12 @@ typedef struct{
 	int16 isEcapRefresh;
 	int16 closeLooptargetDuty;
 	int16 currentDuty;
+	//int32 currentDuty_32bit;
 	int16 openLoopTargetDuty;
 	int16 ddtmax;
 	int16 hallErrorCount;
 	int16 maxCurrent;
+	int16 aveCurrent;
 	int16 repeatPeriod;
 	int16 thresholdKiError;
 	int16 enableFindTable;
@@ -108,6 +110,7 @@ void enableEcapInterrupt(void);
 void disableEcapInterrupt(void);
 void clearScibOverflow(void);
 void readTZGpioState(void);
+void enableSoftwareDog(void);
 int findOpenLoopDuty(int busvol, int tarSpeed);
 int findOpenLoopDutyByFormula(int busvol, int tarSpeed, int current);
 #endif

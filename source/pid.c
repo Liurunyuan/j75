@@ -30,15 +30,13 @@ int32 sektest = 0;
 int16 PidOutput(double currentSpeed){
 	int16 pidOutput = 0;
 	int32 ek1;
-	int32 thresholdKi;
 
 	ek1 = (int32)(gTargetSpeed - currentSpeed);
-	thresholdKi = gTargetSpeed * 0.2;
 	if((ek1 > -gSysInfo.thresholdKiError) && (ek1 < gSysInfo.thresholdKiError))
 	{
 		if(((ek1 > 0) && (sek < 585535)) || ((ek1 < 0) && (sek > -585535)))
 		{
-			sek = sek + ek1;
+		        sek = sek + ek1;
 		}
 	}
 	else
@@ -64,7 +62,7 @@ int16 openLoopControl(int16 busVol, int16 targetSpeed){
 	int16 ret = 0;
 
 	// ret = findOpenLoopDuty(busVol, targetSpeed);
-	ret = findOpenLoopDutyByFormula(busVol, targetSpeed, gSysInfo.maxCurrent);
+	ret = findOpenLoopDutyByFormula(busVol, targetSpeed, gSysInfo.aveCurrent);
 
 #if OPENLOOPDONE
 	return ret;

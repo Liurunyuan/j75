@@ -92,6 +92,7 @@ static void ClearAlarmInfo(VAR16 a, int b, int c){
 	if(clearAlarm == 1){
 		gSysAlarm.all = 0;
 		gSysInfo.hallErrorCount = 0;
+		gSysInfo.aveCurrent = 0;
 		gSysInfo.maxCurrent = 0;
 	}
 }
