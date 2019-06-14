@@ -136,6 +136,7 @@ void PackRS422TxData(void){
 	char tmp[3] = {0};
 	int lenPosition = 0;
 	Uint16 total = 2;
+	static unsigned int serialNum = 0;
 
 	if(count == 0){
 		if(RX422TXEnQueue(0x5a) == 0){
@@ -149,11 +150,16 @@ void PackRS422TxData(void){
 		if(RX422TXEnQueue(0x05) == 0){
 			return;
 		}
-		if(RX422TXEnQueue(0xff) == 0){
+		if(RX422TXEnQueue(serialNum >> 8) == 0){
 			return;
 		}
-		if(RX422TXEnQueue(0xff) == 0){
+		if(RX422TXEnQueue(serialNum) == 0){
 			return;
+		}
+
+		serialNum++;
+		if(serialNum > 60000){
+			serialNum = 0;
 		}
 
 		tmp[0] = 0x02;
