@@ -357,6 +357,11 @@ void TargetDutyGradualChange(int targetduty){
 	else if (gSysInfo.currentDuty <= 0) {
 		gSysInfo.currentDuty = 0;
 	}
+    if(gSysState.targetState == START){
+        if(gSysInfo.currentDuty <= 80){
+            gSysInfo.currentDuty = 80;
+        }
+    }
 	gSysInfo.duty = gSysInfo.currentDuty;
 }
 /**************************************************************
