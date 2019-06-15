@@ -16,7 +16,17 @@ SysAnalogVar gSysAnalogVar = {0};
 /********update anolog variable value******************************/
 Uint16 updateU_AN_3V3_A0(void){return GET_U_AN_3V3_A0;}
 Uint16 updateAGND_A1(void){return GET_AGND_A1;}
-Uint16 updateI_AN_3V3_A2(void){return GET_I_AN_3V3_A2;}
+Uint16 updateI_AN_3V3_A2(void){
+    Uint16 CurrentNoOffset;
+    if(GET_I_AN_3V3_A2 <= gSysInfo.currentOffset){
+        CurrentNoOffset = 0;
+    }
+    else{
+        CurrentNoOffset = ((Uint16)GET_I_AN_3V3_A2) - gSysInfo.currentOffset;
+    }
+    return CurrentNoOffset;
+    //return GET_I_AN_3V3_A2;
+}
 Uint16 updateAGND_A3(void){return GET_AGND_A3;}
 Uint16 updateNO_USE_A4(void){return GET_NO_USE_A4;}
 Uint16 updateNO_USE_A5(void){return GET_NO_USE_A5;}

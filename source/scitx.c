@@ -22,7 +22,12 @@ void GetMotorSpeedCurve(int a, int b, int c){
 	gRx422TxVar[1].value = gMotorSpeedEcap;
 }
 void GetTargetSpeed(int a, int b, int c){
-	gRx422TxVar[2].value = gTargetSpeed;
+    if((gSysState.currentstate == STOP) || (gSysState.currentstate == ALARM)){
+        gRx422TxVar[2].value = 0;
+    }
+    else{
+        gRx422TxVar[2].value = gTargetSpeed;
+    }
     //gRx422TxVar[2].value = gSysAnalogVar.single.var[T_AN_3V3_B0].value;
 }
 void GetCurrentDuty(int a, int b, int c){
@@ -127,6 +132,23 @@ void updateTxEnableFlag(void) {
 		gRx422TxVar[i].isTx = gRx422TxEnableFlag[i];
 	}
 }
+
+int CheckLastState (void){
+    static unsigned int last_state = 0;
+    if(gSysState.currentstate == START){
+        if(last_state == STOP){
+            last_state = gSysState.currentstate;
+            return 1;
+        }
+        last_state = gSysState.currentstate;
+        return 0;
+    }
+    else{
+        last_state = gSysState.currentstate;
+        return 0;
+    }
+}
+
 void PackRS422TxData(void){
 	int i;
 	char crcl;
@@ -147,6 +169,11 @@ void PackRS422TxData(void){
 		}
 
 		lenPosition = gRS422TxQue.rear;
+
+		if(CheckLastState()){
+		    serialNum = 0;
+		}
+
 		if(RX422TXEnQueue(0x05) == 0){
 			return;
 		}

@@ -28,6 +28,7 @@ void InitPeripheral(){
 	Init_CpuTimer_J75();
 }
 void InitVar(){
+    gSysInfo.currentOffset = GET_I_AN_3V3_A2;
 
 	InitAdcVar();
 

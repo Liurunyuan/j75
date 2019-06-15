@@ -66,6 +66,7 @@ typedef struct{
 	int16 isEcapRefresh;
 	int16 closeLooptargetDuty;
 	int16 currentDuty;
+	Uint16 currentOffset;
 	//int32 currentDuty_32bit;
 	int16 openLoopTargetDuty;
 	int16 ddtmax;

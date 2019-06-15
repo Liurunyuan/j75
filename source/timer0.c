@@ -28,7 +28,8 @@ void MotorSpeed(){
   	else{
 		count++;
 		if(count > 5){
-    		gMotorSpeedEcap = 0;
+		    gMotorSpeedEcap = (int16)KalmanFilter(0, KALMAN_Q, KALMAN_R);
+    		//gMotorSpeedEcap = 0;
 			count = 0;
 		}
   	}
