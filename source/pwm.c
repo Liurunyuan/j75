@@ -24,11 +24,12 @@ inline void openAL(void){
 inline void closeAL(void){
 	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
 }
-
+/*
 inline void closeAHandAL(void){
 	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
 }
+*/
 /******************************************/
 inline void openBH(void){
 	EPwm2Regs.AQCSFRC.bit.CSFA = 3;
@@ -44,10 +45,12 @@ inline void openBL(void){
 inline void closeBL(void){
 	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
 }
+/*
 inline void closeBHandAL(void){
 	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
 }
+*/
 /******************************************/
 inline void openCH(void){
 	EPwm3Regs.AQCSFRC.bit.CSFA = 3;
@@ -63,10 +66,12 @@ inline void openCL(void){
 inline void closeCL(void){
 	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
 }
+/*
 inline void closeCHandAL(void){
 	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
 }
+*/
 /******************************************/
 inline void DisablePwm1(void){
 
@@ -88,10 +93,6 @@ void DisablePwmOutput(void){
 	DisablePwm1();
 	DisablePwm2();
 	DisablePwm3();
-	sek = 0;
-	gSysInfo.duty = 0;
-	gSysInfo.currentDuty = 50;
-	gSysInfo.curp = 0;
 }
 /******************************************/
 inline void CPositiveToBNegtive(void) {
@@ -342,13 +343,16 @@ void TargetDutyGradualChange(int targetduty){
 	        }
 	    }
 	}
-	else if(gSysInfo.currentDuty > targetduty){
+	/*end of if(gSysInfo.currentDuty < targetduty)*/
+	else {
 		gSysInfo.currentDuty =  targetduty;
 		count = 0;
 	}
+	if(0 == gSysInfo.restrictduty){
+		gSysInfo.currentDuty = gSysInfo.currentDuty + gSysInfo.breakDistance;
+	}
 	else{
-	    count = 0;
-		//nothing need change
+		/*no use*/
 	}
 	//need to change the threshold value of the next line
 	if (gSysInfo.currentDuty > 1500) {
@@ -357,11 +361,13 @@ void TargetDutyGradualChange(int targetduty){
 	else if (gSysInfo.currentDuty <= 0) {
 		gSysInfo.currentDuty = 0;
 	}
+	/*
     if(gSysState.targetState == START){
         if(gSysInfo.currentDuty <= 80){
             gSysInfo.currentDuty = 80;
         }
     }
+    */
 	gSysInfo.duty = gSysInfo.currentDuty;
 }
 /**************************************************************
@@ -374,7 +380,7 @@ void TargetDutyGradualChange(int targetduty){
  **************************************************************/
 void PwmIsrThread(void)
 {
-	if(gSysState.currentstate == START){
+	if((START == gSysState.currentstate) && (0 == gSysAlarm.all)){
 		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.closeLooptargetDuty + gSysInfo.dtDuty);
 		SwitchDirection();
 	}

@@ -29,7 +29,6 @@ void MotorSpeed(){
 		count++;
 		if(count > 5){
 		    gMotorSpeedEcap = (int16)KalmanFilter(0, KALMAN_Q, KALMAN_R);
-    		//gMotorSpeedEcap = 0;
 			count = 0;
 		}
   	}
@@ -53,7 +52,9 @@ void Timer0_ISR_Thread(void){
 		count = 0;
 	}
 }
+/*************************End of Timer0********************************/
 
+/*************************Start of Timer1*************************************/
 inline void ChangeDutyAddInterval(void){
     if((gMotorSpeedEcap >= 0) && (gMotorSpeedEcap <= 3000)){
         gSysInfo.dutyAddInterval = 3;
@@ -66,36 +67,52 @@ inline void ChangeDutyAddInterval(void){
     }
 }
 
+void t0_DisablePwmOutput(void){
+	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
+	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
+	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
+	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
+	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
+	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
+}
+
+/* interupt cpu every 5ms */
 void Timer1_ISR_Thread(void){
 	static unsigned char count = 0;
-	gSysAnalogVar.single.var[U_AN_3V3_A0].value = gSysAnalogVar.single.var[U_AN_3V3_A0].updateValue();
-	int busVol = gSysAnalogVar.single.var[U_AN_3V3_A0].value;
+	int busVol;
 	MotorSpeed();
-	ChangeDutyAddInterval();
-	if(gSysState.currentstate == START){
-	    gSysInfo.openLoopTargetDuty = openLoopControl(busVol, gTargetSpeed);
-/*
-		if(gSysInfo.enableFindTable){
+	switch(gSysState.currentstate){
+		case START:
+			busVol = gSysAnalogVar.single.var[U_AN_3V3_A0].value = gSysAnalogVar.single.var[U_AN_3V3_A0].updateValue();
+			ChangeDutyAddInterval();
 			gSysInfo.openLoopTargetDuty = openLoopControl(busVol, gTargetSpeed);
-		}
-		else{
-			gSysInfo.openLoopTargetDuty = gSysInfo.uiSetOpenLoopDuty;
-		}
-*/
-	#if CLOSELOOPDONE
-		gSysInfo.closeLooptargetDuty =  PidOutput(gMotorSpeedEcap);
-	#else
-		gSysInfo.closeLooptargetDuty = 0;
-	#endif
+			#if CLOSELOOPDONE
+				gSysInfo.closeLooptargetDuty =  PidOutput(gMotorSpeedEcap);
+			#else
+				gSysInfo.closeLooptargetDuty = 0;
+			#endif
+			break;
+		default:
+			t0_DisablePwmOutput();
+			break;
 	}
-
 	++count;
+	/* count = 0,1,2,3*/
 	if(count >= CALSPEED){
+		/*send package per 20ms */
 		count = 0;
 		if(gRS422TxQue.front != gRS422TxQue.rear
 			&& ScibRegs.SCIFFTX.bit.TXFFST == 0){
 		 	EnableScibTxInterrupt();
 		}
+		else{
+			t0_DisablePwmOutput();
+			gSysSWAlarm.bit.txBufferFull = 1;
+			gSysAlarm.bit.softwareFault = 1;
+		}
+	}
+	else{
+		/* no use */
 	}
 }
 

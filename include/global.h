@@ -4,7 +4,8 @@
 #define OPENLOOPDONE 1
 #define CLOSELOOPDONE 1
 
-
+#define MAXBREAKDISTANCE 100
+#define MINBREAKDISTANCE -100
 
 
 #define FEED_WATCH_DOG  GpioDataRegs.GPATOGGLE.bit.GPIO23
@@ -48,12 +49,37 @@ typedef struct
 	Uint16 p : 1;
 }ALARMBIT;
 
+typedef struct
+{
+	Uint16 txBufferFull : 1;
+	Uint16 updateAndCheckTemperature : 1;
+	Uint16 updateAndCheckVoltage : 1;
+	Uint16 d : 1;
+	Uint16 e : 1;
+	Uint16 f : 1;
+	Uint16 g : 1;
+	Uint16 h : 1;
+	Uint16 i : 1;
+	Uint16 j : 1;
+	Uint16 k : 1;
+	Uint16 l : 1;
+	Uint16 m : 1;
+	Uint16 n : 1;
+	Uint16 o : 1;
+	Uint16 p : 1;
+}SW_ALARMBIT;
+
 typedef union
 {
 	Uint16 all;
 	ALARMBIT bit;
 }SYSALARM;
 
+typedef union
+{
+	Uint16 all;
+	SW_ALARMBIT bit;
+}SYS_SW_ALARM;
 
 
 typedef struct{
@@ -81,6 +107,8 @@ typedef struct{
 	int16 formularRa;
 	int32 curp;
 	int16 dutyAddInterval;
+	int32 sek;
+	int16 breakDistance;
 }SYSINFO;
 
 typedef struct _DATA{
@@ -100,6 +128,7 @@ typedef struct _SYSSTATE{
 
 extern volatile SYSINFO gSysInfo;
 extern volatile SYSALARM gSysAlarm;
+extern volatile SYS_SW_ALARM gSysSWAlarm;
 extern volatile SYSSTATE gSysState;
 
 void Delay(int time);

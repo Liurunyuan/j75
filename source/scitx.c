@@ -160,7 +160,7 @@ void PackRS422TxData(void){
 	Uint16 total = 2;
 	static unsigned int serialNum = 0;
 
-	if(count == 0){
+	if(0 == count){
 		if(RX422TXEnQueue(0x5a) == 0){
 			return;
 		}

@@ -157,7 +157,8 @@ void updateAndCheckTemperature(void){
         }
     }
     else{
-       gSysAlarm.bit.softwareFault = 1;
+    	gSysSWAlarm.bit.updateAndCheckTemperature = 1;
+    	gSysAlarm.bit.softwareFault = 1;
     }
 }
 
@@ -192,6 +193,7 @@ void updateAndCheckVoltage(void){
         }
     }
     else {
+    	gSysSWAlarm.bit.updateAndCheckVoltage = 1;
         gSysAlarm.bit.softwareFault = 1;
     }
 }
