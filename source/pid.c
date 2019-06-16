@@ -55,18 +55,28 @@ int16 PidOutput(double currentSpeed){
 	gPidPara.targetPid = pidOutput;
 
 	/*break distance*/
+	dis_temp = ((int16)ek1) >> 2;
+	if(MAXBREAKDISTANCE < dis_temp){
+		dis_temp = MAXBREAKDISTANCE;
+	}
+	else if(MINBREAKDISTANCE > dis_temp){
+		dis_temp = MINBREAKDISTANCE;
+	}
 	if((300 < ek1) || (-300 > ek1)){
-		dis_temp = ((int16)ek1) >> 2;
-		if(MAXBREAKDISTANCE < dis_temp){
-			dis_temp = MAXBREAKDISTANCE;
-		}
-		else if(MINBREAKDISTANCE > dis_temp){
-			dis_temp = MINBREAKDISTANCE;
-		}
 		gSysInfo.breakDistance = dis_temp;
 	}
 	else{
-		gSysInfo.breakDistance = 0;
+		dis_temp = gSysInfo.breakDistance;
+		if(10 < dis_temp){
+			dis_temp = dis_temp - 10;
+		}
+		else if(-10 > dis_temp){
+			dis_temp = dis_temp + 10;
+		}
+		else{
+			dis_temp = 0;
+		}
+		gSysInfo.breakDistance = dis_temp;
 	}
 	return pidOutput;
 }
