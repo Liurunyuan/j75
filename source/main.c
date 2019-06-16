@@ -43,7 +43,7 @@ void InitVar(){
 	InitGlobalVar();
 }
 
-void EndAlarm_Init(void){
+void ClearBeforeStart(void){
 	gSysInfo.sek = 0;
 	gSysInfo.duty = 0;
 	gSysInfo.currentDuty = 0;
@@ -73,6 +73,7 @@ void StateMachine(void){
 			break;
 		case STOP:
 			if(gSysState.targetState == START){
+			    ClearBeforeStart();
 				gSysState.currentstate = START;
 			}
 
@@ -85,7 +86,6 @@ void StateMachine(void){
 			if(gSysAlarm.all == 0){
 				enablePwmOutput();
 				if(GpioDataRegs.GPADAT.bit.GPIO15 == 1){
-					EndAlarm_Init();
 					gSysState.currentstate = STOP;
 					gSysState.targetState = STOP;
 					clearHardwareErro();
@@ -132,7 +132,7 @@ void main(void) {
 
 	DisablePwmOutput();
 
-	EndAlarm_Init();
+	ClearBeforeStart();
 
 	InitInterruptForJ75();
 

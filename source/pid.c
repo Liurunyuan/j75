@@ -55,7 +55,7 @@ int16 PidOutput(double currentSpeed){
 	gPidPara.targetPid = pidOutput;
 
 	/*break distance*/
-	if((30 < ek1) || (-30 > ek1)){
+	if((300 < ek1) || (-300 > ek1)){
 		dis_temp = ((int16)ek1) >> 2;
 		if(MAXBREAKDISTANCE < dis_temp){
 			dis_temp = MAXBREAKDISTANCE;
