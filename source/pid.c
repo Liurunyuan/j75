@@ -30,8 +30,6 @@ int16 PidOutput(double currentSpeed){
 	int16 pidOutput = 0;
 	int32 ek1;
 	int16 dis_temp;
-	int16 maxbreak;
-	int16 minbreak;
 
 	ek1 = (int32)(gTargetSpeed - currentSpeed);
 	if((ek1 > -gSysInfo.thresholdKiError) && (ek1 < gSysInfo.thresholdKiError))
@@ -59,11 +57,11 @@ int16 PidOutput(double currentSpeed){
 	/*startup distance*/
 	if(200 > currentSpeed){
 		dis_temp = ((int16)ek1) >> 2;
-		if(MAXBREAKDISTANCE < dis_temp){
-			dis_temp = MAXBREAKDISTANCE;
+		if(MAXSTARTDISTANCE < dis_temp){
+			dis_temp = MAXSTARTDISTANCE;
 		}
-		else if(MINBREAKDISTANCE > dis_temp){
-			dis_temp = MINBREAKDISTANCE;
+		else if(MINSTARTDISTANCE > dis_temp){
+			dis_temp = MINSTARTDISTANCE;
 		}
 	}
 	else{
