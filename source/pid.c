@@ -56,42 +56,27 @@ int16 PidOutput(double currentSpeed){
 	}
 	gPidPara.targetPid = pidOutput;
 
-	/*break distance*/
-	dis_temp = ((int16)ek1) >> 2;
-	if(1500 > gTargetSpeed){
-		maxbreak = MAXBREAKDISTANCE;
-		minbreak = MINBREAKDISTANCE;
-	}
-	else if(3000 > gTargetSpeed){
-		maxbreak = MAXBREAKDISTANCE >> 3;
-		minbreak = MINBREAKDISTANCE >> 3;
-	}
-	else{
-		maxbreak = 3;
-		minbreak = -3;
-	}
-	if(maxbreak < dis_temp){
-		dis_temp = maxbreak;
-	}
-	else if(minbreak > dis_temp){
-		dis_temp = minbreak;
-	}
-	if((300 < ek1) || (-300 > ek1)){
-		gSysInfo.breakDistance = dis_temp;
+	/*startup distance*/
+	if(200 > currentSpeed){
+		dis_temp = ((int16)ek1) >> 2;
+		if(MAXBREAKDISTANCE < dis_temp){
+			dis_temp = MAXBREAKDISTANCE;
+		}
+		else if(MINBREAKDISTANCE > dis_temp){
+			dis_temp = MINBREAKDISTANCE;
+		}
 	}
 	else{
-		dis_temp = gSysInfo.breakDistance;
+		dis_temp = gSysInfo.startDistance;
 		if(1 < dis_temp){
 			dis_temp = dis_temp - 1;
-		}
-		else if(-1 > dis_temp){
-			dis_temp = dis_temp + 1;
 		}
 		else{
 			dis_temp = 0;
 		}
-		gSysInfo.breakDistance = dis_temp;
 	}
+	gSysInfo.startDistance = dis_temp;
+	/*end of startup distance*/
 	return pidOutput;
 }
 

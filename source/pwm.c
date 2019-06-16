@@ -349,7 +349,7 @@ void TargetDutyGradualChange(int targetduty){
 		count = 0;
 	}
 	if(0 == gSysInfo.restrictduty){
-		gSysInfo.currentDuty = gSysInfo.currentDuty + gSysInfo.breakDistance;
+		gSysInfo.currentDuty = gSysInfo.currentDuty + gSysInfo.startDistance;
 	}
 	else{
 		/*no use*/
