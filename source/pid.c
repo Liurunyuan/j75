@@ -58,17 +58,17 @@ int16 PidOutput(double currentSpeed){
 
 	/*break distance*/
 	dis_temp = ((int16)ek1) >> 2;
-	if(2000 > gTargetSpeed){
+	if(1500 > gTargetSpeed){
 		maxbreak = MAXBREAKDISTANCE;
 		minbreak = MINBREAKDISTANCE;
 	}
-	else if(4000 > gTargetSpeed){
-		maxbreak = MAXBREAKDISTANCE >> 2;
-		minbreak = MINBREAKDISTANCE >> 2;
-	}
-	else{
+	else if(3000 > gTargetSpeed){
 		maxbreak = MAXBREAKDISTANCE >> 3;
 		minbreak = MINBREAKDISTANCE >> 3;
+	}
+	else{
+		maxbreak = 3;
+		minbreak = -3;
 	}
 	if(maxbreak < dis_temp){
 		dis_temp = maxbreak;
@@ -81,11 +81,11 @@ int16 PidOutput(double currentSpeed){
 	}
 	else{
 		dis_temp = gSysInfo.breakDistance;
-		if(3 < dis_temp){
-			dis_temp = dis_temp - 3;
+		if(1 < dis_temp){
+			dis_temp = dis_temp - 1;
 		}
-		else if(-3 > dis_temp){
-			dis_temp = dis_temp + 3;
+		else if(-1 > dis_temp){
+			dis_temp = dis_temp + 1;
 		}
 		else{
 			dis_temp = 0;
