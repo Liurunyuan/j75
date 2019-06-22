@@ -19,7 +19,8 @@ void GetCurrent(int a, int b, int c){
 	// gRx422TxVar[0].value = gTargetSpeed;
 }
 void GetMotorSpeedCurve(int a, int b, int c){
-	gRx422TxVar[1].value = gMotorSpeedEcap;
+//	gRx422TxVar[1].value = gMotorSpeedEcap;
+	gRx422TxVar[1].value = gSysInfo.speedUI;
 }
 void GetTargetSpeed(int a, int b, int c){
     if((gSysState.currentstate == STOP) || (gSysState.currentstate == ALARM)){

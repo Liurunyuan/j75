@@ -12,6 +12,24 @@
 
 #define CALSPEED (4)
 
+void motorSpeedForUI(void){
+
+    static int i = 0;
+    static int64 tmp[4] = {0, 0, 0, 0};
+    int64 ret = 0;
+    int j;
+    tmp[i] = gMotorSpeedEcap;
+    ++i;
+    if(i >= 4){
+        i = 0;
+    }
+    for(j = 0; j < 4; ++j){
+        ret += tmp[j];
+    }
+    ret = ret >> 2;
+    gSysInfo.speedUI  = (int16)ret;
+}
+
 void MotorSpeed(){
 	static int count = 0;
 	int calSpeed = -1;
@@ -92,6 +110,9 @@ void Timer1_ISR_Thread(void){
 	static unsigned char count = 0;
 	int busVol;
 	MotorSpeed();
+
+    motorSpeedForUI();
+
 	switch(gSysState.currentstate){
 		case START:
 			busVol = gSysAnalogVar.single.var[U_AN_3V3_A0].value = gSysAnalogVar.single.var[U_AN_3V3_A0].updateValue();

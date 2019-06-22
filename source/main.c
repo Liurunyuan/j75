@@ -120,6 +120,7 @@ void MainLoop(){
 	UnpackSciPackage(&gRS422RxQue);
 
 	clearScibOverflow();
+
 }
 
 void main(void) {

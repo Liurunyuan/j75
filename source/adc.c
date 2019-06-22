@@ -202,7 +202,7 @@ void updateAndCheckCurrent(void){
 	static int max_count = 0;
 	static int i = 0;
 	int j;
-	int64 ret;
+	int64 ret = 0;
 	gSysAnalogVar.single.var[I_AN_3V3_A2].value = gSysAnalogVar.single.var[I_AN_3V3_A2].updateValue();
 	if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max2nd) {
 	   gSysInfo.restrictduty = 1;
@@ -236,11 +236,11 @@ void updateAndCheckCurrent(void){
 	++i;
 	if(i >= 64){
 	    i = 0;
-	    for(j = 0; j < 64; ++j){
-	        ret += tmp[j];
-	    }
-	    ret = ret >> 6;
-	    gSysInfo.aveCurrent  = ret;
 	}
+    for(j = 0; j < 64; ++j){
+        ret += tmp[j];
+    }
+    ret = ret >> 6;
+    gSysInfo.aveCurrent  = ret;
 //	gSysInfo.maxCurrent = (int16)(KalmanFilterCurrent(ret,300,50));
 }

@@ -108,6 +108,7 @@ typedef struct{
 	int32 curp;
 	int16 dutyAddInterval;
 	int32 sek;
+	int16 speedUI;
 	//int16 startDistance;
 }SYSINFO;
 
