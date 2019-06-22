@@ -108,7 +108,7 @@ typedef struct{
 	int32 curp;
 	int16 dutyAddInterval;
 	int32 sek;
-	int16 startDistance;
+	//int16 startDistance;
 }SYSINFO;
 
 typedef struct _DATA{

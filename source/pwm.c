@@ -348,12 +348,14 @@ void TargetDutyGradualChange(int targetduty){
 		gSysInfo.currentDuty =  targetduty;
 		count = 0;
 	}
+	/*
 	if(0 == gSysInfo.restrictduty){
 		gSysInfo.currentDuty = gSysInfo.currentDuty + gSysInfo.startDistance;
 	}
 	else{
-		/*no use*/
+
 	}
+*/
 	//need to change the threshold value of the next line
 	if (gSysInfo.currentDuty > 1500) {
 		gSysInfo.currentDuty = 1500;

@@ -56,14 +56,25 @@ void Timer0_ISR_Thread(void){
 
 /*************************Start of Timer1*************************************/
 inline void ChangeDutyAddInterval(void){
-    if((gMotorSpeedEcap >= 0) && (gMotorSpeedEcap <= 3000)){
+    if((gMotorSpeedEcap < 200) && (gMotorSpeedEcap >= 0)){
         gSysInfo.dutyAddInterval = 3;
+        gSysInfo.ddtmax = 1;
+        gSysInfo.dtDuty = 40;
+    }
+    else if((gMotorSpeedEcap >= 200) && (gMotorSpeedEcap <= 3000)){
+        gSysInfo.dutyAddInterval = 3;
+        gSysInfo.ddtmax = 1;
+        gSysInfo.dtDuty = 0;
     }
     else if((gMotorSpeedEcap > 3000) && (gMotorSpeedEcap < 6000)){
         gSysInfo.dutyAddInterval = 2;
+        gSysInfo.ddtmax = 1;
+        gSysInfo.dtDuty = 0;
     }
     else if(gMotorSpeedEcap >=6000){
         gSysInfo.dutyAddInterval = 1;
+        gSysInfo.ddtmax = 1;
+        gSysInfo.dtDuty = 0;
     }
 }
 

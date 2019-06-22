@@ -65,7 +65,7 @@ const int anologMaxMinInit[][4] = {
     //max,max2nd,min,min2nd
 	{1636,1596,684,725},       //voltage max and min
 	{1,0,0,0},
-	{1277,1079,0,0},        //current max, 2nd max and min
+	{1338,1079,0,0},        //current max, 2nd max and min
 	{3,0,0,0},
 	{4,0,0,0},
 	{5,0,0,0},

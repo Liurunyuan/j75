@@ -29,7 +29,7 @@ int32 sektest = 0;
 int16 PidOutput(double currentSpeed){
 	int16 pidOutput = 0;
 	int32 ek1;
-	int16 dis_temp;
+	//int16 dis_temp;
 
 	ek1 = (int32)(gTargetSpeed - currentSpeed);
 	if((ek1 > -gSysInfo.thresholdKiError) && (ek1 < gSysInfo.thresholdKiError))
@@ -55,6 +55,7 @@ int16 PidOutput(double currentSpeed){
 	gPidPara.targetPid = pidOutput;
 
 	/*startup distance*/
+	/*
 	if(200 > currentSpeed){
 		dis_temp = ((int16)ek1) >> 2;
 		if(MAXSTARTDISTANCE < dis_temp){
@@ -74,6 +75,7 @@ int16 PidOutput(double currentSpeed){
 		}
 	}
 	gSysInfo.startDistance = dis_temp;
+	*/
 	/*end of startup distance*/
 	return pidOutput;
 }
