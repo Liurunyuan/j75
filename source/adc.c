@@ -65,7 +65,7 @@ const int anologMaxMinInit[][4] = {
     //max,max2nd,min,min2nd
 	{1636,1596,684,725},       //voltage max and min
 	{1,0,0,0},
-	{1338,1079,0,0},        //current max, 2nd max and min
+	{1096,958,0,0},        //current max, 2nd max and min
 	{3,0,0,0},
 	{4,0,0,0},
 	{5,0,0,0},
@@ -200,9 +200,9 @@ void updateAndCheckVoltage(void){
 
 void updateAndCheckCurrent(void){
 	static int max_count = 0;
-	static int i = 0;
-	int j;
-	int64 ret = 0;
+//	static int i = 0;
+//	int j;
+//	int64 ret = 0;
 	gSysAnalogVar.single.var[I_AN_3V3_A2].value = gSysAnalogVar.single.var[I_AN_3V3_A2].updateValue();
 	if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max2nd) {
 	   gSysInfo.restrictduty = 1;
@@ -232,15 +232,15 @@ void updateAndCheckCurrent(void){
 	 }
 	//	gSysInfo.maxCurrent = gSysAnalogVar.single.var[I_AN_3V3_A2].value;
 	//	gSysInfo.maxCurrent = (KalmanFilterCurrent(gSysAnalogVar.single.var[I_AN_3V3_A2].value,300,50));
-	tmp[i] = (int64)gSysAnalogVar.single.var[I_AN_3V3_A2].value;
-	++i;
-	if(i >= 64){
-	    i = 0;
-	}
-    for(j = 0; j < 64; ++j){
-        ret += tmp[j];
-    }
-    ret = ret >> 6;
-    gSysInfo.aveCurrent  = ret;
+	// tmp[i] = (int64)gSysAnalogVar.single.var[I_AN_3V3_A2].value;
+	// ++i;
+	// if(i >= 64){
+	//     i = 0;
+	// }
+    // for(j = 0; j < 64; ++j){
+    //     ret += tmp[j];
+    // }
+    // ret = ret >> 6;
+    // gSysInfo.aveCurrent  = ret;
 //	gSysInfo.maxCurrent = (int16)(KalmanFilterCurrent(ret,300,50));
 }

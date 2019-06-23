@@ -318,58 +318,71 @@ void SwitchDirection(void){
 	}
 }
 
+void OverCurrentSoftProtect(void){
+	if(1 == gSysInfo.restrictduty){
+		gSysInfo.currentDuty = gSysInfo.currentDuty - 7;
+	}
+	else{
+		gSysInfo.currentDuty = gSysInfo.currentDuty;
+	}
+}
+
 void TargetDutyGradualChange(int targetduty){
 	static int count = 0;
-	if(gSysInfo.currentDuty < targetduty){/*need increase duty*/
-	    if(gSysInfo.restrictduty){/*need for soft protection*/
-	        //gSysInfo.currentDuty_32bit = gSysInfo.currentDuty;
-	        //gSysInfo.currentDuty = (int16)((gSysInfo.currentDuty_32bit * 922) >> 10);
-	        gSysInfo.currentDuty = gSysInfo.currentDuty -7;
-	        count = 0;
-	    }
-	    else{/*no need for soft protection*/
-	        if(count < gSysInfo.dutyAddInterval){
-	            ++count;
-	            /*no use*/
-	        }
-	        else{
-	            count = 0;
-	            if((gSysInfo.currentDuty + gSysInfo.ddtmax) >= targetduty){
-	                gSysInfo.currentDuty = targetduty;
-	            }
-	            else{
-	                gSysInfo.currentDuty = gSysInfo.currentDuty + gSysInfo.ddtmax;
-	            }
-	        }
-	    }
+
+	++count;
+	if(count < gSysInfo.dutyAddInterval){
+		return;
 	}
-	/*end of if(gSysInfo.currentDuty < targetduty)*/
-	else {
-		gSysInfo.currentDuty =  targetduty;
-		count = 0;
+	count = 0;
+
+	if(gMotorSpeedEcap > gTargetSpeed){
+		if(gSysInfo.currentDuty < targetduty){
+
+		}
+		else if(gSysInfo.currentDuty > targetduty){
+			gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
+		}
+		else{
+			//nothing need change
+		}
 	}
-	/*
-	if(0 == gSysInfo.restrictduty){
-		gSysInfo.currentDuty = gSysInfo.currentDuty + gSysInfo.startDistance;
+	else if(gMotorSpeedEcap < gTargetSpeed){
+		if(gSysInfo.currentDuty < targetduty){
+			gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
+			// gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
+		}
+		else if(gSysInfo.currentDuty > targetduty){
+			
+		}
+		else{
+			//nothing need change
+		}
 	}
 	else{
 
 	}
-*/
+
+
+
+	// if(gSysInfo.currentDuty < targetduty){
+	// 	gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
+	// 	// gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
+	// }
+	// else if(gSysInfo.currentDuty > targetduty){
+	// 	gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
+	// }
+	// else{
+	// 	//nothing need change
+	// }
+	OverCurrentSoftProtect();
 	//need to change the threshold value of the next line
-	if (gSysInfo.currentDuty > 1500) {
-		gSysInfo.currentDuty = 1500;
+	if (gSysInfo.currentDuty > 1495) {
+		gSysInfo.currentDuty = 1495;
 	} 
 	else if (gSysInfo.currentDuty <= 0) {
 		gSysInfo.currentDuty = 0;
 	}
-	/*
-    if(gSysState.targetState == START){
-        if(gSysInfo.currentDuty <= 80){
-            gSysInfo.currentDuty = 80;
-        }
-    }
-    */
 	gSysInfo.duty = gSysInfo.currentDuty;
 }
 /**************************************************************
