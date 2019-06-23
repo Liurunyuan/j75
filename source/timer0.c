@@ -12,6 +12,30 @@
 
 #define CALSPEED (4)
 
+void changeKiWOnResonance(void){
+	int ds = 0;
+	ds = gMotorSpeedEcap - gTargetSpeed;
+	if(gTargetSpeed == 4000){
+		if(ds < 200 || ds > -200){
+			gPidPara.ki = 270;
+		}
+		else{
+			gPidPara.ki = 400;
+		}
+	}
+	else if(gTargetSpeed == 8000){
+		if(ds < 200 || ds > -200){
+			gPidPara.ki = 270;
+		}
+		else{
+			gPidPara.ki = 400;
+		}
+	}
+	else{
+		gPidPara.ki = 400;
+	}
+}
+
 void motorSpeedForUI(void){
 
     static int i = 0;
@@ -28,6 +52,24 @@ void motorSpeedForUI(void){
     }
     ret = ret >> 2;
     gSysInfo.speedUI  = (int16)ret;
+}
+
+void currentFilter(void){
+	static int i = 0;
+    static int64 tmp[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    int64 ret = 0;
+    int j;
+    tmp[i] = gSysAnalogVar.single.var[I_AN_3V3_A2].updateValue();
+    ++i;
+    if(i >= 8){
+        i = 0;
+    }
+    for(j = 0; j < 8; ++j){
+        ret += tmp[j];
+    }
+    ret = ret >> 3;
+	gSysInfo.aveCurrent = (int16)KalmanFilterCurrent(ret,1,300);
+    // gSysInfo.aveCurrent = (int16)ret;
 }
 
 void MotorSpeed(){
@@ -78,21 +120,26 @@ inline void ChangeDutyAddInterval(void){
         gSysInfo.dutyAddInterval = 3;
         gSysInfo.ddtmax = 1;
         gSysInfo.dtDuty = 40;
+		gSysInfo.formularRa = 270;
     }
     else if((gMotorSpeedEcap >= 200) && (gMotorSpeedEcap <= 3000)){
         gSysInfo.dutyAddInterval = 3;
         gSysInfo.ddtmax = 1;
         gSysInfo.dtDuty = 0;
+		gSysInfo.formularRa = 270;
     }
     else if((gMotorSpeedEcap > 3000) && (gMotorSpeedEcap < 6000)){
-        gSysInfo.dutyAddInterval = 2;
+        gSysInfo.dutyAddInterval = 3;
         gSysInfo.ddtmax = 1;
         gSysInfo.dtDuty = 0;
+		gSysInfo.formularRa = 270;
     }
     else if(gMotorSpeedEcap >=6000){
-        gSysInfo.dutyAddInterval = 1;
+        gSysInfo.dutyAddInterval = 3;
         gSysInfo.ddtmax = 1;
         gSysInfo.dtDuty = 0;
+		// gSysInfo.formularRa = 270 - gTargetSpeed - 6000 >> 5;
+		gSysInfo.formularRa = (270 - ((gMotorSpeedEcap - 6000) >> 5));
     }
 }
 
@@ -111,7 +158,9 @@ void Timer1_ISR_Thread(void){
 	int busVol;
 	MotorSpeed();
 
-    motorSpeedForUI();
+	changeKiWOnResonance();
+
+//    motorSpeedForUI();
 
 	switch(gSysState.currentstate){
 		case START:
@@ -133,6 +182,7 @@ void Timer1_ISR_Thread(void){
 	if(count >= CALSPEED){
 		/*send package per 20ms */
 		count = 0;
+			currentFilter();
 		if(gRS422TxQue.front != gRS422TxQue.rear
 			&& ScibRegs.SCIFFTX.bit.TXFFST == 0){
 		 	EnableScibTxInterrupt();
