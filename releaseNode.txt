@@ -1,3 +1,14 @@
+/***************************0.1.3*******************************/
+Version Number: 0.1.3
+Date: 2019/6/24
+Author:Simon
+
+What new: 
+	1. Send serial number to UI
+	2. Current offset
+	3. Change Ki when system resonance
+	4. Error less than 20rpm when motor speed is 10000rpm
+	5. This version is the second release to cumstomer
 /***************************0.1.2*******************************/
 Version Number: 0.1.2
 Date: 2019/6/12
