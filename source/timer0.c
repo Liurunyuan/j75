@@ -12,6 +12,66 @@
 
 #define CALSPEED (4)
 
+void changeKiWOnResonance(void){
+	int ds = 0;
+	ds = gMotorSpeedEcap - gTargetSpeed;
+	if(gTargetSpeed == 4000){
+		if(ds < 200 || ds > -200){
+			gPidPara.ki = 270;
+		}
+		else{
+			gPidPara.ki = 400;
+		}
+	}
+	else if(gTargetSpeed == 8000){
+		if(ds < 200 || ds > -200){
+			gPidPara.ki = 270;
+		}
+		else{
+			gPidPara.ki = 400;
+		}
+	}
+	else{
+		gPidPara.ki = 400;
+	}
+}
+
+void motorSpeedForUI(void){
+
+    static int i = 0;
+    static int64 tmp[4] = {0, 0, 0, 0};
+    int64 ret = 0;
+    int j;
+    tmp[i] = gMotorSpeedEcap;
+    ++i;
+    if(i >= 4){
+        i = 0;
+    }
+    for(j = 0; j < 4; ++j){
+        ret += tmp[j];
+    }
+    ret = ret >> 2;
+    gSysInfo.speedUI  = (int16)ret;
+}
+
+void currentFilter(void){
+	static int i = 0;
+    static int64 tmp[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    int64 ret = 0;
+    int j;
+    tmp[i] = gSysAnalogVar.single.var[I_AN_3V3_A2].updateValue();
+    ++i;
+    if(i >= 8){
+        i = 0;
+    }
+    for(j = 0; j < 8; ++j){
+        ret += tmp[j];
+    }
+    ret = ret >> 3;
+	gSysInfo.aveCurrent = (int16)KalmanFilterCurrent(ret,1,300);
+    // gSysInfo.aveCurrent = (int16)ret;
+}
+
 void MotorSpeed(){
 	static int count = 0;
 	int calSpeed = -1;
@@ -28,7 +88,7 @@ void MotorSpeed(){
   	else{
 		count++;
 		if(count > 5){
-    		gMotorSpeedEcap = 0;
+		    gMotorSpeedEcap = (int16)KalmanFilter(0, KALMAN_Q, KALMAN_R);
 			count = 0;
 		}
   	}
@@ -52,49 +112,87 @@ void Timer0_ISR_Thread(void){
 		count = 0;
 	}
 }
+/*************************End of Timer0********************************/
 
+/*************************Start of Timer1*************************************/
 inline void ChangeDutyAddInterval(void){
-    if((gMotorSpeedEcap >= 0) && (gMotorSpeedEcap <= 3000)){
+    if((gMotorSpeedEcap < 200) && (gMotorSpeedEcap >= 0)){
         gSysInfo.dutyAddInterval = 3;
+        gSysInfo.ddtmax = 1;
+        gSysInfo.dtDuty = 40;
+		gSysInfo.formularRa = 270;
+    }
+    else if((gMotorSpeedEcap >= 200) && (gMotorSpeedEcap <= 3000)){
+        gSysInfo.dutyAddInterval = 3;
+        gSysInfo.ddtmax = 1;
+        gSysInfo.dtDuty = 0;
+		gSysInfo.formularRa = 270;
     }
     else if((gMotorSpeedEcap > 3000) && (gMotorSpeedEcap < 6000)){
-        gSysInfo.dutyAddInterval = 2;
+        gSysInfo.dutyAddInterval = 3;
+        gSysInfo.ddtmax = 1;
+        gSysInfo.dtDuty = 0;
+		gSysInfo.formularRa = 270;
     }
     else if(gMotorSpeedEcap >=6000){
-        gSysInfo.dutyAddInterval = 1;
+        gSysInfo.dutyAddInterval = 3;
+        gSysInfo.ddtmax = 1;
+        gSysInfo.dtDuty = 0;
+		// gSysInfo.formularRa = 270 - gTargetSpeed - 6000 >> 5;
+		gSysInfo.formularRa = (270 - ((gMotorSpeedEcap - 6000) >> 5));
     }
 }
 
+void t0_DisablePwmOutput(void){
+	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
+	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
+	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
+	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
+	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
+	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
+}
+
+/* interupt cpu every 5ms */
 void Timer1_ISR_Thread(void){
 	static unsigned char count = 0;
-	gSysAnalogVar.single.var[U_AN_3V3_A0].value = gSysAnalogVar.single.var[U_AN_3V3_A0].updateValue();
-	int busVol = gSysAnalogVar.single.var[U_AN_3V3_A0].value;
+	int busVol;
 	MotorSpeed();
-	ChangeDutyAddInterval();
-	if(gSysState.currentstate == START){
-	    gSysInfo.openLoopTargetDuty = openLoopControl(busVol, gTargetSpeed);
-/*
-		if(gSysInfo.enableFindTable){
-			gSysInfo.openLoopTargetDuty = openLoopControl(busVol, gTargetSpeed);
-		}
-		else{
-			gSysInfo.openLoopTargetDuty = gSysInfo.uiSetOpenLoopDuty;
-		}
-*/
-	#if CLOSELOOPDONE
-		gSysInfo.closeLooptargetDuty =  PidOutput(gMotorSpeedEcap);
-	#else
-		gSysInfo.closeLooptargetDuty = 0;
-	#endif
-	}
 
+	changeKiWOnResonance();
+
+//    motorSpeedForUI();
+
+	switch(gSysState.currentstate){
+		case START:
+			busVol = gSysAnalogVar.single.var[U_AN_3V3_A0].value = gSysAnalogVar.single.var[U_AN_3V3_A0].updateValue();
+			ChangeDutyAddInterval();
+			gSysInfo.openLoopTargetDuty = openLoopControl(busVol, gTargetSpeed);
+			#if CLOSELOOPDONE
+				gSysInfo.closeLooptargetDuty =  PidOutput(gMotorSpeedEcap);
+			#else
+				gSysInfo.closeLooptargetDuty = 0;
+			#endif
+			break;
+		default:
+			t0_DisablePwmOutput();
+			break;
+	}
 	++count;
+	/* count = 0,1,2,3*/
 	if(count >= CALSPEED){
+		/*send package per 20ms */
 		count = 0;
+			currentFilter();
 		if(gRS422TxQue.front != gRS422TxQue.rear
 			&& ScibRegs.SCIFFTX.bit.TXFFST == 0){
 		 	EnableScibTxInterrupt();
 		}
+		else{
+		    /* do nothing */
+		}
+	}
+	else{
+		/* no use */
 	}
 }
 

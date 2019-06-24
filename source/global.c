@@ -9,6 +9,7 @@
 volatile SYSINFO gSysInfo = {0};
 volatile SYSSTATE gSysState = {0};
 volatile SYSALARM gSysAlarm = {0};
+volatile SYS_SW_ALARM gSysSWAlarm = {0};
 
 void InitGlobalVar(void){
 	gSysState.currentstate = INIT;
@@ -34,8 +35,12 @@ void InitGlobalVar(void){
 	gSysInfo.formularRa = 270;
 	gSysInfo.curp = 0;
 	gSysInfo.dutyAddInterval = 3;
+	gSysInfo.sek = 0;
 
 	gSysAlarm.all = 0;
+	gSysSWAlarm.all = 0;
+	gSysInfo.speedUI = 0;
+	//gSysInfo.startDistance = 0;
 }
 void Delay(int time){
 	int i;

@@ -28,6 +28,7 @@ void InitPeripheral(){
 	Init_CpuTimer_J75();
 }
 void InitVar(){
+    gSysInfo.currentOffset = GET_I_AN_3V3_A2;
 
 	InitAdcVar();
 
@@ -40,6 +41,13 @@ void InitVar(){
 	InitPidVar();
 
 	InitGlobalVar();
+}
+
+void ClearBeforeStart(void){
+	gSysInfo.sek = 0;
+	gSysInfo.duty = 0;
+	gSysInfo.currentDuty = 0;
+	gSysInfo.curp = 0;
 }
 
 void StateMachine(void){
@@ -65,6 +73,7 @@ void StateMachine(void){
 			break;
 		case STOP:
 			if(gSysState.targetState == START){
+			    ClearBeforeStart();
 				gSysState.currentstate = START;
 			}
 
@@ -111,6 +120,7 @@ void MainLoop(){
 	UnpackSciPackage(&gRS422RxQue);
 
 	clearScibOverflow();
+
 }
 
 void main(void) {
@@ -122,6 +132,8 @@ void main(void) {
 	InitVar();
 
 	DisablePwmOutput();
+
+	ClearBeforeStart();
 
 	InitInterruptForJ75();
 

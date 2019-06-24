@@ -24,11 +24,12 @@ inline void openAL(void){
 inline void closeAL(void){
 	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
 }
-
+/*
 inline void closeAHandAL(void){
 	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
 }
+*/
 /******************************************/
 inline void openBH(void){
 	EPwm2Regs.AQCSFRC.bit.CSFA = 3;
@@ -44,10 +45,12 @@ inline void openBL(void){
 inline void closeBL(void){
 	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
 }
+/*
 inline void closeBHandAL(void){
 	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
 }
+*/
 /******************************************/
 inline void openCH(void){
 	EPwm3Regs.AQCSFRC.bit.CSFA = 3;
@@ -63,10 +66,12 @@ inline void openCL(void){
 inline void closeCL(void){
 	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
 }
+/*
 inline void closeCHandAL(void){
 	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
 }
+*/
 /******************************************/
 inline void DisablePwm1(void){
 
@@ -88,10 +93,6 @@ void DisablePwmOutput(void){
 	DisablePwm1();
 	DisablePwm2();
 	DisablePwm3();
-	sek = 0;
-	gSysInfo.duty = 0;
-	gSysInfo.currentDuty = 50;
-	gSysInfo.curp = 0;
 }
 /******************************************/
 inline void CPositiveToBNegtive(void) {
@@ -317,42 +318,67 @@ void SwitchDirection(void){
 	}
 }
 
-void TargetDutyGradualChange(int targetduty){
-	static int count = 0;
-	if(gSysInfo.currentDuty < targetduty){/*need increase duty*/
-	    if(gSysInfo.restrictduty){/*need for soft protection*/
-	        //gSysInfo.currentDuty_32bit = gSysInfo.currentDuty;
-	        //gSysInfo.currentDuty = (int16)((gSysInfo.currentDuty_32bit * 922) >> 10);
-	        gSysInfo.currentDuty = gSysInfo.currentDuty -7;
-	        count = 0;
-	    }
-	    else{/*no need for soft protection*/
-	        if(count < gSysInfo.dutyAddInterval){
-	            ++count;
-	            /*no use*/
-	        }
-	        else{
-	            count = 0;
-	            if((gSysInfo.currentDuty + gSysInfo.ddtmax) >= targetduty){
-	                gSysInfo.currentDuty = targetduty;
-	            }
-	            else{
-	                gSysInfo.currentDuty = gSysInfo.currentDuty + gSysInfo.ddtmax;
-	            }
-	        }
-	    }
-	}
-	else if(gSysInfo.currentDuty > targetduty){
-		gSysInfo.currentDuty =  targetduty;
-		count = 0;
+void OverCurrentSoftProtect(void){
+	if(1 == gSysInfo.restrictduty){
+		gSysInfo.currentDuty = gSysInfo.currentDuty - 7;
 	}
 	else{
-	    count = 0;
-		//nothing need change
+		gSysInfo.currentDuty = gSysInfo.currentDuty;
 	}
+}
+
+void TargetDutyGradualChange(int targetduty){
+	static int count = 0;
+
+	++count;
+	if(count < gSysInfo.dutyAddInterval){
+		return;
+	}
+	count = 0;
+
+	if(gMotorSpeedEcap > gTargetSpeed){
+		if(gSysInfo.currentDuty < targetduty){
+
+		}
+		else if(gSysInfo.currentDuty > targetduty){
+			gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
+		}
+		else{
+			//nothing need change
+		}
+	}
+	else if(gMotorSpeedEcap < gTargetSpeed){
+		if(gSysInfo.currentDuty < targetduty){
+			gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
+			// gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
+		}
+		else if(gSysInfo.currentDuty > targetduty){
+			
+		}
+		else{
+			//nothing need change
+		}
+	}
+	else{
+
+	}
+
+
+
+	// if(gSysInfo.currentDuty < targetduty){
+	// 	gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
+	// 	// gSysInfo.currentDuty = (gSysInfo.currentDuty + gSysInfo.ddtmax) > targetduty ? targetduty : (gSysInfo.currentDuty + gSysInfo.ddtmax);
+	// }
+	// else if(gSysInfo.currentDuty > targetduty){
+	// 	gSysInfo.currentDuty = (gSysInfo.currentDuty - gSysInfo.ddtmax) < targetduty ? targetduty : (gSysInfo.currentDuty - gSysInfo.ddtmax);
+	// }
+	// else{
+	// 	//nothing need change
+	// }
+	OverCurrentSoftProtect();
 	//need to change the threshold value of the next line
-	if (gSysInfo.currentDuty > 1500) {
-		gSysInfo.currentDuty = 1500;
+	if (gSysInfo.currentDuty > 1495) {
+		gSysInfo.currentDuty = 1495;
 	} 
 	else if (gSysInfo.currentDuty <= 0) {
 		gSysInfo.currentDuty = 0;
@@ -369,7 +395,7 @@ void TargetDutyGradualChange(int targetduty){
  **************************************************************/
 void PwmIsrThread(void)
 {
-	if(gSysState.currentstate == START){
+	if((START == gSysState.currentstate) && (0 == gSysAlarm.all)){
 		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.closeLooptargetDuty + gSysInfo.dtDuty);
 		SwitchDirection();
 	}

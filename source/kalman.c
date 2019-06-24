@@ -1,7 +1,7 @@
 /*
  * kalman.c
  *
- *  Created on: 2019Äê2ÔÂ14ÈÕ
+ *  Created on: 2019ï¿½ï¿½2ï¿½ï¿½14ï¿½ï¿½
  *      Author: Administrator
  */
 
@@ -17,7 +17,7 @@ double KalmanFilter(const double ResrcData, int ProcessNiose_Q, int MeasureNoise
 	double x_mid = x_last;
 	double x_now;
 
-	static double p_last;
+	static double p_last = 0;
 	double p_mid;
 	double p_now;
 
@@ -46,7 +46,7 @@ double KalmanFilterCurrent(const double ResrcData, double ProcessNiose_Q, double
     double x_mid = x_last;
     double x_now;
 
-    static double p_last;
+    static double p_last = 0;
     double p_mid;
     double p_now;
 

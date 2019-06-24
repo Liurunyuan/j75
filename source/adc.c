@@ -16,7 +16,17 @@ SysAnalogVar gSysAnalogVar = {0};
 /********update anolog variable value******************************/
 Uint16 updateU_AN_3V3_A0(void){return GET_U_AN_3V3_A0;}
 Uint16 updateAGND_A1(void){return GET_AGND_A1;}
-Uint16 updateI_AN_3V3_A2(void){return GET_I_AN_3V3_A2;}
+Uint16 updateI_AN_3V3_A2(void){
+    Uint16 CurrentNoOffset;
+    if(GET_I_AN_3V3_A2 <= gSysInfo.currentOffset){
+        CurrentNoOffset = 0;
+    }
+    else{
+        CurrentNoOffset = ((Uint16)GET_I_AN_3V3_A2) - gSysInfo.currentOffset;
+    }
+    return CurrentNoOffset;
+    //return GET_I_AN_3V3_A2;
+}
 Uint16 updateAGND_A3(void){return GET_AGND_A3;}
 Uint16 updateNO_USE_A4(void){return GET_NO_USE_A4;}
 Uint16 updateNO_USE_A5(void){return GET_NO_USE_A5;}
@@ -55,7 +65,7 @@ const int anologMaxMinInit[][4] = {
     //max,max2nd,min,min2nd
 	{1636,1596,684,725},       //voltage max and min
 	{1,0,0,0},
-	{1338,1140,0,0},        //current max, 2nd max and min
+	{1096,958,0,0},        //current max, 2nd max and min
 	{3,0,0,0},
 	{4,0,0,0},
 	{5,0,0,0},
@@ -147,7 +157,8 @@ void updateAndCheckTemperature(void){
         }
     }
     else{
-       gSysAlarm.bit.softwareFault = 1;
+    	gSysSWAlarm.bit.updateAndCheckTemperature = 1;
+    	gSysAlarm.bit.softwareFault = 1;
     }
 }
 
@@ -182,15 +193,16 @@ void updateAndCheckVoltage(void){
         }
     }
     else {
+    	gSysSWAlarm.bit.updateAndCheckVoltage = 1;
         gSysAlarm.bit.softwareFault = 1;
     }
 }
 
 void updateAndCheckCurrent(void){
 	static int max_count = 0;
-	static int i = 0;
-	int j;
-	int64 ret;
+//	static int i = 0;
+//	int j;
+//	int64 ret = 0;
 	gSysAnalogVar.single.var[I_AN_3V3_A2].value = gSysAnalogVar.single.var[I_AN_3V3_A2].updateValue();
 	if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max2nd) {
 	   gSysInfo.restrictduty = 1;
@@ -220,15 +232,15 @@ void updateAndCheckCurrent(void){
 	 }
 	//	gSysInfo.maxCurrent = gSysAnalogVar.single.var[I_AN_3V3_A2].value;
 	//	gSysInfo.maxCurrent = (KalmanFilterCurrent(gSysAnalogVar.single.var[I_AN_3V3_A2].value,300,50));
-	tmp[i] = (int64)gSysAnalogVar.single.var[I_AN_3V3_A2].value;
-	++i;
-	if(i >= 64){
-	    i = 0;
-	    for(j = 0; j < 64; ++j){
-	        ret += tmp[j];
-	    }
-	    ret = ret >> 6;
-	    gSysInfo.aveCurrent  = ret;
-	}
+	// tmp[i] = (int64)gSysAnalogVar.single.var[I_AN_3V3_A2].value;
+	// ++i;
+	// if(i >= 64){
+	//     i = 0;
+	// }
+    // for(j = 0; j < 64; ++j){
+    //     ret += tmp[j];
+    // }
+    // ret = ret >> 6;
+    // gSysInfo.aveCurrent  = ret;
 //	gSysInfo.maxCurrent = (int16)(KalmanFilterCurrent(ret,300,50));
 }

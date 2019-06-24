@@ -37,7 +37,7 @@ static void WaveCommand(VAR16 a, int b, int c) {
 	}
 }
 static void SetTargetSpeed(VAR16 a, int b, int c) {
-	gTargetSpeed = a.value;
+        gTargetSpeed = a.value;
 }
 
 static void SetSystemState(VAR16 a, int b, int c) {

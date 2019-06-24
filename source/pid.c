@@ -11,7 +11,7 @@
 #include "pid.h"
 
 volatile PIDPARA gPidPara = {0};
-volatile double gTargetSpeed = 500;
+volatile int gTargetSpeed = 500;
 
 void InitPidVar(void){
 //	gPidPara.kp = 450;
@@ -24,27 +24,27 @@ void InitPidVar(void){
 	gTargetSpeed = 500;
 }
 
-int32 sek = 0;
 int32 sektest = 0;
 
 int16 PidOutput(double currentSpeed){
 	int16 pidOutput = 0;
 	int32 ek1;
+	//int16 dis_temp;
 
 	ek1 = (int32)(gTargetSpeed - currentSpeed);
 	if((ek1 > -gSysInfo.thresholdKiError) && (ek1 < gSysInfo.thresholdKiError))
 	{
-		if(((ek1 > 0) && (sek < 585535)) || ((ek1 < 0) && (sek > -585535)))
+		if(((ek1 > 0) && (gSysInfo.sek < 585535)) || ((ek1 < 0) && (gSysInfo.sek > -585535)))
 		{
-		        sek = sek + ek1;
+			gSysInfo.sek = gSysInfo.sek + ek1;
 		}
 	}
 	else
 	{
-		sek = 0;
+		gSysInfo.sek = 0;
 	}
-	sektest = sek;
-	pidOutput = (int16)((ek1 * gPidPara.kp) >> 14) + (int16)(((sek >> 8) * gPidPara.ki) >> 11);
+	sektest = gSysInfo.sek;
+	pidOutput = (int16)((ek1 * gPidPara.kp) >> 14) + (int16)(((gSysInfo.sek >> 8) * gPidPara.ki) >> 11);
 
 	if(pidOutput > 800){
 		pidOutput = 800;
@@ -54,6 +54,29 @@ int16 PidOutput(double currentSpeed){
 	}
 	gPidPara.targetPid = pidOutput;
 
+	/*startup distance*/
+	/*
+	if(200 > currentSpeed){
+		dis_temp = ((int16)ek1) >> 2;
+		if(MAXSTARTDISTANCE < dis_temp){
+			dis_temp = MAXSTARTDISTANCE;
+		}
+		else if(MINSTARTDISTANCE > dis_temp){
+			dis_temp = MINSTARTDISTANCE;
+		}
+	}
+	else{
+		dis_temp = gSysInfo.startDistance;
+		if(1 < dis_temp){
+			dis_temp = dis_temp - 1;
+		}
+		else{
+			dis_temp = 0;
+		}
+	}
+	gSysInfo.startDistance = dis_temp;
+	*/
+	/*end of startup distance*/
 	return pidOutput;
 }
 
