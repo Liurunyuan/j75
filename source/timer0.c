@@ -188,9 +188,7 @@ void Timer1_ISR_Thread(void){
 		 	EnableScibTxInterrupt();
 		}
 		else{
-			t0_DisablePwmOutput();
-			gSysSWAlarm.bit.txBufferFull = 1;
-			gSysAlarm.bit.softwareFault = 1;
+		    /* do nothing */
 		}
 	}
 	else{
