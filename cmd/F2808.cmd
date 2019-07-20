@@ -75,11 +75,12 @@ PAGE 0:    /* Program Memory */
 
    RAML0       : origin = 0x008000, length = 0x001000     /* on-chip RAM block L0 */
    OTP         : origin = 0x3D7800, length = 0x000400     /* on-chip OTP */
-   FLASHD      : origin = 0x3E8000, length = 0x004000     /* on-chip FLASH */
+   FLASHD_BEGIN : origin = 0x3E8000, length = 0x000010
+   FLASHD      : origin = 0x3E8010, length = 0x003FF0     /* on-chip FLASH */
    FLASHC      : origin = 0x3EC000, length = 0x004000     /* on-chip FLASH */
    FLASHA      : origin = 0x3F4000, length = 0x003F80     /* on-chip FLASH */
    CSM_RSVD    : origin = 0x3F7F80, length = 0x000076     /* Part of FLASHA.  Program with all 0x0000 when CSM is in use. */
-   BEGIN       : origin = 0x3F7FF6, length = 0x000002     /* Part of FLASHA.  Used for "boot to Flash" bootloader mode. */
+   /*  BEGIN       : origin = 0x3F7FF6, length = 0x000002     /* Part of FLASHA.  Used for "boot to Flash" bootloader mode. */
    CSM_PWL     : origin = 0x3F7FF8, length = 0x000008     /* Part of FLASHA.  CSM password locations in FLASHA */
    
    ROM         : origin = 0x3FF000, length = 0x000FC0     /* Boot ROM */
@@ -109,10 +110,10 @@ SECTIONS
 {
  
    /* Allocate program areas: */
-   .cinit              : > FLASHA      PAGE = 0
-   .pinit              : > FLASHA,     PAGE = 0
-   .text               : > FLASHA      PAGE = 0
-   codestart           : > BEGIN       PAGE = 0
+   .cinit              : > FLASHD      PAGE = 0
+   .pinit              : > FLASHD,     PAGE = 0
+   .text               : > FLASHD      PAGE = 0
+   codestart           : > FLASHD_BEGIN       PAGE = 0
    ramfuncs            : LOAD = FLASHD, 
                          RUN = RAML0, 
                          LOAD_START(_RamfuncsLoadStart),
@@ -131,11 +132,11 @@ SECTIONS
 
    /* Initalized sections go in Flash */
    /* For SDFlash to program these, they must be allocated to page 0 */
-   .econst             : > FLASHA      PAGE = 0
-   .switch             : > FLASHA      PAGE = 0      
+   .econst             : > FLASHD      PAGE = 0
+   .switch             : > FLASHD      PAGE = 0
 
    /* Allocate IQ math areas: */
-   IQmath              : > FLASHC      PAGE = 0                  /* Math Code */
+   IQmath              : > FLASHD      PAGE = 0                  /* Math Code */
    IQmathTables        : > ROM         PAGE = 0, TYPE = NOLOAD   /* Math Tables In ROM */
 
    /* .reset is a standard section used by the compiler.  It contains the */ 
