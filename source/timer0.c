@@ -14,22 +14,28 @@
 
 void updateKpAndKiPara(void)
 {
-	int16 kmi;
-	int16 kmp;
+	int64 kmi;
+	int64 kmp;
 
-	kmi = 100 + abs(gTargetSpeed - gMotorSpeedEcap);
+	int64 ds = 0;
+	ds = gTargetSpeed - gMotorSpeedEcap;
+	if(ds < 0){
+		ds = -ds;
+	}
+
+	kmi = 100 + ds;
 	if(kmi > 500)
 	{
 		kmi = 500;
 	}
-	kmp = 100 + abs(gTargetSpeed - gMotorSpeedEcap);
+	kmp = 100 + ds; 
 	if(kmp > 400)
 	{
 		kmp = 400;
 	}
 
-	gPidPara.ki = (gSysInfo.aKi >> 10) * kmi;
-	gPidPara.kp = (gSysInfo.aKp >> 10) * kmp;
+	gPidPara.ki = (gSysInfo.aKi * kmi) >> 10;
+	gPidPara.kp = (gSysInfo.aKp * kmp) >> 10;
 }
 
 void changeKiWOnResonance(void){
