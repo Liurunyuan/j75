@@ -97,14 +97,24 @@ static void ClearAlarmInfo(VAR16 a, int b, int c){
 	}
 }
 
+static void SetAKI(VAR16 a, int b, int c)
+{
+	gSysInfo.aKi = a.value;
+}
+
+static void SetAKP(VAR16 a, int b, int c)
+{
+	gSysInfo.aKp = a.value;
+}
+
 const functionMsgCodeUnpack msgInterface[] = {
 			0,					   	//0
 			SetSystemState,		   	//1
 			SetTargetSpeed,		   	//2
 			WaveCommand,		   	//3
 			ClearAlarmInfo,			//4
-			0,						//5
-			0,						//6
+			SetAKI,					//5
+			SetAKP,					//6
 			0,						//7
 			0,						//8
 			0,						//9

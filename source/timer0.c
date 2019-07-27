@@ -12,9 +12,29 @@
 
 #define CALSPEED (4)
 
+void updateKpAndKiPara(void)
+{
+	int16 kmi;
+	int16 kmp;
+
+	kmi = 100 + abs(gTargetSpeed - gMotorSpeedEcap);
+	if(kmi > 500)
+	{
+		kmi = 500;
+	}
+	kmp = 100 + abs(gTargetSpeed - gMotorSpeedEcap);
+	if(kmp > 400)
+	{
+		kmp = 400;
+	}
+
+	gPidPara.ki = (gSysInfo.aKi >> 10) * kmi;
+	gPidPara.kp = (gSysInfo.aKp >> 10) * kmp;
+}
+
 void changeKiWOnResonance(void){
 	int ds = 0;
-	ds = gMotorSpeedEcap - gTargetSpeed;
+	ds = gTargetSpeed - gMotorSpeedEcap;
 	if(gTargetSpeed == 4000){
 		if(ds < 200 || ds > -200){
 			gPidPara.ki = 270;
@@ -158,7 +178,10 @@ void Timer1_ISR_Thread(void){
 	int busVol;
 	MotorSpeed();
 
-	changeKiWOnResonance();
+	//disable this function. No more need to use this fucntion
+	//changeKiWOnResonance();
+
+	updateKpAndKiPara();
 
 //    motorSpeedForUI();
 
