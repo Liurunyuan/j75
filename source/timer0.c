@@ -145,7 +145,7 @@ inline void ChangeDutyAddInterval(void){
     if((gMotorSpeedEcap < 200) && (gMotorSpeedEcap >= 0)){
         gSysInfo.dutyAddInterval = 3;
         gSysInfo.ddtmax = 1;
-        gSysInfo.dtDuty = 40;
+        gSysInfo.dtDuty = 0;
 		gSysInfo.formularRa = 270;
     }
     else if((gMotorSpeedEcap >= 200) && (gMotorSpeedEcap <= 3000)){
