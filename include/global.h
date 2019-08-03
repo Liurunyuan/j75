@@ -107,7 +107,7 @@ typedef struct{
 	int16 formularRa;
 	int32 curp;
 	int16 dutyAddInterval;
-	int32 sek;
+	int64 sek;
 	int16 speedUI;
 	int16 aKi;
 	int16 aKp;

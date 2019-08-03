@@ -1,7 +1,7 @@
 /*
  * pid.c
  *
- *  Created on: 2019��2��14�汉子
+ *  Created on: 2019锟斤拷2锟斤拷14锟芥眽瀛�
  *      Author: Administrator
  */
 
@@ -19,22 +19,22 @@ void InitPidVar(void){
     gPidPara.kp = 300;
     gPidPara.ki = 400;
 	gPidPara.kd = 0;
-	gPidPara.targetPid = 0;  //����ĵ�ǰPID���ֵ  ʲô��˼��LUG
+	gPidPara.targetPid = 0;  //锟斤拷锟斤拷牡锟角癙ID锟斤拷锟街�  什么锟斤拷思锟斤拷LUG
 
 	gTargetSpeed = 500;
 }
 
-int32 sektest = 0;  //  �м�������������ۼ�ֵ��ʲô��˼��LUG
+int32 sektest = 0;  //  锟叫硷拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷奂锟街碉拷锟绞裁达拷锟剿硷拷锟絃UG
 
 int16 PidOutput(double currentSpeed){
 	int16 pidOutput = 0;
-	int32 ek1;
+	int64 ek1;
 	//int16 dis_temp;
 
-	ek1 = (int32)(gTargetSpeed - currentSpeed);
+	ek1 = (int64)(gTargetSpeed - currentSpeed);
 	if((ek1 > -gSysInfo.thresholdKiError) && (ek1 < gSysInfo.thresholdKiError))
 	{
-		if(((ek1 > 0) && (gSysInfo.sek < 585535)) || ((ek1 < 0) && (gSysInfo.sek > -585535)))
+		if(((ek1 > 0) && (gSysInfo.sek < 1171070)) || ((ek1 < 0) && (gSysInfo.sek > -1171070)))
 		{
 			gSysInfo.sek = gSysInfo.sek + ek1;
 		}
