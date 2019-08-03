@@ -1,7 +1,7 @@
 /*
  * pid.c
  *
- *  Created on: 2019ï¿½ï¿½2ï¿½ï¿½14ï¿½ï¿½
+ *  Created on: 2019ï¿½ï¿½2ï¿½ï¿½14ï¿½æ±‰å­
  *      Author: Administrator
  */
 
@@ -19,12 +19,12 @@ void InitPidVar(void){
     gPidPara.kp = 300;
     gPidPara.ki = 400;
 	gPidPara.kd = 0;
-	gPidPara.targetPid = 0;  //¼ÆËãµÄµ±Ç°PIDÊä³öÖµ  Ê²Ã´ÒâË¼£¿LUG
+	gPidPara.targetPid = 0;  //ï¿½ï¿½ï¿½ï¿½Äµï¿½Ç°PIDï¿½ï¿½ï¿½Öµ  Ê²Ã´ï¿½ï¿½Ë¼ï¿½ï¿½LUG
 
 	gTargetSpeed = 500;
 }
 
-int32 sektest = 0;  //  ÖĞ¼ä±äÁ¿£¬Îó²î»ı·ÖÀÛ¼ÓÖµ£¬Ê²Ã´ÒâË¼£¿LUG
+int32 sektest = 0;  //  ï¿½Ğ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Û¼ï¿½Öµï¿½ï¿½Ê²Ã´ï¿½ï¿½Ë¼ï¿½ï¿½LUG
 
 int16 PidOutput(double currentSpeed){
 	int16 pidOutput = 0;
