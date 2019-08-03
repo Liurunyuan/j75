@@ -19,12 +19,12 @@ void InitPidVar(void){
     gPidPara.kp = 300;
     gPidPara.ki = 400;
 	gPidPara.kd = 0;
-	gPidPara.targetPid = 0;
+	gPidPara.targetPid = 0;  //计算的当前PID输出值  什么意思？LUG
 
 	gTargetSpeed = 500;
 }
 
-int32 sektest = 0;
+int32 sektest = 0;  //  中间变量，误差积分累加值，什么意思？LUG
 
 int16 PidOutput(double currentSpeed){
 	int16 pidOutput = 0;
