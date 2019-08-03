@@ -12,9 +12,48 @@
 
 #define CALSPEED (4)
 
+void updateKpAndKiPara(void)
+{
+	int64 kmi;
+	int64 kmp;
+
+	int64 ekabs = 0;
+	ekabs = gTargetSpeed - gMotorSpeedEcap;
+	if(ekabs < 0){
+		ekabs = -ekabs;
+	}
+
+	kmi = 300 - (ekabs>>4);
+	if(kmi < 50)
+	{
+		kmi = 50;
+	}
+	else if(kmi > 300){
+		kmi = 300;
+	}
+	else{
+
+	}
+
+	kmp = 400 - (ekabs>>5);
+	if(kmp < 100){
+		kmp = 100;
+	}
+	else if(kmp > 400)
+	{
+		kmp = 400;
+	}
+	else{
+
+	}
+
+	gPidPara.ki = (gSysInfo.aKi * kmi) >> 10;
+	gPidPara.kp = (gSysInfo.aKp * kmp) >> 10;
+}
+
 void changeKiWOnResonance(void){
 	int ds = 0;
-	ds = gMotorSpeedEcap - gTargetSpeed;
+	ds = gTargetSpeed - gMotorSpeedEcap;
 	if(gTargetSpeed == 4000){
 		if(ds < 200 || ds > -200){
 			gPidPara.ki = 270;
@@ -119,7 +158,7 @@ inline void ChangeDutyAddInterval(void){
     if((gMotorSpeedEcap < 200) && (gMotorSpeedEcap >= 0)){
         gSysInfo.dutyAddInterval = 3;
         gSysInfo.ddtmax = 1;
-        gSysInfo.dtDuty = 40;
+        gSysInfo.dtDuty = 0;
 		gSysInfo.formularRa = 270;
     }
     else if((gMotorSpeedEcap >= 200) && (gMotorSpeedEcap <= 3000)){
@@ -141,6 +180,8 @@ inline void ChangeDutyAddInterval(void){
 		// gSysInfo.formularRa = 270 - gTargetSpeed - 6000 >> 5;
 		gSysInfo.formularRa = (270 - ((gMotorSpeedEcap - 6000) >> 5));
     }
+    gSysInfo.formularRa = gSysInfo.formularRa >> 3;
+
 }
 
 void t0_DisablePwmOutput(void){
@@ -158,7 +199,10 @@ void Timer1_ISR_Thread(void){
 	int busVol;
 	MotorSpeed();
 
-	changeKiWOnResonance();
+	//disable this function. No more need to use this fucntion
+	//changeKiWOnResonance();
+
+	updateKpAndKiPara();
 
 //    motorSpeedForUI();
 

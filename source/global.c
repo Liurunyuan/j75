@@ -40,6 +40,8 @@ void InitGlobalVar(void){
 	gSysAlarm.all = 0;
 	gSysSWAlarm.all = 0;
 	gSysInfo.speedUI = 0;
+	gSysInfo.aKi = 3000;
+	gSysInfo.aKp = 3000;
 	//gSysInfo.startDistance = 0;
 }
 void Delay(int time){
