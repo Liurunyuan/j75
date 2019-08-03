@@ -17,21 +17,34 @@ void updateKpAndKiPara(void)
 	int64 kmi;
 	int64 kmp;
 
-	int64 ds = 0;
-	ds = gTargetSpeed - gMotorSpeedEcap;
-	if(ds < 0){
-		ds = -ds;
+	int64 ekabs = 0;
+	ekabs = gTargetSpeed - gMotorSpeedEcap;
+	if(ekabs < 0){
+		ekabs = -ekabs;
 	}
 
-	kmi = 100 + ds;
-	if(kmi > 500)
+	kmi = 300 - (ekabs>>4);
+	if(kmi < 50)
 	{
-		kmi = 500;
+		kmi = 50;
 	}
-	kmp = 100 + ds; 
-	if(kmp > 400)
+	else if(kmi > 300){
+		kmi = 300;
+	}
+	else{
+
+	}
+
+	kmp = 400 - (ekabs>>5);
+	if(kmp < 100){
+		kmp = 100;
+	}
+	else if(kmp > 400)
 	{
 		kmp = 400;
+	}
+	else{
+
 	}
 
 	gPidPara.ki = (gSysInfo.aKi * kmi) >> 10;
@@ -167,6 +180,8 @@ inline void ChangeDutyAddInterval(void){
 		// gSysInfo.formularRa = 270 - gTargetSpeed - 6000 >> 5;
 		gSysInfo.formularRa = (270 - ((gMotorSpeedEcap - 6000) >> 5));
     }
+    gSysInfo.formularRa = gSysInfo.formularRa >> 3;
+
 }
 
 void t0_DisablePwmOutput(void){
