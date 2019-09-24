@@ -373,7 +373,8 @@ void UnpackSciPackage(RS422RXQUE *RS422RxQue){
 /****************New Rs422 protocal to support 401 requirement*************/
 #define HEAD1_401 0x7e
 #define HEAD2_401 0x7e
-#define RX_PACKET_LENGTH 6
+#define RX_PACKET_LENGTH_401 6
+#define OFFSET_401 2
 
 int findhead401(RS422RXQUE *RS422RxQue){
 
@@ -430,6 +431,15 @@ int sumCheck401(const char *buf){
 	else{
 		return FAIL;
 	}
+}
+
+void unpack401(int len){
+	VAR16 var16;
+
+	var16.datahl.h = rs422rxPack[OFFSET_401 + 1];
+	var16.datahl.l = rs422rxPack[OFFSET_401 + 2];
+
+	gTargetSpeed = var16.value;
 }
 /**************************************************************************/
 
