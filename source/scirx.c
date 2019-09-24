@@ -415,5 +415,21 @@ void saveprofile401(RS422RXQUE *RS422RxQue){
 		rs422rxPack[i] = RS422RxQue->rxBuff[(RS422RxQue->front + i) % MAXQSIZE];
 	}
 }
+
+int sumCheck401(const char *buf){
+	int i;
+	unsigned char sum = 0;
+
+	for(i = 0; i < 5; ++i){
+		sum += buf[i];
+	}
+
+	if(sum == buf[5]){
+		return SUCCESS;
+	}
+	else{
+		return FAIL;
+	}
+}
 /**************************************************************************/
 
