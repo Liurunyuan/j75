@@ -1,7 +1,7 @@
 /*
  * pid.c
  *
- *  Created on: 2019锟斤拷2锟斤拷14锟芥眽瀛�
+ *  Created on: 2019é”Ÿæ–¤æ‹·2é”Ÿæ–¤æ‹·14é”ŸèŠ¥çœ½ç€›ï¿½
  *      Author: Administrator
  */
 
@@ -11,7 +11,7 @@
 #include "pid.h"
 
 volatile PIDPARA gPidPara = {0};
-volatile int gTargetSpeed = 500;
+volatile int gTargetSpeed = 200;
 
 void InitPidVar(void){
 //	gPidPara.kp = 450;
@@ -19,12 +19,12 @@ void InitPidVar(void){
     gPidPara.kp = 300;
     gPidPara.ki = 400;
 	gPidPara.kd = 0;
-	gPidPara.targetPid = 0;  //锟斤拷锟斤拷牡锟角癙ID锟斤拷锟街�  什么锟斤拷思锟斤拷LUG
+	gPidPara.targetPid = 0;  //é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ç‰¡é”Ÿè§’ç™™IDé”Ÿæ–¤æ‹·é”Ÿè¡—ï¿½  ä»€ä¹ˆé”Ÿæ–¤æ‹·æ€�é”Ÿæ–¤æ‹·LUG
 
-	gTargetSpeed = 500;
+	gTargetSpeed = 200;
 }
 
-int32 sektest = 0;  //  锟叫硷拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷奂锟街碉拷锟绞裁达拷锟剿硷拷锟絃UG
+int32 sektest = 0;  //  é”Ÿå�«ç¡·æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¥‚é”Ÿè¡—ç¢‰æ‹·é”Ÿç»žè£�è¾¾æ‹·é”Ÿå‰¿ç¡·æ‹·é”ŸçµƒUG
 
 int16 PidOutput(double currentSpeed){
 	int16 pidOutput = 0;
