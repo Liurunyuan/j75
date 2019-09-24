@@ -1,3 +1,10 @@
+﻿/***************************0.1.5*******************************/
+Version Number: 0.1.5
+Date: 2019/9/24
+Author:Runtian
+
+What new: 
+	1. Change inital target speed to 200rpm based on 401 request
 /***************************0.1.4*******************************/
 Version Number: 0.1.4
 Date: 2019/8/3
