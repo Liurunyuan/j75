@@ -441,5 +441,9 @@ void unpack401(int len){
 
 	gTargetSpeed = var16.value;
 }
+
+void updatehead401(RS422RXQUE *RS422RxQue){
+	RS422RxQue->front = (RS422RxQue->front + 6) % MAXQSIZE;
+}
 /**************************************************************************/
 
