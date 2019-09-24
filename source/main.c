@@ -117,7 +117,11 @@ void MainLoop(){
 
 	updateAndCheckTemperature();
 
+#if(SCI_PROTOCAL_401_SUPPORT == INCLUDE_FEATURE)
+	UnpackSciPackage401(&gRS422RxQue);
+#else
 	UnpackSciPackage(&gRS422RxQue);
+#endif
 
 	clearScibOverflow();
 

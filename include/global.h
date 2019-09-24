@@ -21,6 +21,12 @@
 #define ENABLE_TX (1)
 #define DISABLE_TX (0)
 
+#define INCLUDE_FEATURE  1
+#define EXCLUDE_FEATURE  0
+
+
+#define SCI_PROTOCAL_401_SUPPORT INCLUDE_FEATURE
+
 enum{
 	UNKNOWN,
 	START,

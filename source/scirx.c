@@ -412,7 +412,7 @@ int checklength401(RS422RXQUE *RS422RxQue){
 void saveprofile401(RS422RXQUE *RS422RxQue){
 	int i;
 
-	for(i = 0; i < 6; ++i){
+	for(i = 0; i < RX_PACKET_LENGTH_401; ++i){
 		rs422rxPack[i] = RS422RxQue->rxBuff[(RS422RxQue->front + i) % MAXQSIZE];
 	}
 }
@@ -433,7 +433,7 @@ int sumCheck401(const char *buf){
 	}
 }
 
-void unpack401(int len){
+void unpack401(void){
 	VAR16 var16;
 
 	var16.datahl.h = rs422rxPack[OFFSET_401 + 1];
@@ -443,7 +443,32 @@ void unpack401(int len){
 }
 
 void updatehead401(RS422RXQUE *RS422RxQue){
-	RS422RxQue->front = (RS422RxQue->front + 6) % MAXQSIZE;
+	RS422RxQue->front = (RS422RxQue->front + RX_PACKET_LENGTH_401) % MAXQSIZE;
+}
+
+void UnpackSciPackage401(RS422RXQUE *RS422RxQue){
+
+	while(RS422RxQueLength(RS422RxQue) >= RX_PACKET_LENGTH_401){
+		if(findhead401(RS422RxQue) == FAIL){
+			return;
+		}
+
+		if(checklength401(RS422RxQue) == FAIL){
+			return;
+		}
+
+		saveprofile401(RS422RxQue);
+
+		if(sumCheck401(rs422rxPack) == FAIL){
+			if(DeQueue(RS422RxQue) == 0){
+			}
+			return;
+		}
+
+		unpack401();
+
+		updatehead401(RS422RxQue);
+	}
 }
 /**************************************************************************/
 
