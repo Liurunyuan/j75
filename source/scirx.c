@@ -10,7 +10,7 @@
 
 
 RS422RXQUE gRS422RxQue = {0};
-char rs422rxPack[16];
+unsigned char rs422rxPack[16];
 
 
 inline void Init_gRS422RxQue(void) {
@@ -417,7 +417,7 @@ void saveprofile401(RS422RXQUE *RS422RxQue){
 	}
 }
 
-int sumCheck401(const char *buf){
+int sumCheck401(const unsigned char *buf){
 	int i;
 	unsigned char sum = 0;
 
