@@ -407,5 +407,13 @@ int checklength401(RS422RXQUE *RS422RxQue){
 		return FAIL;
 	}
 }
+
+void saveprofile401(RS422RXQUE *RS422RxQue){
+	int i;
+
+	for(i = 0; i < 6; ++i){
+		rs422rxPack[i] = RS422RxQue->rxBuff[(RS422RxQue->front + i) % MAXQSIZE];
+	}
+}
 /**************************************************************************/
 
