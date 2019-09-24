@@ -400,7 +400,7 @@ int findhead401(RS422RXQUE *RS422RxQue){
 
 int checklength401(RS422RXQUE *RS422RxQue){
 
-	if(RX_PACKET_LENGTH <= RS422RxQueLength(RS422RxQue)){
+	if(RX_PACKET_LENGTH_401 <= RS422RxQueLength(RS422RxQue)){
 		return SUCCESS;
 	}
 	else
