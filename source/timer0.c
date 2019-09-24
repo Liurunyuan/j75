@@ -147,7 +147,11 @@ void Timer0_ISR_Thread(void){
 
 	if(count >= N){
 		FEED_WATCH_DOG = 1;
+#if(SCI_PROTOCAL_401_SUPPORT == INCLUDE_FEATURE)
+		PackRS422TxData401();
+#else
 		PackRS422TxData();
+#endif
 		count = 0;
 	}
 }

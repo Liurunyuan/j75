@@ -241,7 +241,7 @@ void SciRxIsrThread(RS422RXQUE *RS422RxQue){
 
 }
 
-int CalCrc(int crc, const char *buf, int len){
+int CalCrc(int crc, const unsigned char *buf, int len){
 	int x;
 	int i;
 

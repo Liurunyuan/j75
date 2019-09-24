@@ -303,3 +303,64 @@ void SciTxIsrThread(void){
 		}
 	}
 }
+
+/****************New Rs422 protocal to support 401 requirement*************/
+void PackRS422TxData401(void){
+
+	int i = 0;
+	static unsigned char tmp[9] = {0,0,0,0,0,0,0,0,0};
+
+	tmp[0] = 0x7e;
+	tmp[1] = 0x7e;
+
+	if(RX422TXEnQueue(tmp[0]) == 0){
+		return;
+	}
+	if(RX422TXEnQueue(tmp[1]) == 0){
+		return;
+	}
+
+
+	tmp[2] = (gTargetSpeed >> 8);
+	tmp[3] = gTargetSpeed;
+
+	if(RX422TXEnQueue(tmp[2]) == 0){
+		return;
+	}
+	if(RX422TXEnQueue(tmp[3]) == 0){
+		return;
+	}
+
+	tmp[4] = ((Uint16)gMotorSpeedEcap) >> 8;
+	tmp[5] = ((Uint16)gMotorSpeedEcap);
+
+	if(RX422TXEnQueue(tmp[4]) == 0){
+		return;
+	}
+	if(RX422TXEnQueue(tmp[5]) == 0){
+		return;
+	}
+
+	tmp[6] = gSysAlarm.all;
+
+	if(RX422TXEnQueue(tmp[6]) == 0){
+		return;
+	}
+
+	tmp[7] = 0x00;
+
+	if(RX422TXEnQueue(tmp[7]) == 0){
+		return;
+	}
+
+	tmp[8] = 0;
+	for(i = 0; i < 8; ++i){
+		tmp[8] += tmp[i];
+	}
+
+	if(RX422TXEnQueue(tmp[8]) == 0){
+		return;
+	}
+
+}
+/**************************************************************************/

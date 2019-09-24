@@ -125,7 +125,7 @@ void readTZGpioState(void){
 	gpio14state = GpioDataRegs.GPADAT.bit.GPIO14;
 
 	if(gpio14state == 0){
-		gSysAlarm.bit.f = 1;
+		gSysAlarm.bit.overCurrent2 = 1;
 	}
 }
 

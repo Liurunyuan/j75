@@ -11,7 +11,7 @@
 #include "pid.h"
 
 volatile PIDPARA gPidPara = {0};
-volatile int gTargetSpeed = 200;
+volatile int16 gTargetSpeed = 200;
 
 void InitPidVar(void){
 //	gPidPara.kp = 450;
