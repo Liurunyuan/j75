@@ -189,12 +189,16 @@ inline void ChangeDutyAddInterval(void){
 }
 
 void t0_DisablePwmOutput(void){
+#if(SCI_PROTOCAL_401_SUPPORT == INCLUDE_FEATURE)
+	asm(" NOP");
+#else
 	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
 	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
 	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
+#endif
 }
 
 /* interupt cpu every 5ms */

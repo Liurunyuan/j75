@@ -90,9 +90,13 @@ inline void DisablePwm3(void){
 }
 
 void DisablePwmOutput(void){
+#if(SCI_PROTOCAL_401_SUPPORT == INCLUDE_FEATURE)
+	asm(" NOP");
+#else
 	DisablePwm1();
 	DisablePwm2();
 	DisablePwm3();
+#endif
 }
 /******************************************/
 inline void CPositiveToBNegtive(void) {
