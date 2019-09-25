@@ -399,6 +399,10 @@ void TargetDutyGradualChange(int targetduty){
  **************************************************************/
 void PwmIsrThread(void)
 {
+#if(SCI_PROTOCAL_401_SUPPORT == INCLUDE_FEATURE)
+	TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.closeLooptargetDuty + gSysInfo.dtDuty);
+	SwitchDirection();
+#else
 	if((START == gSysState.currentstate) && (0 == gSysAlarm.all)){
 		TargetDutyGradualChange(gSysInfo.openLoopTargetDuty + gSysInfo.closeLooptargetDuty + gSysInfo.dtDuty);
 		SwitchDirection();
@@ -406,6 +410,7 @@ void PwmIsrThread(void)
 	else{
 		DisablePwmOutput();
 	}
+#endif
 	ReadAnalogValue();
 
 	updateAndCheckCurrent();
