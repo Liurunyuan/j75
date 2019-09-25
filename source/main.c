@@ -151,7 +151,7 @@ void main(void) {
 
 	InitVar();
 
-	DisablePwmOutput();
+	DisablePwmOutput401();
 
 	ClearBeforeStart();
 

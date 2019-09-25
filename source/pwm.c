@@ -98,6 +98,13 @@ void DisablePwmOutput(void){
 	DisablePwm3();
 #endif
 }
+
+void DisablePwmOutput401(void){
+
+	DisablePwm1();
+	DisablePwm2();
+	DisablePwm3();
+}
 /******************************************/
 inline void CPositiveToBNegtive(void) {
 
