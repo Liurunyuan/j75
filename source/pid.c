@@ -11,7 +11,7 @@
 #include "pid.h"
 
 volatile PIDPARA gPidPara = {0};
-volatile int gTargetSpeed = 200;
+volatile int gTargetSpeed = 500;
 
 void InitPidVar(void){
 //	gPidPara.kp = 450;
@@ -21,7 +21,7 @@ void InitPidVar(void){
 	gPidPara.kd = 0;
 	gPidPara.targetPid = 0;  //é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·ç‰¡é”Ÿè§’ç™™IDé”Ÿæ–¤æ‹·é”Ÿè¡—ï¿½  ä»€ä¹ˆé”Ÿæ–¤æ‹·æ€�é”Ÿæ–¤æ‹·LUG
 
-	gTargetSpeed = 200;
+	gTargetSpeed = 500;
 }
 
 int32 sektest = 0;  //  é”Ÿå�«ç¡·æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å¥‚é”Ÿè¡—ç¢‰æ‹·é”Ÿç»žè£�è¾¾æ‹·é”Ÿå‰¿ç¡·æ‹·é”ŸçµƒUG
