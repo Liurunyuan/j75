@@ -8,6 +8,7 @@
 #include "kalman.h"
 
 #define DUTYCHANGEINTERVAL (3)
+#define SPECIAL_MOTOR_REVERSE_ROTATION (0)
 /******************************************/
 inline void openAH(void){
 	EPwm1Regs.AQCSFRC.bit.CSFA = 3;
@@ -193,129 +194,207 @@ Uint16 GetCurrentHallValue(void){
  *Date:						2018.10.31
  **************************************************************/
 void SwitchDirection(void){
-	gSysInfo.lastTimeHalllPosition = gSysInfo.currentHallPosition;
-	gSysInfo.currentHallPosition = GetCurrentHallValue();
-	//1:A 2:B 3:C
-	switch (gSysInfo.currentHallPosition) {
-		case 3://B+ --------------->C-
-			if(2 == gSysInfo.lastTimeHalllPosition){
-				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-				closeBH();
-				closeAH();
-				closeCL();
-				openCH();
-				openAL();
-				openBL();
-			}
-			else if(3 == gSysInfo.lastTimeHalllPosition){
-				CPositiveToANegtive();
-			}
-			else{
-				DisablePwmOutput();
-				gSysInfo.hallErrorCount++;
-			}
-			break;
-		case 1://A+ --------------->C-
-			if(3 == gSysInfo.lastTimeHalllPosition){
-				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-				closeAL();
-				closeBH();
-				closeCL();
-				openCH();
-				openBL();
-				openAH();
-			}
-			else if(1 == gSysInfo.lastTimeHalllPosition){
-				CPositiveToBNegtive();
-			}
-			else{
-				DisablePwmOutput();
-				gSysInfo.hallErrorCount++;
-			}
-			break;
-		case 5://A+ --------------->B-
-			if(1 == gSysInfo.lastTimeHalllPosition){
-				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-				closeCH();
-				closeBH();
-				closeAL();
-				openAH();
-				openBL();
-				openCL();
-			}
-			else if(5 == gSysInfo.lastTimeHalllPosition){
-				APositiveToBNegtive();
-			}
-			else{
-				DisablePwmOutput();
-				gSysInfo.hallErrorCount++;
-			}
-			break;
-		case 4://C+ --------------->B-
-			if(5 == gSysInfo.lastTimeHalllPosition){
-				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-				closeBL();
-				closeCH();
-				closeAL();
-				openAH();
-				openCL();
-				openBH();
-			}
-			else if(4 == gSysInfo.lastTimeHalllPosition){
-				APositiveToCNegtive();
-			}
-			else{
-				DisablePwmOutput();
-				gSysInfo.hallErrorCount++;
-			}
-			break;
-		case 6://C+ --------------->A-
-			if(4 == gSysInfo.lastTimeHalllPosition){
-				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-				EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-				closeAH();
-				closeBL();
-				closeCH();
-				openBH();
-				openCL();
-				openAL();	
+    gSysInfo.lastTimeHalllPosition = gSysInfo.currentHallPosition;
+    gSysInfo.currentHallPosition = GetCurrentHallValue();
+    //1:A 2:B 3:C
+    switch (gSysInfo.currentHallPosition) {
+        case 3://B+ --------------->C-
+            if(2 == gSysInfo.lastTimeHalllPosition){
+                EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+                EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+#if SPECIAL_MOTOR_REVERSE_ROTATION
+                                closeCH();
+                                closeAL();
+                                closeBL();
+                                openBH();
+                                openAH();
+                                openCL();
+#else
+                                closeBH();
+                                closeAH();
+                                closeCL();
+                                openCH();
+                                openAL();
+                                openBL();
+#endif
 
-			}
-			else if(6 == gSysInfo.lastTimeHalllPosition){
-				BPositiveToCNegtive();
-			}
-			else{
-				DisablePwmOutput();
-				gSysInfo.hallErrorCount++;		
-			}
-			break;
-		case 2://B+ --------------->A-
-			if(6 == gSysInfo.lastTimeHalllPosition){
-				EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
-				EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
-				closeCL();
-				closeAH();
-				closeBL();
-				openBH();
-				openAL();
-				openCH();
-			}
-			else if(2 == gSysInfo.lastTimeHalllPosition){
-				BPositiveToANegtive();
-			}
-			else{
-				DisablePwmOutput();
-				gSysInfo.hallErrorCount++;
-			}
-			break;
-		default:
-			DisablePwmOutput();
-			break;
-	}
+            }
+            else if(3 == gSysInfo.lastTimeHalllPosition){
+#if SPECIAL_MOTOR_REVERSE_ROTATION
+                APositiveToCNegtive();
+#else
+                CPositiveToANegtive();
+#endif
+            }
+            else{
+                DisablePwmOutput();
+                gSysInfo.hallErrorCount++;
+            }
+            break;
+        case 1://A+ --------------->C-
+            if(3 == gSysInfo.lastTimeHalllPosition){
+                EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+                EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+#if SPECIAL_MOTOR_REVERSE_ROTATION
+                closeCH();
+                closeBL();
+                closeAH();
+                openAL();
+                openBH();
+                openCL();
+#else
+                closeAL();
+                closeBH();
+                closeCL();
+                openCH();
+                openBL();
+                openAH();
+#endif
+            }
+            else if(1 == gSysInfo.lastTimeHalllPosition){
+#if SPECIAL_MOTOR_REVERSE_ROTATION
+                BPositiveToCNegtive();
+#else
+                CPositiveToBNegtive();
+#endif
+            }
+            else{
+                DisablePwmOutput();
+                gSysInfo.hallErrorCount++;
+            }
+            break;
+        case 5://A+ --------------->B-
+            if(1 == gSysInfo.lastTimeHalllPosition){
+                EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+                EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+#if SPECIAL_MOTOR_REVERSE_ROTATION
+                closeAH();
+                closeBL();
+                closeCL();
+                openCH();
+                openBH();
+                openAL();
+#else
+                closeCH();
+                closeBH();
+                closeAL();
+                openAH();
+                openBL();
+                openCL();
+#endif
+            }
+            else if(5 == gSysInfo.lastTimeHalllPosition){
+#if SPECIAL_MOTOR_REVERSE_ROTATION
+                BPositiveToANegtive();
+#else
+                APositiveToBNegtive();
+#endif
+            }
+            else{
+                DisablePwmOutput();
+                gSysInfo.hallErrorCount++;
+            }
+            break;
+        case 4://C+ --------------->B-
+            if(5 == gSysInfo.lastTimeHalllPosition){
+                EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+                EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+#if SPECIAL_MOTOR_REVERSE_ROTATION
+                closeAH();
+                closeCL();
+                closeBH();
+                openBL();
+                openCH();
+                openAL();
+#else
+                closeBL();
+                closeCH();
+                closeAL();
+                openAH();
+                openCL();
+                openBH();
+#endif
+            }
+            else if(4 == gSysInfo.lastTimeHalllPosition){
+#if SPECIAL_MOTOR_REVERSE_ROTATION
+                CPositiveToANegtive();
+#else
+                APositiveToCNegtive();
+#endif
+            }
+            else{
+                DisablePwmOutput();
+                gSysInfo.hallErrorCount++;
+            }
+            break;
+        case 6://C+ --------------->A-
+            if(4 == gSysInfo.lastTimeHalllPosition){
+                EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+                EPwm3Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+#if SPECIAL_MOTOR_REVERSE_ROTATION
+                closeBH();
+                closeCL();
+                closeAL();
+                openAH();
+                openBL();
+                openCH();
+#else
+                closeAH();
+                closeBL();
+                closeCH();
+                openBH();
+                openCL();
+                openAL();
+#endif
+            }
+            else if(6 == gSysInfo.lastTimeHalllPosition){
+#if SPECIAL_MOTOR_REVERSE_ROTATION
+                CPositiveToBNegtive();
+#else
+                BPositiveToCNegtive();
+#endif
+            }
+            else{
+                DisablePwmOutput();
+                gSysInfo.hallErrorCount++;
+            }
+            break;
+        case 2://B+ --------------->A-
+            if(6 == gSysInfo.lastTimeHalllPosition){
+                EPwm2Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD + gSysInfo.duty;
+                EPwm1Regs.CMPA.half.CMPA = EPWM1_TIMER_HALF_TBPRD - gSysInfo.duty;
+#if SPECIAL_MOTOR_REVERSE_ROTATION
+                closeBH();
+                closeAL();
+                closeCH();
+                openCL();
+                openAH();
+                openBL();
+#else
+                closeCL();
+                closeAH();
+                closeBL();
+                openBH();
+                openAL();
+                openCH();
+#endif
+            }
+            else if(2 == gSysInfo.lastTimeHalllPosition){
+#if SPECIAL_MOTOR_REVERSE_ROTATION
+                APositiveToBNegtive();
+#else
+                BPositiveToANegtive();
+#endif
+            }
+            else{
+                DisablePwmOutput();
+                gSysInfo.hallErrorCount++;
+            }
+            break;
+        default:
+            DisablePwmOutput();
+            break;
+    }
 }
 
 void OverCurrentSoftProtect(void){
