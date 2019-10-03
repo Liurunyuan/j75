@@ -109,6 +109,9 @@ void StateMachine401(void){
 		case INIT:
 			gSysState.currentstate = START;
 			break;
+		case START:
+            gSysState.currentstate = START;
+            break;
 		default:
 			gSysAlarm.bit.softwareFault = 1;
 			gSysState.currentstate = ALARM;

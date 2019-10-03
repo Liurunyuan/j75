@@ -10,7 +10,7 @@
 
 
 RS422RXQUE gRS422RxQue = {0};
-unsigned char rs422rxPack[16];
+unsigned char rs422rxPack[16] = {0};
 
 
 inline void Init_gRS422RxQue(void) {
@@ -374,7 +374,7 @@ void UnpackSciPackage(RS422RXQUE *RS422RxQue){
 #define HEAD1_401 0x7e
 #define HEAD2_401 0x7e
 #define RX_PACKET_LENGTH_401 6
-#define OFFSET_401 2
+#define OFFSET_401 1
 
 int findhead401(RS422RXQUE *RS422RxQue){
 
@@ -419,13 +419,16 @@ void saveprofile401(RS422RXQUE *RS422RxQue){
 
 int sumCheck401(const unsigned char *buf){
 	int i;
-	unsigned char sum = 0;
+	int sum = 0;
+	unsigned char result = 0;
 
 	for(i = 0; i < 5; ++i){
 		sum += buf[i];
 	}
 
-	if(sum == buf[5]){
+	result = sum & 0x00FF;
+
+	if(result == buf[5]){
 		return SUCCESS;
 	}
 	else{
