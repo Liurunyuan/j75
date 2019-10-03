@@ -10,7 +10,7 @@
 #include "adc.h"
 #define N (1)
 
-#define CALSPEED (4)
+#define CALSPEED (6)
 
 void updateKpAndKiPara(void)
 {

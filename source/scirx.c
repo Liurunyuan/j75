@@ -10,7 +10,12 @@
 
 
 RS422RXQUE gRS422RxQue = {0};
-unsigned char rs422rxPack[16] = {0};
+#if(SCI_PROTOCAL_401_SUPPORT == INCLUDE_FEATURE)
+	unsigned char rs422rxPack[16] = {0};
+#else
+	char rs422rxPack[16] = {0};
+#endif
+
 
 
 inline void Init_gRS422RxQue(void) {
