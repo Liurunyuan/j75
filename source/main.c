@@ -103,13 +103,32 @@ void StateMachine(void){
 	}
 }
 
+void StateMachine401(void){
+	switch (gSysState.currentstate)
+	{
+		case INIT:
+			gSysState.currentstate = START;
+			break;
+		case START:
+            gSysState.currentstate = START;
+            break;
+		default:
+			gSysAlarm.bit.softwareFault = 1;
+			gSysState.currentstate = ALARM;
+			break;
+	}
+}
+
 void MainLoop(){
 
 	// FEED_WATCH_DOG = 1;
 
 	ServiceDog();
-
+#if(SCI_PROTOCAL_401_SUPPORT == INCLUDE_FEATURE)
+	StateMachine401();
+#else
 	StateMachine();
+#endif
 
 	readTZGpioState();
 
@@ -117,7 +136,11 @@ void MainLoop(){
 
 	updateAndCheckTemperature();
 
+#if(SCI_PROTOCAL_401_SUPPORT == INCLUDE_FEATURE)
+	UnpackSciPackage401(&gRS422RxQue);
+#else
 	UnpackSciPackage(&gRS422RxQue);
+#endif
 
 	clearScibOverflow();
 
@@ -131,7 +154,7 @@ void main(void) {
 
 	InitVar();
 
-	DisablePwmOutput();
+	DisablePwmOutput401();
 
 	ClearBeforeStart();
 

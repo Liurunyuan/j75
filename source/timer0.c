@@ -10,7 +10,7 @@
 #include "adc.h"
 #define N (1)
 
-#define CALSPEED (4)
+#define CALSPEED (6)
 
 void updateKpAndKiPara(void)
 {
@@ -147,7 +147,11 @@ void Timer0_ISR_Thread(void){
 
 	if(count >= N){
 		FEED_WATCH_DOG = 1;
+#if(SCI_PROTOCAL_401_SUPPORT == INCLUDE_FEATURE)
+		PackRS422TxData401();
+#else
 		PackRS422TxData();
+#endif
 		count = 0;
 	}
 }
@@ -185,12 +189,16 @@ inline void ChangeDutyAddInterval(void){
 }
 
 void t0_DisablePwmOutput(void){
+#if(SCI_PROTOCAL_401_SUPPORT == INCLUDE_FEATURE)
+	asm(" NOP");
+#else
 	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
 	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
 	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
+#endif
 }
 
 /* interupt cpu every 5ms */

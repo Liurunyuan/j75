@@ -18,7 +18,11 @@
 typedef void (*functionMsgCodeUnpack)(VAR16 a, int b,int c);
 
 typedef struct _RS422RXQUE{
+#if(SCI_PROTOCAL_401_SUPPORT == INCLUDE_FEATURE)
+	unsigned char rxBuff[MAXQSIZE];
+#else
 	char rxBuff[MAXQSIZE];
+#endif
 	int front;
 	int rear;
 }RS422RXQUE;
@@ -27,5 +31,6 @@ extern RS422RXQUE gRS422RxQue;
 
 void SciRxIsrThread(RS422RXQUE *RS422RxQue);
 void UnpackSciPackage(RS422RXQUE *RS422RxQue);
+void UnpackSciPackage401(RS422RXQUE *RS422RxQue);
 void InitSciRxVar(void);
 #endif
