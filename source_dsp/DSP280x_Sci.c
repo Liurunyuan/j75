@@ -138,7 +138,7 @@ void scia_loopback_init(void)
 	// SciaRegs.SCILBAUD    			= 0x17;//0x17:115200-------------------0x24:9600 90M
 
 	ScibRegs.SCIHBAUD    			= 0x00;
-	ScibRegs.SCILBAUD    			= 0x72;
+	ScibRegs.SCILBAUD    			= 0x48;
 
 	SciaRegs.SCICCR.bit.LOOPBKENA 	= 0; // enable loop back
 	SciaRegs.SCICTL1.all 			= 0x0023;     // Relinquish SCI from Reset
@@ -155,7 +155,7 @@ void scib_loopback_init(void)
 	// ScibRegs.SCILBAUD    			= 0x17;//0x17:115200-------------------0x24:9600--------0x72:38400 90M
 
 	ScibRegs.SCIHBAUD    			= 0x00;
-	ScibRegs.SCILBAUD    			= 0x72;
+	ScibRegs.SCILBAUD    			= 0x48;
 
 	ScibRegs.SCICCR.bit.LOOPBKENA 	= 0; // enable loop back
 	ScibRegs.SCICTL1.all 			= 0x0023;     // Relinquish SCI from Reset
