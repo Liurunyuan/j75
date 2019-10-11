@@ -233,7 +233,7 @@ void updateAndCheckCurrent(void){
 	        }
 	    }
 	    else{
-	        --max_count_30A;
+	        max_count_30A = 0;
 	    }
         if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].min) {
             max_count_50A = (gSysAnalogVar.single.var[I_AN_3V3_A2].value - gSysAnalogVar.single.var[I_AN_3V3_A2].min) + max_count_50A;
@@ -243,7 +243,7 @@ void updateAndCheckCurrent(void){
             }
         }
         else{
-            --max_count_50A;
+            max_count_50A = 0;
         }
 	}
 	else{
