@@ -42,6 +42,7 @@ void InitGlobalVar(void){
 	gSysInfo.speedUI = 0;
 	gSysInfo.aKi = 3000;
 	gSysInfo.aKp = 3000;
+	gSysInfo.HW_OverCurrent = 0;
 	//gSysInfo.startDistance = 0;
 }
 void Delay(int time){
@@ -126,6 +127,7 @@ void readTZGpioState(void){
 
 	if(gpio14state == 0){
 		gSysAlarm.bit.overCurrent2 = 1;
+		gSysInfo.HW_OverCurrent = 1;
 	}
 }
 

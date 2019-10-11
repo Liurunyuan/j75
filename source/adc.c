@@ -65,7 +65,7 @@ const int anologMaxMinInit[][4] = {
     //max,max2nd,min,min2nd
 	{1636,1596,684,725},       //voltage max and min
 	{1,0,0,0},
-	{1096,958,0,0},        //current max, 2nd max and min
+	{1096,958,2400,0},        //current 30A, 28A, 50A, 0
 	{3,0,0,0},
 	{4,0,0,0},
 	{5,0,0,0},
@@ -220,30 +220,49 @@ void updateAndCheckVoltage(void){
 }
 
 void updateAndCheckCurrent(void){
-	static int max_count = 0;
+	static int max_count_30A = 0;
+	static int max_count_50A = 0;
 	gSysAnalogVar.single.var[I_AN_3V3_A2].value = gSysAnalogVar.single.var[I_AN_3V3_A2].updateValue();
 	if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max2nd) {
 	   gSysInfo.restrictduty = 1;
 	    if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max) {
-	        max_count = (gSysAnalogVar.single.var[I_AN_3V3_A2].value - gSysAnalogVar.single.var[I_AN_3V3_A2].max) + max_count;
-	        if(max_count > 150){
-	            max_count = 0;
+	        max_count_30A = (gSysAnalogVar.single.var[I_AN_3V3_A2].value - gSysAnalogVar.single.var[I_AN_3V3_A2].max) + max_count_30A;
+	        if(max_count_30A > 150){
+	            max_count_30A = 0;
 	            gSysAlarm.bit.overCurrent = 1;
 	        }
 	    }
 	    else{
-	        --max_count;
+	        --max_count_30A;
 	    }
+        if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].min) {
+            max_count_50A = (gSysAnalogVar.single.var[I_AN_3V3_A2].value - gSysAnalogVar.single.var[I_AN_3V3_A2].min) + max_count_50A;
+            if(max_count_50A > 75){
+                max_count_50A = 0;
+                gSysAlarm.bit.overCurrent2 = 1;
+            }
+        }
+        else{
+            --max_count_50A;
+        }
 	}
 	else{
-	    if(max_count >= 1){
-	        --max_count;
+	    if(max_count_30A >= 1){
+	        --max_count_30A;
 	    }
 	    else{
-	        max_count = 0;
+	        max_count_30A = 0;
 	    }
+        if(max_count_50A >= 1){
+            --max_count_50A;
+        }
+        else{
+            max_count_50A = 0;
+        }
 		gSysInfo.restrictduty = 0;
 		gSysAlarm.bit.overCurrent = 0;
+		gSysAlarm.bit.overCurrent2 = 0;
+		gSysInfo.HW_OverCurrent = 0;
 	}
 
 	 if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysInfo.maxCurrent){

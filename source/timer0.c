@@ -204,7 +204,18 @@ void t0_DisablePwmOutput(void){
 /* interupt cpu every 5ms */
 void Timer1_ISR_Thread(void){
 	static unsigned char count = 0;
+	static unsigned char count_oc = 0;
 	int busVol;
+
+	if(gSysInfo.HW_OverCurrent == 1){
+	    ++count_oc;
+	}
+    if(count_oc > 0){
+        if(gSysAlarm.all == 0){
+            clearHardwareErro();
+            count_oc = 0;
+        }
+    }
 	MotorSpeed();
 
 	//disable this function. No more need to use this fucntion

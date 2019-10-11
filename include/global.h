@@ -119,6 +119,7 @@ typedef struct{
 	int16 speedUI;
 	int16 aKi;
 	int16 aKp;
+	Uint16 HW_OverCurrent;
 	//int16 startDistance;
 }SYSINFO;
 
