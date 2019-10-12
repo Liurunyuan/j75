@@ -210,9 +210,10 @@ void Timer1_ISR_Thread(void){
 	if(gSysInfo.HW_OverCurrent == 1){
 	    ++count_oc;
 	}
-    if(count_oc > 0){
-        if(gSysAlarm.all == 0){
+    if(count_oc > 1){
+        if(GpioDataRegs.GPADAT.bit.GPIO15 == 1){
             clearHardwareErro();
+            gSysInfo.HW_OverCurrent = 0;
             count_oc = 0;
         }
     }

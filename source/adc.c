@@ -262,7 +262,6 @@ void updateAndCheckCurrent(void){
 		gSysInfo.restrictduty = 0;
 		gSysAlarm.bit.overCurrent = 0;
 		gSysAlarm.bit.overCurrent2 = 0;
-		gSysInfo.HW_OverCurrent = 0;
 	}
 
 	 if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysInfo.maxCurrent){
