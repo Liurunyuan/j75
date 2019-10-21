@@ -10,7 +10,7 @@
 #include "adc.h"
 #define N (1)
 
-#define CALSPEED (4)
+#define CALSPEED (6)
 
 void updateKpAndKiPara(void)
 {
@@ -126,7 +126,7 @@ void MotorSpeed(){
   	}
   	else{
 		count++;
-		if(count > 0){
+		if(count > 5){
 		    gMotorSpeedEcap = (int16)KalmanFilter(0, KALMAN_Q, KALMAN_R);
 			count = 0;
 		}
@@ -147,7 +147,11 @@ void Timer0_ISR_Thread(void){
 
 	if(count >= N){
 		FEED_WATCH_DOG = 1;
+#if(SCI_PROTOCAL_401_SUPPORT == INCLUDE_FEATURE)
+		PackRS422TxData401();
+#else
 		PackRS422TxData();
+#endif
 		count = 0;
 	}
 }
@@ -185,18 +189,34 @@ inline void ChangeDutyAddInterval(void){
 }
 
 void t0_DisablePwmOutput(void){
+#if(SCI_PROTOCAL_401_SUPPORT == INCLUDE_FEATURE)
+	asm(" NOP");
+#else
 	EPwm1Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm1Regs.AQCSFRC.bit.CSFB = 2;
 	EPwm2Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm2Regs.AQCSFRC.bit.CSFB = 2;
 	EPwm3Regs.AQCSFRC.bit.CSFA = 1;
 	EPwm3Regs.AQCSFRC.bit.CSFB = 2;
+#endif
 }
 
 /* interupt cpu every 5ms */
 void Timer1_ISR_Thread(void){
 	static unsigned char count = 0;
+	static unsigned char count_oc = 0;
 	int busVol;
+
+	if(gSysInfo.HW_OverCurrent == 1){
+	    ++count_oc;
+	}
+    if(count_oc > 1){
+        if(GpioDataRegs.GPADAT.bit.GPIO15 == 1){
+            clearHardwareErro();
+            gSysInfo.HW_OverCurrent = 0;
+            count_oc = 0;
+        }
+    }
 	MotorSpeed();
 
 	//disable this function. No more need to use this fucntion

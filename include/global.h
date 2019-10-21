@@ -21,6 +21,12 @@
 #define ENABLE_TX (1)
 #define DISABLE_TX (0)
 
+#define INCLUDE_FEATURE  1
+#define EXCLUDE_FEATURE  0
+
+
+#define SCI_PROTOCAL_401_SUPPORT INCLUDE_FEATURE
+
 enum{
 	UNKNOWN,
 	START,
@@ -31,13 +37,15 @@ enum{
 
 typedef struct
 {
-	Uint16 overCurrent : 1;
-	Uint16 overBusVoltage : 1;
+	Uint16 a : 1;
 	Uint16 overTemperature : 1;
-	Uint16 softwareFault : 1;
+	Uint16 overBusVoltage : 1;
+	Uint16 lowBusVoltage : 1;
+	Uint16 overCurrent : 1;
+	Uint16 overCurrent2 : 1;
 	Uint16 InitFault : 1;
 	Uint16 f : 1;
-	Uint16 g : 1;
+	Uint16 softwareFault : 1;
 	Uint16 h : 1;
 	Uint16 i : 1;
 	Uint16 j : 1;
@@ -111,6 +119,7 @@ typedef struct{
 	int16 speedUI;
 	int16 aKi;
 	int16 aKp;
+	Uint16 HW_OverCurrent;
 	//int16 startDistance;
 }SYSINFO;
 

@@ -65,7 +65,7 @@ const int anologMaxMinInit[][4] = {
     //max,max2nd,min,min2nd
 	{1636,1596,684,725},       //voltage max and min
 	{1,0,0,0},
-	{1096,958,0,0},        //current max, 2nd max and min
+	{1096,958,2400,0},        //current 30A, 28A, 50A, 0
 	{3,0,0,0},
 	{4,0,0,0},
 	{5,0,0,0},
@@ -136,6 +136,7 @@ void updateAndCheckTemperature(void){
             if(min2nd_count >5000){
                 min2nd_count = 0;
                 over_limit_lasttime = 0;
+                gSysAlarm.bit.overTemperature = 0;
             }
         }
         else{
@@ -163,33 +164,53 @@ void updateAndCheckTemperature(void){
 }
 
 void updateAndCheckVoltage(void){
-    static int count = 0;
-    static int over_limit_lasttime = 0;
+    static int count_max = 0;
+    static int count_min = 0;
 
     gSysAnalogVar.single.var[U_AN_3V3_A0].value = gSysAnalogVar.single.var[U_AN_3V3_A0].updateValue();
 
-    if(over_limit_lasttime == 1){
-        if((gSysAnalogVar.single.var[U_AN_3V3_A0].value < gSysAnalogVar.single.var[U_AN_3V3_A0].max2nd) &&
-                    (gSysAnalogVar.single.var[U_AN_3V3_A0].value > gSysAnalogVar.single.var[U_AN_3V3_A0].min2nd)){
-            over_limit_lasttime = 0;
+    if(gSysAlarm.bit.overBusVoltage == 1){
+        if((gSysAnalogVar.single.var[U_AN_3V3_A0].value < gSysAnalogVar.single.var[U_AN_3V3_A0].max2nd)){
+            gSysAlarm.bit.overBusVoltage = 0;
         }
         else{
             gSysAlarm.bit.overBusVoltage = 1;
-            over_limit_lasttime = 1;
         }
     }
-    else if (over_limit_lasttime == 0){
-        if((gSysAnalogVar.single.var[U_AN_3V3_A0].value > gSysAnalogVar.single.var[U_AN_3V3_A0].max) ||
-                    (gSysAnalogVar.single.var[U_AN_3V3_A0].value < gSysAnalogVar.single.var[U_AN_3V3_A0].min)) {
-            ++count;
-            if(count > 10){
-                count = 0;
+    else if(gSysAlarm.bit.overBusVoltage == 0){
+        if((gSysAnalogVar.single.var[U_AN_3V3_A0].value > gSysAnalogVar.single.var[U_AN_3V3_A0].max)) {
+            ++count_max;
+            if(count_max > 10){
+                count_max = 0;
                 gSysAlarm.bit.overBusVoltage = 1;
-                over_limit_lasttime = 1;
             }
         }
         else{
-            count = 0;
+            count_max = 0;
+        }
+    }
+    else{
+        gSysSWAlarm.bit.updateAndCheckVoltage = 1;
+        gSysAlarm.bit.softwareFault = 1;
+    }
+    if(gSysAlarm.bit.lowBusVoltage == 1){
+        if((gSysAnalogVar.single.var[U_AN_3V3_A0].value > gSysAnalogVar.single.var[U_AN_3V3_A0].min2nd)){
+            gSysAlarm.bit.lowBusVoltage = 0;
+        }
+        else{
+            gSysAlarm.bit.lowBusVoltage = 1;
+        }
+    }
+    else if (gSysAlarm.bit.lowBusVoltage == 0){
+        if((gSysAnalogVar.single.var[U_AN_3V3_A0].value < gSysAnalogVar.single.var[U_AN_3V3_A0].min)) {
+            ++count_min;
+            if(count_min > 10){
+                count_min = 0;
+                gSysAlarm.bit.lowBusVoltage = 1;
+            }
+        }
+        else{
+            count_min = 0;
         }
     }
     else {
@@ -199,48 +220,51 @@ void updateAndCheckVoltage(void){
 }
 
 void updateAndCheckCurrent(void){
-	static int max_count = 0;
-//	static int i = 0;
-//	int j;
-//	int64 ret = 0;
+	static int max_count_30A = 0;
+	static int max_count_50A = 0;
 	gSysAnalogVar.single.var[I_AN_3V3_A2].value = gSysAnalogVar.single.var[I_AN_3V3_A2].updateValue();
 	if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max2nd) {
 	   gSysInfo.restrictduty = 1;
 	    if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].max) {
-	        max_count = (gSysAnalogVar.single.var[I_AN_3V3_A2].value - gSysAnalogVar.single.var[I_AN_3V3_A2].max) + max_count;
-	        if(max_count > 150){
-	            max_count = 0;
+	        max_count_30A = (gSysAnalogVar.single.var[I_AN_3V3_A2].value - gSysAnalogVar.single.var[I_AN_3V3_A2].max) + max_count_30A;
+	        if(max_count_30A > 150){
+	            max_count_30A = 0;
 	            gSysAlarm.bit.overCurrent = 1;
 	        }
 	    }
 	    else{
-	        --max_count;
+	        max_count_30A = 0;
 	    }
+        if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysAnalogVar.single.var[I_AN_3V3_A2].min) {
+            max_count_50A = (gSysAnalogVar.single.var[I_AN_3V3_A2].value - gSysAnalogVar.single.var[I_AN_3V3_A2].min) + max_count_50A;
+            if(max_count_50A > 75){
+                max_count_50A = 0;
+                gSysAlarm.bit.overCurrent2 = 1;
+            }
+        }
+        else{
+            max_count_50A = 0;
+        }
 	}
 	else{
-	    if(max_count >= 1){
-	        --max_count;
+	    if(max_count_30A >= 1){
+	        --max_count_30A;
 	    }
 	    else{
-	        max_count = 0;
+	        max_count_30A = 0;
 	    }
+        if(max_count_50A >= 1){
+            --max_count_50A;
+        }
+        else{
+            max_count_50A = 0;
+        }
 		gSysInfo.restrictduty = 0;
+		gSysAlarm.bit.overCurrent = 0;
+		gSysAlarm.bit.overCurrent2 = 0;
 	}
 
 	 if(gSysAnalogVar.single.var[I_AN_3V3_A2].value > gSysInfo.maxCurrent){
 	 	gSysInfo.maxCurrent = gSysAnalogVar.single.var[I_AN_3V3_A2].value;
 	 }
-	//	gSysInfo.maxCurrent = gSysAnalogVar.single.var[I_AN_3V3_A2].value;
-	//	gSysInfo.maxCurrent = (KalmanFilterCurrent(gSysAnalogVar.single.var[I_AN_3V3_A2].value,300,50));
-	// tmp[i] = (int64)gSysAnalogVar.single.var[I_AN_3V3_A2].value;
-	// ++i;
-	// if(i >= 64){
-	//     i = 0;
-	// }
-    // for(j = 0; j < 64; ++j){
-    //     ret += tmp[j];
-    // }
-    // ret = ret >> 6;
-    // gSysInfo.aveCurrent  = ret;
-//	gSysInfo.maxCurrent = (int16)(KalmanFilterCurrent(ret,300,50));
 }
