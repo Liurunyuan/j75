@@ -1,4 +1,13 @@
-﻿/***************************0.1.5*******************************/
+﻿/***************************0.1.6*******************************/
+Version Number: 0.1.6
+Date: 2019/10/21
+Author:Runtian
+
+What new: 
+	1. Change communication protocals based on 401 requests
+	2. Change alerts clearing method
+	3. Add reverse rotation feature for a specific 401 Motor
+/***************************0.1.5*******************************/
 Version Number: 0.1.5
 Date: 2019/9/24
 Author:Runtian
